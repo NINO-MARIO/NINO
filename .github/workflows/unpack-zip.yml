@@ -1,0 +1,40 @@
+name: NINO unpack zip
+
+on:
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+  actions: write
+
+jobs:
+  unpack:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Unpack the newest zip at the repo root
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          ZIP=$(ls -t ./*.zip 2>/dev/null | head -n 1)
+          if [ -z "$ZIP" ]; then echo "::error::ไม่พบไฟล์ .zip ที่หน้าแรกของรีโป (อัปโหลดไฟล์ zip ก่อน)"; exit 1; fi
+          echo "ใช้ไฟล์: $ZIP"
+          rm -rf "$RUNNER_TEMP/x" && mkdir -p "$RUNNER_TEMP/x"
+          unzip -q "$ZIP" -d "$RUNNER_TEMP/x"
+          SRC="$RUNNER_TEMP/x"
+          COUNT=$(find "$SRC" -mindepth 1 -maxdepth 1 | wc -l)
+          if [ "$COUNT" -eq 1 ] && [ -d "$(find "$SRC" -mindepth 1 -maxdepth 1)" ]; then SRC=$(find "$SRC" -mindepth 1 -maxdepth 1); fi
+          rsync -a --exclude '.github' --exclude '.git' --exclude '*.zip' "$SRC"/ ./
+          git rm -q -f "$ZIP"
+          if [ -d "$SRC/.github/workflows" ]; then
+            if ! diff -rq "$SRC/.github/workflows" .github/workflows > "$RUNNER_TEMP/wf.diff" 2>&1; then
+              { echo "## ไฟล์ workflow ใน zip ต่างจากที่อยู่ในรีโป"; echo "GitHub ไม่ให้ระบบอัตโนมัติแก้ไฟล์ใน .github/workflows ต้องอัปโหลดเองจากโฟลเดอร์ android/ci ของ zip"; echo '```'; cat "$RUNNER_TEMP/wf.diff"; echo '```'; } >> "$GITHUB_STEP_SUMMARY"
+            fi
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -m "Update NINO from zip" || echo "ไม่มีอะไรเปลี่ยน"
+          git push origin HEAD
+          gh workflow run "NINO Android APK" || echo "สั่งบิลด์เองที่แท็บ Actions ได้"
