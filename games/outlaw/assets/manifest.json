@@ -1,0 +1,2859 @@
+{
+ "atk": {
+  "shidi": {
+   "frames": 3,
+   "h": 43,
+   "w": 44
+  },
+  "shijie": {
+   "frames": 3,
+   "h": 43,
+   "w": 47
+  },
+  "shimei": {
+   "frames": 3,
+   "h": 43,
+   "w": 44
+  },
+  "shizu": {
+   "frames": 3,
+   "h": 43,
+   "w": 42
+  }
+ },
+ "buildings": {
+  "bld_adobe_house": {
+   "h": 129,
+   "w": 150
+  },
+  "bld_alchemy": {
+   "h": 159,
+   "w": 184
+  },
+  "bld_arrow_tower": {
+   "h": 200,
+   "w": 92
+  },
+  "bld_auction": {
+   "h": 167,
+   "w": 264
+  },
+  "bld_bamboo_hut": {
+   "h": 122,
+   "w": 136
+  },
+  "bld_barracks": {
+   "h": 107,
+   "w": 240
+  },
+  "bld_beacon": {
+   "h": 212,
+   "w": 86
+  },
+  "bld_bell_tower": {
+   "h": 193,
+   "w": 172
+  },
+  "bld_city_gate": {
+   "h": 157,
+   "w": 320
+  },
+  "bld_city_god_temple": {
+   "h": 201,
+   "w": 236
+  },
+  "bld_clinic": {
+   "h": 143,
+   "w": 192
+  },
+  "bld_clinic_desert": {
+   "h": 159,
+   "w": 180
+  },
+  "bld_clinic_ghost": {
+   "h": 166,
+   "w": 180
+  },
+  "bld_clinic_jn": {
+   "h": 162,
+   "w": 186
+  },
+  "bld_clinic_miao": {
+   "h": 144,
+   "w": 160
+  },
+  "bld_clinic_snow": {
+   "h": 146,
+   "w": 184
+  },
+  "bld_clinic_vol": {
+   "h": 140,
+   "w": 184
+  },
+  "bld_command_hall": {
+   "h": 151,
+   "w": 270
+  },
+  "bld_danfang": {
+   "h": 167,
+   "w": 184
+  },
+  "bld_demon_tower": {
+   "h": 272,
+   "w": 112
+  },
+  "bld_dorm": {
+   "h": 89,
+   "w": 248
+  },
+  "bld_drum_tower": {
+   "h": 183,
+   "w": 200
+  },
+  "bld_drum_tower_miao": {
+   "h": 260,
+   "w": 112
+  },
+  "bld_fire_temple": {
+   "h": 213,
+   "w": 230
+  },
+  "bld_fishing_hut": {
+   "h": 112,
+   "w": 128
+  },
+  "bld_fortress_gate": {
+   "h": 186,
+   "w": 320
+  },
+  "bld_ghost_house": {
+   "h": 158,
+   "w": 176
+  },
+  "bld_granary": {
+   "h": 116,
+   "w": 104
+  },
+  "bld_heaven_gate": {
+   "h": 207,
+   "w": 360
+  },
+  "bld_hermitage": {
+   "h": 132,
+   "w": 184
+  },
+  "bld_house_a": {
+   "h": 135,
+   "w": 152
+  },
+  "bld_house_b": {
+   "h": 123,
+   "w": 164
+  },
+  "bld_house_c": {
+   "h": 178,
+   "w": 172
+  },
+  "bld_house_jn_a": {
+   "h": 136,
+   "w": 150
+  },
+  "bld_house_jn_b": {
+   "h": 140,
+   "w": 168
+  },
+  "bld_house_sea": {
+   "h": 127,
+   "w": 156
+  },
+  "bld_house_vol_a": {
+   "h": 143,
+   "w": 150
+  },
+  "bld_house_vol_b": {
+   "h": 157,
+   "w": 160
+  },
+  "bld_ice_temple": {
+   "h": 188,
+   "w": 208
+  },
+  "bld_inn": {
+   "h": 177,
+   "w": 224
+  },
+  "bld_inn_desert": {
+   "h": 205,
+   "w": 230
+  },
+  "bld_inn_ghost": {
+   "h": 187,
+   "w": 210
+  },
+  "bld_inn_jn": {
+   "h": 180,
+   "w": 210
+  },
+  "bld_inn_miao": {
+   "h": 152,
+   "w": 214
+  },
+  "bld_inn_sea": {
+   "h": 171,
+   "w": 214
+  },
+  "bld_inn_snow": {
+   "h": 206,
+   "w": 224
+  },
+  "bld_inn_vol": {
+   "h": 191,
+   "w": 214
+  },
+  "bld_jade_hall": {
+   "h": 163,
+   "w": 352
+  },
+  "bld_lighthouse": {
+   "h": 254,
+   "w": 100
+  },
+  "bld_log_house": {
+   "h": 129,
+   "w": 150
+  },
+  "bld_longhall": {
+   "h": 119,
+   "w": 264
+  },
+  "bld_main_hall": {
+   "h": 172,
+   "w": 352
+  },
+  "bld_mansion": {
+   "h": 123,
+   "w": 232
+  },
+  "bld_mansion_official": {
+   "h": 143,
+   "w": 236
+  },
+  "bld_opera": {
+   "h": 189,
+   "w": 208
+  },
+  "bld_pagoda": {
+   "h": 273,
+   "w": 112
+  },
+  "bld_palace": {
+   "h": 248,
+   "w": 400
+  },
+  "bld_pastry_shop": {
+   "h": 146,
+   "w": 176
+  },
+  "bld_pavilion": {
+   "h": 143,
+   "w": 124
+  },
+  "bld_pawn": {
+   "h": 150,
+   "w": 172
+  },
+  "bld_pharmacy": {
+   "h": 167,
+   "w": 184
+  },
+  "bld_police": {
+   "h": 155,
+   "w": 248
+  },
+  "bld_post_station": {
+   "h": 115,
+   "w": 230
+  },
+  "bld_restaurant": {
+   "h": 199,
+   "w": 228
+  },
+  "bld_ruined_temple": {
+   "h": 176,
+   "w": 200
+  },
+  "bld_sea_temple": {
+   "h": 181,
+   "w": 236
+  },
+  "bld_sect_gate": {
+   "h": 172,
+   "w": 264
+  },
+  "bld_shijie_house": {
+   "h": 142,
+   "w": 184
+  },
+  "bld_siheyuan": {
+   "h": 92,
+   "w": 176
+  },
+  "bld_smith": {
+   "h": 153,
+   "w": 192
+  },
+  "bld_smith_desert": {
+   "h": 164,
+   "w": 190
+  },
+  "bld_smith_ghost": {
+   "h": 167,
+   "w": 190
+  },
+  "bld_smith_jn": {
+   "h": 155,
+   "w": 186
+  },
+  "bld_smith_miao": {
+   "h": 155,
+   "w": 186
+  },
+  "bld_smith_snow": {
+   "h": 160,
+   "w": 196
+  },
+  "bld_smith_vol": {
+   "h": 162,
+   "w": 270
+  },
+  "bld_star_tower": {
+   "h": 223,
+   "w": 128
+  },
+  "bld_stilt_house": {
+   "h": 146,
+   "w": 160
+  },
+  "bld_tavern": {
+   "h": 143,
+   "w": 184
+  },
+  "bld_teahouse": {
+   "h": 130,
+   "w": 192
+  },
+  "bld_temple": {
+   "h": 96,
+   "w": 92
+  },
+  "bld_tent": {
+   "h": 108,
+   "w": 120
+  },
+  "bld_tower": {
+   "h": 255,
+   "w": 136
+  },
+  "bld_town_gate": {
+   "h": 173,
+   "w": 280
+  },
+  "bld_warehouse": {
+   "h": 92,
+   "w": 240
+  },
+  "bld_watchtower_wood": {
+   "h": 228,
+   "w": 78
+  },
+  "bld_water_gate": {
+   "h": 113,
+   "w": 220
+  },
+  "bld_watermill": {
+   "h": 139,
+   "w": 196
+  },
+  "bld_weapon_shop": {
+   "h": 155,
+   "w": 196
+  },
+  "dg_abyss": {
+   "h": 165,
+   "w": 264
+  },
+  "dg_beast": {
+   "h": 157,
+   "w": 272
+  },
+  "dg_fire": {
+   "h": 139,
+   "w": 272
+  },
+  "dg_ghost": {
+   "h": 153,
+   "w": 272
+  },
+  "dg_heaven": {
+   "h": 149,
+   "w": 304
+  },
+  "dg_huanjing": {
+   "h": 138,
+   "w": 256
+  },
+  "dg_ice": {
+   "h": 162,
+   "w": 244
+  },
+  "dg_jadepool": {
+   "h": 132,
+   "w": 284
+  },
+  "dg_longgong": {
+   "h": 157,
+   "w": 252
+  },
+  "dg_palace": {
+   "h": 148,
+   "w": 248
+  },
+  "dg_sand": {
+   "h": 168,
+   "w": 280
+  },
+  "dg_snake": {
+   "h": 136,
+   "w": 256
+  },
+  "dg_tomb": {
+   "h": 149,
+   "w": 264
+  },
+  "dg_zhenyao": {
+   "h": 329,
+   "w": 136
+  },
+  "lm_crystal_palace": {
+   "h": 166,
+   "w": 336
+  },
+  "lm_fox_altar": {
+   "h": 202,
+   "w": 232
+  },
+  "lm_pantao": {
+   "h": 233,
+   "w": 244
+  },
+  "lm_tianjiao_ta": {
+   "h": 432,
+   "w": 200
+  },
+  "lm_yaotai": {
+   "h": 162,
+   "w": 360
+  }
+ },
+ "chars": {
+  "ao_bing": {
+   "frames": 9,
+   "h": 49,
+   "w": 36
+  },
+  "ape": {
+   "frames": 9,
+   "h": 45,
+   "w": 38
+  },
+  "ape_king": {
+   "frames": 9,
+   "h": 61,
+   "w": 82
+  },
+  "bandit": {
+   "frames": 9,
+   "h": 41,
+   "w": 33
+  },
+  "bandit_chief": {
+   "frames": 9,
+   "h": 51,
+   "w": 46
+  },
+  "baoyao": {
+   "frames": 9,
+   "h": 43,
+   "w": 39
+  },
+  "bear": {
+   "frames": 9,
+   "h": 57,
+   "w": 40
+  },
+  "bianfu": {
+   "frames": 9,
+   "h": 33,
+   "w": 43
+  },
+  "boar": {
+   "frames": 9,
+   "h": 43,
+   "w": 39
+  },
+  "bull_king": {
+   "frames": 9,
+   "h": 63,
+   "w": 63
+  },
+  "child": {
+   "frames": 9,
+   "h": 31,
+   "w": 23
+  },
+  "crab": {
+   "frames": 9,
+   "h": 45,
+   "w": 47
+  },
+  "daoshi": {
+   "frames": 9,
+   "h": 41,
+   "w": 24
+  },
+  "demon": {
+   "frames": 9,
+   "h": 45,
+   "w": 29
+  },
+  "demon_general": {
+   "frames": 9,
+   "h": 59,
+   "w": 72
+  },
+  "demon_lord": {
+   "frames": 9,
+   "h": 55,
+   "w": 34
+  },
+  "driver": {
+   "frames": 9,
+   "h": 41,
+   "w": 23
+  },
+  "elder": {
+   "frames": 9,
+   "h": 38,
+   "w": 24
+  },
+  "erlang": {
+   "frames": 9,
+   "h": 55,
+   "w": 41
+  },
+  "eyu": {
+   "frames": 9,
+   "h": 45,
+   "w": 65
+  },
+  "farmer": {
+   "frames": 9,
+   "h": 41,
+   "w": 31
+  },
+  "fox": {
+   "frames": 9,
+   "h": 47,
+   "w": 47
+  },
+  "fox_maiden": {
+   "frames": 9,
+   "h": 43,
+   "w": 36
+  },
+  "ghost": {
+   "frames": 9,
+   "h": 41,
+   "w": 29
+  },
+  "ghost_king": {
+   "frames": 9,
+   "h": 61,
+   "w": 42
+  },
+  "giant_god": {
+   "frames": 9,
+   "h": 63,
+   "w": 81
+  },
+  "girl": {
+   "frames": 9,
+   "h": 41,
+   "w": 28
+  },
+  "guard": {
+   "frames": 9,
+   "h": 41,
+   "w": 25
+  },
+  "horse_face": {
+   "frames": 9,
+   "h": 51,
+   "w": 36
+  },
+  "huangfeng": {
+   "frames": 9,
+   "h": 39,
+   "w": 45
+  },
+  "huoya": {
+   "frames": 9,
+   "h": 35,
+   "w": 41
+  },
+  "ice_queen": {
+   "frames": 9,
+   "h": 51,
+   "w": 34
+  },
+  "iron_fan": {
+   "frames": 9,
+   "h": 47,
+   "w": 37
+  },
+  "jiangshi": {
+   "frames": 9,
+   "h": 41,
+   "w": 26
+  },
+  "jianxiu": {
+   "frames": 9,
+   "h": 41,
+   "w": 24
+  },
+  "jiao": {
+   "frames": 9,
+   "h": 61,
+   "w": 45
+  },
+  "jiaoren": {
+   "frames": 9,
+   "h": 41,
+   "w": 29
+  },
+  "jiuying": {
+   "frames": 9,
+   "h": 63,
+   "w": 84
+  },
+  "lava_golem": {
+   "frames": 9,
+   "h": 47,
+   "w": 45
+  },
+  "leigong": {
+   "frames": 9,
+   "h": 47,
+   "w": 46
+  },
+  "mer_guard": {
+   "frames": 9,
+   "h": 45,
+   "w": 30
+  },
+  "merchant": {
+   "frames": 9,
+   "h": 40,
+   "w": 31
+  },
+  "mogou": {
+   "frames": 9,
+   "h": 37,
+   "w": 44
+  },
+  "mogu": {
+   "frames": 9,
+   "h": 31,
+   "w": 30
+  },
+  "monk": {
+   "frames": 9,
+   "h": 39,
+   "w": 25
+  },
+  "nezha": {
+   "frames": 9,
+   "h": 45,
+   "w": 41
+  },
+  "nine_tails": {
+   "frames": 9,
+   "h": 55,
+   "w": 66
+  },
+  "nvxiu": {
+   "frames": 9,
+   "h": 41,
+   "w": 31
+  },
+  "ox_head": {
+   "frames": 9,
+   "h": 51,
+   "w": 34
+  },
+  "passerby": {
+   "frames": 9,
+   "h": 41,
+   "w": 25
+  },
+  "red_boy": {
+   "frames": 9,
+   "h": 39,
+   "w": 31
+  },
+  "sanxiu": {
+   "frames": 9,
+   "h": 41,
+   "w": 25
+  },
+  "sb_ape": {
+   "frames": 9,
+   "h": 51,
+   "w": 46
+  },
+  "sb_boar": {
+   "frames": 9,
+   "h": 45,
+   "w": 59
+  },
+  "sb_eagle": {
+   "frames": 9,
+   "h": 41,
+   "w": 65
+  },
+  "sb_fox": {
+   "frames": 9,
+   "h": 43,
+   "w": 41
+  },
+  "sb_qilin": {
+   "frames": 9,
+   "h": 53,
+   "w": 46
+  },
+  "sb_toad": {
+   "frames": 9,
+   "h": 31,
+   "w": 41
+  },
+  "sb_turtle": {
+   "frames": 9,
+   "h": 41,
+   "w": 60
+  },
+  "sb_wolf": {
+   "frames": 9,
+   "h": 45,
+   "w": 61
+  },
+  "sb_yinglong": {
+   "frames": 9,
+   "h": 55,
+   "w": 56
+  },
+  "scholar": {
+   "frames": 9,
+   "h": 41,
+   "w": 28
+  },
+  "scorpion": {
+   "frames": 9,
+   "h": 41,
+   "w": 31
+  },
+  "scorpion_queen": {
+   "frames": 9,
+   "h": 55,
+   "w": 41
+  },
+  "shanxiao": {
+   "frames": 9,
+   "h": 35,
+   "w": 35
+  },
+  "shidi": {
+   "frames": 9,
+   "h": 41,
+   "w": 23
+  },
+  "shijie": {
+   "frames": 9,
+   "h": 41,
+   "w": 26
+  },
+  "shimei": {
+   "frames": 9,
+   "h": 41,
+   "w": 26
+  },
+  "shishi": {
+   "frames": 9,
+   "h": 39,
+   "w": 45
+  },
+  "shizu": {
+   "frames": 9,
+   "h": 41,
+   "w": 26
+  },
+  "shrimp": {
+   "frames": 9,
+   "h": 41,
+   "w": 34
+  },
+  "skeleton": {
+   "frames": 9,
+   "h": 41,
+   "w": 31
+  },
+  "snake": {
+   "frames": 9,
+   "h": 41,
+   "w": 30
+  },
+  "snake_queen": {
+   "frames": 9,
+   "h": 57,
+   "w": 37
+  },
+  "spider": {
+   "frames": 9,
+   "h": 41,
+   "w": 42
+  },
+  "swordswoman": {
+   "frames": 9,
+   "h": 41,
+   "w": 28
+  },
+  "taohua": {
+   "frames": 9,
+   "h": 43,
+   "w": 42
+  },
+  "tian_bing": {
+   "frames": 9,
+   "h": 43,
+   "w": 29
+  },
+  "tm_eater": {
+   "frames": 9,
+   "h": 45,
+   "w": 49
+  },
+  "tm_guard": {
+   "frames": 9,
+   "h": 51,
+   "w": 56
+  },
+  "tm_lancer": {
+   "frames": 9,
+   "h": 49,
+   "w": 39
+  },
+  "tm_priest": {
+   "frames": 9,
+   "h": 51,
+   "w": 48
+  },
+  "tm_scout": {
+   "frames": 9,
+   "h": 43,
+   "w": 34
+  },
+  "tm_wraith": {
+   "frames": 9,
+   "h": 49,
+   "w": 41
+  },
+  "toad": {
+   "frames": 9,
+   "h": 35,
+   "w": 38
+  },
+  "tree_demon": {
+   "frames": 9,
+   "h": 49,
+   "w": 31
+  },
+  "tudi": {
+   "frames": 9,
+   "h": 41,
+   "w": 25
+  },
+  "turtle": {
+   "frames": 9,
+   "h": 43,
+   "w": 40
+  },
+  "vendor": {
+   "frames": 9,
+   "h": 41,
+   "w": 32
+  },
+  "wolf": {
+   "frames": 9,
+   "h": 41,
+   "w": 33
+  },
+  "woman": {
+   "frames": 9,
+   "h": 41,
+   "w": 25
+  },
+  "xiongyao": {
+   "frames": 9,
+   "h": 51,
+   "w": 53
+  },
+  "xuebao": {
+   "frames": 9,
+   "h": 43,
+   "w": 55
+  },
+  "yecha": {
+   "frames": 9,
+   "h": 45,
+   "w": 32
+  },
+  "yeti": {
+   "frames": 9,
+   "h": 49,
+   "w": 47
+  },
+  "zhangmen": {
+   "frames": 9,
+   "h": 41,
+   "w": 27
+  },
+  "zhizha": {
+   "frames": 9,
+   "h": 41,
+   "w": 29
+  },
+  "zombie_king": {
+   "frames": 9,
+   "h": 55,
+   "w": 44
+  }
+ },
+ "figures": {
+  "shidi": {
+   "h": 280,
+   "w": 130
+  },
+  "shijie": {
+   "h": 280,
+   "w": 137
+  },
+  "shimei": {
+   "h": 280,
+   "w": 131
+  },
+  "shimei_drive": {
+   "h": 200,
+   "w": 301
+  },
+  "shizu": {
+   "h": 280,
+   "w": 132
+  }
+ },
+ "fx": {
+  "demon_flame": {
+   "h": 29,
+   "w": 26
+  },
+  "explosion": {
+   "h": 63,
+   "w": 60
+  },
+  "fire_wheel": {
+   "h": 26,
+   "w": 25
+  },
+  "flying_sword": {
+   "h": 6,
+   "w": 22
+  },
+  "fox_fire": {
+   "h": 19,
+   "w": 14
+  },
+  "heart": {
+   "h": 9,
+   "w": 10
+  },
+  "ice_blade": {
+   "h": 11,
+   "w": 20
+  },
+  "light_ray": {
+   "h": 24,
+   "w": 64
+  },
+  "lightning": {
+   "h": 72,
+   "w": 49
+  },
+  "meteor": {
+   "h": 95,
+   "w": 83
+  },
+  "note": {
+   "h": 20,
+   "w": 18
+  },
+  "orb": {
+   "h": 23,
+   "w": 22
+  },
+  "petal": {
+   "h": 11,
+   "w": 11
+  },
+  "phoenix": {
+   "h": 64,
+   "w": 56
+  },
+  "rune": {
+   "h": 48,
+   "w": 47
+  },
+  "sand_swirl": {
+   "h": 61,
+   "w": 64
+  },
+  "scale": {
+   "h": 13,
+   "w": 11
+  },
+  "slash": {
+   "h": 44,
+   "w": 37
+  },
+  "smoke": {
+   "h": 28,
+   "w": 32
+  },
+  "staff_spin": {
+   "h": 70,
+   "w": 72
+  },
+  "trident_arc": {
+   "h": 53,
+   "w": 56
+  },
+  "wisp": {
+   "h": 17,
+   "w": 18
+  }
+ },
+ "icons": [
+  "lingshi",
+  "cake_box",
+  "cake_plate",
+  "pill_hp",
+  "pill_mp",
+  "medicine",
+  "tanghulu",
+  "baozi",
+  "wine",
+  "key",
+  "scroll",
+  "sword",
+  "fan",
+  "token",
+  "ingot",
+  "wanted_star",
+  "map",
+  "bag",
+  "lock",
+  "tea",
+  "m_herb0",
+  "m_herb1",
+  "m_ginseng",
+  "m_herb2",
+  "m_herb3",
+  "m_herb4",
+  "m_ore0",
+  "m_ore1",
+  "m_ore2",
+  "m_ore3",
+  "m_ore4",
+  "m_jade",
+  "m_fish0",
+  "m_fish1",
+  "m_fish2",
+  "m_fish3",
+  "m_fish4",
+  "m_meat",
+  "f_grilled",
+  "f_soup",
+  "p_dahuan",
+  "p_peiyuan",
+  "p_kuangbao",
+  "p_jingang",
+  "p_jifeng",
+  "p_jiuzhuan",
+  "f_stew",
+  "f_carp",
+  "f_rice",
+  "f_dumpling",
+  "f_spiritwine",
+  "i_rod",
+  "c_qiang",
+  "c_setbox",
+  "c_xisui",
+  "c_wudao",
+  "merit",
+  "silver",
+  "trip",
+  "post",
+  "store",
+  "ledger",
+  "hurt",
+  "letter",
+  "yw_shard",
+  "yw_ticket",
+  "yw_crystal",
+  "yw_core",
+  "s_herb0",
+  "s_herb1",
+  "s_ginseng",
+  "s_herb2",
+  "s_herb3",
+  "s_herb4",
+  "m_yusui",
+  "m_puti",
+  "m_sand",
+  "p_qingzhang",
+  "p_bilei",
+  "p_shouyuan",
+  "p_tianyuan",
+  "i_egg",
+  "i_ring",
+  "f_feed",
+  "f_feed2",
+  "b_wolf",
+  "b_boar",
+  "b_yeti",
+  "b_yinglong",
+  "crown",
+  "share",
+  "b_wolf",
+  "b_boar",
+  "b_yeti",
+  "b_fox",
+  "b_toad",
+  "b_turtle",
+  "b_eagle",
+  "b_qilin",
+  "s_youyue",
+  "s_chiyang",
+  "s_xuanlu",
+  "m_youyue",
+  "m_chiyang",
+  "m_xuanlu",
+  "p_yuehua",
+  "f_chiyang",
+  "p_xuanlu",
+  "i_trail",
+  "m_yongheng",
+  "tea_peach",
+  "tea_dew",
+  "tea_lotus",
+  "tea_milk",
+  "tea_butter",
+  "tea_jasmine",
+  "tea_oil",
+  "tea_cool",
+  "tea_spider"
+ ],
+ "portraits": {
+  "ao_bing": {
+   "h": 80,
+   "w": 80
+  },
+  "ape_king": {
+   "h": 80,
+   "w": 80
+  },
+  "bandit": {
+   "h": 80,
+   "w": 80
+  },
+  "bandit_chief": {
+   "h": 80,
+   "w": 80
+  },
+  "bear": {
+   "h": 80,
+   "w": 80
+  },
+  "bull_king": {
+   "h": 80,
+   "w": 80
+  },
+  "daoshi": {
+   "h": 80,
+   "w": 80
+  },
+  "demon_lord": {
+   "h": 80,
+   "w": 80
+  },
+  "driver": {
+   "h": 80,
+   "w": 80
+  },
+  "erlang": {
+   "h": 80,
+   "w": 80
+  },
+  "fox": {
+   "h": 80,
+   "w": 80
+  },
+  "ghost_king": {
+   "h": 80,
+   "w": 80
+  },
+  "guard": {
+   "h": 80,
+   "w": 80
+  },
+  "ice_queen": {
+   "h": 80,
+   "w": 80
+  },
+  "iron_fan": {
+   "h": 80,
+   "w": 80
+  },
+  "jianxiu": {
+   "h": 80,
+   "w": 80
+  },
+  "jiao": {
+   "h": 80,
+   "w": 80
+  },
+  "jiaoren": {
+   "h": 80,
+   "w": 80
+  },
+  "jiuying": {
+   "h": 80,
+   "w": 80
+  },
+  "nezha": {
+   "h": 80,
+   "w": 80
+  },
+  "nine_tails": {
+   "h": 80,
+   "w": 80
+  },
+  "nvxiu": {
+   "h": 80,
+   "w": 80
+  },
+  "passerby": {
+   "h": 80,
+   "w": 80
+  },
+  "red_boy": {
+   "h": 80,
+   "w": 80
+  },
+  "sanxiu": {
+   "h": 80,
+   "w": 80
+  },
+  "scorpion_queen": {
+   "h": 80,
+   "w": 80
+  },
+  "shidi": {
+   "h": 80,
+   "w": 80
+  },
+  "shijie": {
+   "h": 80,
+   "w": 80
+  },
+  "shimei": {
+   "h": 80,
+   "w": 80
+  },
+  "shizu": {
+   "h": 80,
+   "w": 80
+  },
+  "snake_queen": {
+   "h": 80,
+   "w": 80
+  },
+  "tudi": {
+   "h": 80,
+   "w": 80
+  },
+  "vendor": {
+   "h": 80,
+   "w": 80
+  },
+  "woman": {
+   "h": 80,
+   "w": 80
+  },
+  "zhangmen": {
+   "h": 80,
+   "w": 80
+  },
+  "zombie_king": {
+   "h": 80,
+   "w": 80
+  }
+ },
+ "props": {
+  "alarm_gong": {
+   "h": 44,
+   "w": 49
+  },
+  "anemone": {
+   "h": 18,
+   "w": 22
+  },
+  "archery_target": {
+   "h": 30,
+   "w": 26
+  },
+  "army_flag": {
+   "h": 64,
+   "w": 33
+  },
+  "azalea": {
+   "h": 22,
+   "w": 24
+  },
+  "ballista": {
+   "h": 30,
+   "w": 41
+  },
+  "balustrade": {
+   "h": 20,
+   "w": 29
+  },
+  "bamboo": {
+   "h": 64,
+   "w": 65
+  },
+  "bamboo_spout": {
+   "h": 24,
+   "w": 23
+  },
+  "banner": {
+   "h": 72,
+   "w": 39
+  },
+  "banyan": {
+   "h": 96,
+   "w": 112
+  },
+  "barrel": {
+   "h": 18,
+   "w": 14
+  },
+  "bazaar_stall": {
+   "h": 40,
+   "w": 44
+  },
+  "beast_bed": {
+   "h": 9,
+   "w": 13
+  },
+  "bench": {
+   "h": 12,
+   "w": 32
+  },
+  "blade_rack": {
+   "h": 30,
+   "w": 34
+  },
+  "bones": {
+   "h": 14,
+   "w": 22
+  },
+  "bonsai_pot": {
+   "h": 22,
+   "w": 22
+  },
+  "boulder": {
+   "h": 32,
+   "w": 35
+  },
+  "brazier": {
+   "h": 31,
+   "w": 25
+  },
+  "bridge_rail": {
+   "h": 14,
+   "w": 21
+  },
+  "broken_chains": {
+   "h": 13,
+   "w": 17
+  },
+  "bronze_bell": {
+   "h": 58,
+   "w": 44
+  },
+  "bronze_mirror": {
+   "h": 52,
+   "w": 38
+  },
+  "bubble_vent": {
+   "h": 22,
+   "w": 22
+  },
+  "bush": {
+   "h": 24,
+   "w": 28
+  },
+  "bush_flower": {
+   "h": 21,
+   "w": 28
+  },
+  "camel": {
+   "h": 40,
+   "w": 42
+  },
+  "campfire": {
+   "h": 17,
+   "w": 18
+  },
+  "candle_rack": {
+   "h": 29,
+   "w": 28
+  },
+  "caravan_cart": {
+   "h": 28,
+   "w": 34
+  },
+  "cart_wreck": {
+   "h": 28,
+   "w": 35
+  },
+  "cauldron": {
+   "h": 38,
+   "w": 33
+  },
+  "censer": {
+   "h": 34,
+   "w": 32
+  },
+  "chain_anchor": {
+   "h": 18,
+   "w": 21
+  },
+  "chest": {
+   "h": 16,
+   "w": 19
+  },
+  "cheval": {
+   "h": 18,
+   "w": 26
+  },
+  "clam": {
+   "h": 22,
+   "w": 21
+  },
+  "cliff_pine": {
+   "h": 64,
+   "w": 65
+  },
+  "cloth_stall": {
+   "h": 44,
+   "w": 50
+  },
+  "cloud_pillar": {
+   "h": 58,
+   "w": 19
+  },
+  "cloud_puff": {
+   "h": 18,
+   "w": 31
+  },
+  "coal_pile": {
+   "h": 14,
+   "w": 17
+  },
+  "coffin": {
+   "h": 20,
+   "w": 37
+  },
+  "coffin_open": {
+   "h": 20,
+   "w": 31
+  },
+  "coral": {
+   "h": 34,
+   "w": 36
+  },
+  "coral_cage": {
+   "h": 48,
+   "w": 41
+  },
+  "coral_tree": {
+   "h": 74,
+   "w": 86
+  },
+  "cormorant_boat": {
+   "h": 24,
+   "w": 26
+  },
+  "crane": {
+   "h": 36,
+   "w": 20
+  },
+  "crane_statue": {
+   "h": 40,
+   "w": 46
+  },
+  "crates": {
+   "h": 26,
+   "w": 29
+  },
+  "crop_chiyang_a": {
+   "h": 6,
+   "w": 6
+  },
+  "crop_chiyang_b": {
+   "h": 12,
+   "w": 12
+  },
+  "crop_ginseng_a": {
+   "h": 7,
+   "w": 9
+  },
+  "crop_ginseng_b": {
+   "h": 13,
+   "w": 15
+  },
+  "crop_t0_a": {
+   "h": 6,
+   "w": 8
+  },
+  "crop_t0_b": {
+   "h": 11,
+   "w": 11
+  },
+  "crop_t1_a": {
+   "h": 7,
+   "w": 7
+  },
+  "crop_t1_b": {
+   "h": 11,
+   "w": 12
+  },
+  "crop_t2_a": {
+   "h": 8,
+   "w": 9
+  },
+  "crop_t2_b": {
+   "h": 12,
+   "w": 13
+  },
+  "crop_t3_a": {
+   "h": 8,
+   "w": 9
+  },
+  "crop_t3_b": {
+   "h": 12,
+   "w": 12
+  },
+  "crop_t4_a": {
+   "h": 7,
+   "w": 9
+  },
+  "crop_t4_b": {
+   "h": 13,
+   "w": 12
+  },
+  "crop_xuanlu_a": {
+   "h": 6,
+   "w": 7
+  },
+  "crop_xuanlu_b": {
+   "h": 12,
+   "w": 14
+  },
+  "crop_youyue_a": {
+   "h": 7,
+   "w": 11
+  },
+  "crop_youyue_b": {
+   "h": 10,
+   "w": 9
+  },
+  "dan_ding": {
+   "h": 40,
+   "w": 35
+  },
+  "dead_tree": {
+   "h": 75,
+   "w": 77
+  },
+  "dead_tree_burnt": {
+   "h": 66,
+   "w": 57
+  },
+  "demon_cage": {
+   "h": 46,
+   "w": 28
+  },
+  "demon_obelisk": {
+   "h": 60,
+   "w": 45
+  },
+  "desert_shrub": {
+   "h": 20,
+   "w": 25
+  },
+  "dew_immortal": {
+   "h": 66,
+   "w": 45
+  },
+  "dinghai": {
+   "h": 136,
+   "w": 85
+  },
+  "dragon_pillar": {
+   "h": 88,
+   "w": 31
+  },
+  "dragon_throne": {
+   "h": 50,
+   "w": 48
+  },
+  "drum": {
+   "h": 34,
+   "w": 28
+  },
+  "ducks": {
+   "h": 12,
+   "w": 20
+  },
+  "dummy": {
+   "h": 34,
+   "w": 19
+  },
+  "feed_trough": {
+   "h": 11,
+   "w": 25
+  },
+  "fern": {
+   "h": 21,
+   "w": 24
+  },
+  "fire_crystal": {
+   "h": 28,
+   "w": 25
+  },
+  "fire_vent": {
+   "h": 22,
+   "w": 21
+  },
+  "firewood": {
+   "h": 18,
+   "w": 22
+  },
+  "fish_rack": {
+   "h": 30,
+   "w": 32
+  },
+  "fish_stall": {
+   "h": 34,
+   "w": 37
+  },
+  "fishing_boat": {
+   "h": 30,
+   "w": 34
+  },
+  "flower_bed": {
+   "h": 16,
+   "w": 22
+  },
+  "forge_altar": {
+   "h": 41,
+   "w": 38
+  },
+  "fortune_table": {
+   "h": 28,
+   "w": 19
+  },
+  "fox_den": {
+   "h": 24,
+   "w": 34
+  },
+  "fox_lantern": {
+   "h": 38,
+   "w": 20
+  },
+  "fox_masks": {
+   "h": 48,
+   "w": 19
+  },
+  "fox_shrine": {
+   "h": 44,
+   "w": 33
+  },
+  "fox_torii": {
+   "h": 58,
+   "w": 59
+  },
+  "frozen_bush": {
+   "h": 23,
+   "w": 24
+  },
+  "fruit_stall": {
+   "h": 34,
+   "w": 35
+  },
+  "funeral_pole": {
+   "h": 56,
+   "w": 44
+  },
+  "ghost_lantern": {
+   "h": 50,
+   "w": 26
+  },
+  "ghost_stall": {
+   "h": 40,
+   "w": 42
+  },
+  "gold_lamp": {
+   "h": 56,
+   "w": 29
+  },
+  "gs_abyss_arch": {
+   "h": 92,
+   "w": 100
+  },
+  "gs_abyss_deco": {
+   "h": 38,
+   "w": 23
+  },
+  "gs_abyss_lamp": {
+   "h": 52,
+   "w": 29
+  },
+  "gs_abyss_statue": {
+   "h": 58,
+   "w": 40
+  },
+  "gs_abyss_tower": {
+   "h": 112,
+   "w": 62
+  },
+  "gs_abyss_wall": {
+   "h": 42,
+   "w": 51
+  },
+  "gs_beast_arch": {
+   "h": 92,
+   "w": 93
+  },
+  "gs_beast_deco": {
+   "h": 38,
+   "w": 47
+  },
+  "gs_beast_lamp": {
+   "h": 51,
+   "w": 18
+  },
+  "gs_beast_statue": {
+   "h": 58,
+   "w": 38
+  },
+  "gs_beast_tower": {
+   "h": 112,
+   "w": 57
+  },
+  "gs_beast_wall": {
+   "h": 42,
+   "w": 54
+  },
+  "gs_fire_arch": {
+   "h": 92,
+   "w": 116
+  },
+  "gs_fire_deco": {
+   "h": 38,
+   "w": 37
+  },
+  "gs_fire_lamp": {
+   "h": 52,
+   "w": 21
+  },
+  "gs_fire_statue": {
+   "h": 58,
+   "w": 40
+  },
+  "gs_fire_tower": {
+   "h": 112,
+   "w": 87
+  },
+  "gs_fire_wall": {
+   "h": 42,
+   "w": 91
+  },
+  "gs_ghost_arch": {
+   "h": 92,
+   "w": 109
+  },
+  "gs_ghost_deco": {
+   "h": 37,
+   "w": 29
+  },
+  "gs_ghost_lamp": {
+   "h": 52,
+   "w": 24
+  },
+  "gs_ghost_statue": {
+   "h": 58,
+   "w": 33
+  },
+  "gs_ghost_tower": {
+   "h": 112,
+   "w": 61
+  },
+  "gs_ghost_wall": {
+   "h": 42,
+   "w": 65
+  },
+  "gs_heaven_arch": {
+   "h": 92,
+   "w": 111
+  },
+  "gs_heaven_deco": {
+   "h": 37,
+   "w": 34
+  },
+  "gs_heaven_lamp": {
+   "h": 52,
+   "w": 21
+  },
+  "gs_heaven_statue": {
+   "h": 58,
+   "w": 36
+  },
+  "gs_heaven_tower": {
+   "h": 112,
+   "w": 85
+  },
+  "gs_heaven_wall": {
+   "h": 42,
+   "w": 73
+  },
+  "gs_huanjing_arch": {
+   "h": 92,
+   "w": 102
+  },
+  "gs_huanjing_deco": {
+   "h": 38,
+   "w": 35
+  },
+  "gs_huanjing_lamp": {
+   "h": 52,
+   "w": 25
+  },
+  "gs_huanjing_statue": {
+   "h": 58,
+   "w": 32
+  },
+  "gs_huanjing_tower": {
+   "h": 112,
+   "w": 90
+  },
+  "gs_huanjing_wall": {
+   "h": 42,
+   "w": 76
+  },
+  "gs_ice_arch": {
+   "h": 92,
+   "w": 88
+  },
+  "gs_ice_deco": {
+   "h": 38,
+   "w": 33
+  },
+  "gs_ice_lamp": {
+   "h": 52,
+   "w": 26
+  },
+  "gs_ice_statue": {
+   "h": 58,
+   "w": 38
+  },
+  "gs_ice_tower": {
+   "h": 112,
+   "w": 62
+  },
+  "gs_ice_wall": {
+   "h": 40,
+   "w": 47
+  },
+  "gs_jadepool_arch": {
+   "h": 92,
+   "w": 96
+  },
+  "gs_jadepool_deco": {
+   "h": 38,
+   "w": 40
+  },
+  "gs_jadepool_lamp": {
+   "h": 52,
+   "w": 20
+  },
+  "gs_jadepool_statue": {
+   "h": 58,
+   "w": 26
+  },
+  "gs_jadepool_tower": {
+   "h": 112,
+   "w": 80
+  },
+  "gs_jadepool_wall": {
+   "h": 42,
+   "w": 73
+  },
+  "gs_longgong_arch": {
+   "h": 92,
+   "w": 109
+  },
+  "gs_longgong_deco": {
+   "h": 38,
+   "w": 35
+  },
+  "gs_longgong_lamp": {
+   "h": 52,
+   "w": 21
+  },
+  "gs_longgong_statue": {
+   "h": 58,
+   "w": 33
+  },
+  "gs_longgong_tower": {
+   "h": 112,
+   "w": 60
+  },
+  "gs_longgong_wall": {
+   "h": 42,
+   "w": 81
+  },
+  "gs_palace_arch": {
+   "h": 92,
+   "w": 112
+  },
+  "gs_palace_deco": {
+   "h": 38,
+   "w": 40
+  },
+  "gs_palace_lamp": {
+   "h": 52,
+   "w": 30
+  },
+  "gs_palace_statue": {
+   "h": 58,
+   "w": 41
+  },
+  "gs_palace_tower": {
+   "h": 112,
+   "w": 63
+  },
+  "gs_palace_wall": {
+   "h": 42,
+   "w": 88
+  },
+  "gs_sand_arch": {
+   "h": 92,
+   "w": 104
+  },
+  "gs_sand_deco": {
+   "h": 38,
+   "w": 48
+  },
+  "gs_sand_lamp": {
+   "h": 51,
+   "w": 22
+  },
+  "gs_sand_statue": {
+   "h": 57,
+   "w": 37
+  },
+  "gs_sand_tower": {
+   "h": 112,
+   "w": 73
+  },
+  "gs_sand_wall": {
+   "h": 42,
+   "w": 49
+  },
+  "gs_snake_arch": {
+   "h": 92,
+   "w": 111
+  },
+  "gs_snake_deco": {
+   "h": 38,
+   "w": 50
+  },
+  "gs_snake_lamp": {
+   "h": 52,
+   "w": 22
+  },
+  "gs_snake_statue": {
+   "h": 58,
+   "w": 34
+  },
+  "gs_snake_tower": {
+   "h": 112,
+   "w": 48
+  },
+  "gs_snake_wall": {
+   "h": 41,
+   "w": 65
+  },
+  "gs_tomb_arch": {
+   "h": 92,
+   "w": 128
+  },
+  "gs_tomb_deco": {
+   "h": 38,
+   "w": 26
+  },
+  "gs_tomb_lamp": {
+   "h": 52,
+   "w": 26
+  },
+  "gs_tomb_statue": {
+   "h": 58,
+   "w": 24
+  },
+  "gs_tomb_tower": {
+   "h": 112,
+   "w": 84
+  },
+  "gs_tomb_wall": {
+   "h": 42,
+   "w": 81
+  },
+  "gs_zhenyao_arch": {
+   "h": 92,
+   "w": 104
+  },
+  "gs_zhenyao_deco": {
+   "h": 38,
+   "w": 23
+  },
+  "gs_zhenyao_lamp": {
+   "h": 52,
+   "w": 35
+  },
+  "gs_zhenyao_statue": {
+   "h": 58,
+   "w": 36
+  },
+  "gs_zhenyao_tower": {
+   "h": 112,
+   "w": 68
+  },
+  "gs_zhenyao_wall": {
+   "h": 42,
+   "w": 57
+  },
+  "haystack": {
+   "h": 29,
+   "w": 31
+  },
+  "herb_basket": {
+   "h": 12,
+   "w": 14
+  },
+  "herb_chiyang": {
+   "h": 17,
+   "w": 19
+  },
+  "herb_ginseng": {
+   "h": 17,
+   "w": 15
+  },
+  "herb_rack": {
+   "h": 32,
+   "w": 36
+  },
+  "herb_t0": {
+   "h": 16,
+   "w": 17
+  },
+  "herb_t1": {
+   "h": 16,
+   "w": 16
+  },
+  "herb_t2": {
+   "h": 15,
+   "w": 16
+  },
+  "herb_t3": {
+   "h": 18,
+   "w": 17
+  },
+  "herb_t4": {
+   "h": 19,
+   "w": 19
+  },
+  "herb_xuanlu": {
+   "h": 17,
+   "w": 19
+  },
+  "herb_youyue": {
+   "h": 16,
+   "w": 20
+  },
+  "horse_post": {
+   "h": 36,
+   "w": 41
+  },
+  "huyang": {
+   "h": 80,
+   "w": 81
+  },
+  "ice_crystal": {
+   "h": 30,
+   "w": 28
+  },
+  "incense_cauldron": {
+   "h": 34,
+   "w": 36
+  },
+  "incense_jade": {
+   "h": 13,
+   "w": 14
+  },
+  "jade_fountain": {
+   "h": 40,
+   "w": 35
+  },
+  "jade_lantern": {
+   "h": 48,
+   "w": 33
+  },
+  "jade_maiden": {
+   "h": 58,
+   "w": 33
+  },
+  "jade_pillar": {
+   "h": 62,
+   "w": 20
+  },
+  "jade_screen": {
+   "h": 40,
+   "w": 63
+  },
+  "jade_tree": {
+   "h": 86,
+   "w": 85
+  },
+  "jars": {
+   "h": 18,
+   "w": 26
+  },
+  "kelp_tall": {
+   "h": 58,
+   "w": 49
+  },
+  "lantern_pole": {
+   "h": 56,
+   "w": 32
+  },
+  "lantern_string": {
+   "h": 30,
+   "w": 34
+  },
+  "laundry": {
+   "h": 36,
+   "w": 45
+  },
+  "lava_rock": {
+   "h": 28,
+   "w": 31
+  },
+  "lion": {
+   "h": 36,
+   "w": 22
+  },
+  "lobster_pots": {
+   "h": 16,
+   "w": 21
+  },
+  "lotus_basin": {
+   "h": 22,
+   "w": 27
+  },
+  "lotus_bloom": {
+   "h": 16,
+   "w": 21
+  },
+  "lotus_lamp": {
+   "h": 33,
+   "w": 21
+  },
+  "lotus_pads": {
+   "h": 14,
+   "w": 16
+  },
+  "lotus_pot": {
+   "h": 18,
+   "w": 18
+  },
+  "maple": {
+   "h": 50,
+   "w": 59
+  },
+  "mine_cart": {
+   "h": 22,
+   "w": 25
+  },
+  "moon_gate": {
+   "h": 58,
+   "w": 82
+  },
+  "mooring_post": {
+   "h": 18,
+   "w": 21
+  },
+  "mossy_log": {
+   "h": 14,
+   "w": 24
+  },
+  "mushroom": {
+   "h": 32,
+   "w": 28
+  },
+  "noodle_stall": {
+   "h": 34,
+   "w": 36
+  },
+  "notice_board": {
+   "h": 36,
+   "w": 35
+  },
+  "ore_jade": {
+   "h": 18,
+   "w": 18
+  },
+  "ore_pile": {
+   "h": 18,
+   "w": 26
+  },
+  "ore_t0": {
+   "h": 18,
+   "w": 18
+  },
+  "ore_t1": {
+   "h": 18,
+   "w": 19
+  },
+  "ore_t2": {
+   "h": 18,
+   "w": 19
+  },
+  "ore_t3": {
+   "h": 18,
+   "w": 18
+  },
+  "ore_t4": {
+   "h": 20,
+   "w": 20
+  },
+  "osmanthus": {
+   "h": 76,
+   "w": 76
+  },
+  "palace_lantern": {
+   "h": 44,
+   "w": 30
+  },
+  "palisade": {
+   "h": 30,
+   "w": 38
+  },
+  "paper_offerings": {
+   "h": 22,
+   "w": 30
+  },
+  "pastry_cart": {
+   "h": 36,
+   "w": 50
+  },
+  "peach": {
+   "h": 78,
+   "w": 81
+  },
+  "peach_ancient": {
+   "h": 124,
+   "w": 162
+  },
+  "peach_basket": {
+   "h": 17,
+   "w": 17
+  },
+  "peach_celestial": {
+   "h": 76,
+   "w": 82
+  },
+  "peak_bell": {
+   "h": 30,
+   "w": 27
+  },
+  "peony": {
+   "h": 16,
+   "w": 25
+  },
+  "petals": {
+   "h": 6,
+   "w": 9
+  },
+  "phoenix_pillar": {
+   "h": 82,
+   "w": 41
+  },
+  "pine": {
+   "h": 100,
+   "w": 97
+  },
+  "prayer_flags": {
+   "h": 38,
+   "w": 45
+  },
+  "purple_crystal": {
+   "h": 29,
+   "w": 28
+  },
+  "quench_trough": {
+   "h": 15,
+   "w": 25
+  },
+  "reeds": {
+   "h": 28,
+   "w": 28
+  },
+  "rocks": {
+   "h": 16,
+   "w": 21
+  },
+  "rubble": {
+   "h": 18,
+   "w": 26
+  },
+  "ruin_wall": {
+   "h": 40,
+   "w": 52
+  },
+  "rune_stone": {
+   "h": 30,
+   "w": 27
+  },
+  "sand_pillar": {
+   "h": 52,
+   "w": 41
+  },
+  "sandbags": {
+   "h": 14,
+   "w": 29
+  },
+  "scarecrow": {
+   "h": 38,
+   "w": 37
+  },
+  "scholar_asleep": {
+   "h": 28,
+   "w": 39
+  },
+  "scholar_rock": {
+   "h": 40,
+   "w": 29
+  },
+  "seal_pillar": {
+   "h": 156,
+   "w": 99
+  },
+  "seal_plate": {
+   "h": 18,
+   "w": 20
+  },
+  "seaweed": {
+   "h": 46,
+   "w": 28
+  },
+  "sedan_chair": {
+   "h": 30,
+   "w": 33
+  },
+  "shell_throne": {
+   "h": 56,
+   "w": 66
+  },
+  "shells": {
+   "h": 13,
+   "w": 20
+  },
+  "shipwreck": {
+   "h": 56,
+   "w": 75
+  },
+  "signpost": {
+   "h": 32,
+   "w": 26
+  },
+  "skull": {
+   "h": 16,
+   "w": 19
+  },
+  "sledge": {
+   "h": 16,
+   "w": 25
+  },
+  "sluice": {
+   "h": 18,
+   "w": 23
+  },
+  "snow_rock": {
+   "h": 28,
+   "w": 31
+  },
+  "spider_lily": {
+   "h": 15,
+   "w": 16
+  },
+  "stairs_up": {
+   "h": 50,
+   "w": 45
+  },
+  "statue_immortal": {
+   "h": 54,
+   "w": 35
+  },
+  "stele": {
+   "h": 42,
+   "w": 25
+  },
+  "stone_fox": {
+   "h": 32,
+   "w": 15
+  },
+  "stone_lantern": {
+   "h": 36,
+   "w": 16
+  },
+  "stone_table": {
+   "h": 24,
+   "w": 32
+  },
+  "stump": {
+   "h": 14,
+   "w": 17
+  },
+  "stupa": {
+   "h": 46,
+   "w": 25
+  },
+  "supply_wagon": {
+   "h": 34,
+   "w": 38
+  },
+  "sutra_shelf": {
+   "h": 44,
+   "w": 41
+  },
+  "ta_banner": {
+   "h": 80,
+   "w": 61
+  },
+  "ta_drum": {
+   "h": 40,
+   "w": 35
+  },
+  "ta_glyph": {
+   "h": 46,
+   "w": 50
+  },
+  "ta_goods": {
+   "h": 26,
+   "w": 47
+  },
+  "ta_lamp": {
+   "h": 38,
+   "w": 21
+  },
+  "ta_ribs": {
+   "h": 104,
+   "w": 137
+  },
+  "ta_skull": {
+   "h": 100,
+   "w": 114
+  },
+  "ta_spine": {
+   "h": 46,
+   "w": 86
+  },
+  "ta_statue": {
+   "h": 80,
+   "w": 69
+  },
+  "ta_stele": {
+   "h": 72,
+   "w": 47
+  },
+  "ta_sword": {
+   "h": 184,
+   "w": 137
+  },
+  "ta_tent": {
+   "h": 58,
+   "w": 83
+  },
+  "talisman_post": {
+   "h": 48,
+   "w": 16
+  },
+  "tea_table": {
+   "h": 20,
+   "w": 32
+  },
+  "tex_rock_face": {
+   "h": 64,
+   "w": 133
+  },
+  "tex_rock_tall": {
+   "h": 192,
+   "w": 256
+  },
+  "tex_stairs": {
+   "h": 80,
+   "w": 48
+  },
+  "tex_wall_field": {
+   "h": 32,
+   "w": 70
+  },
+  "thorn_bush": {
+   "h": 19,
+   "w": 27
+  },
+  "tianwang": {
+   "h": 72,
+   "w": 42
+  },
+  "tomb_broken": {
+   "h": 20,
+   "w": 19
+  },
+  "tomb_door": {
+   "h": 64,
+   "w": 84
+  },
+  "tomb_statue": {
+   "h": 52,
+   "w": 25
+  },
+  "tombstone": {
+   "h": 22,
+   "w": 18
+  },
+  "totem_pole": {
+   "h": 56,
+   "w": 30
+  },
+  "tp_post": {
+   "h": 30,
+   "w": 13
+  },
+  "treasure_heap": {
+   "h": 24,
+   "w": 32
+  },
+  "umbrella_stand": {
+   "h": 34,
+   "w": 36
+  },
+  "veg_stall": {
+   "h": 44,
+   "w": 50
+  },
+  "wash_platform": {
+   "h": 16,
+   "w": 21
+  },
+  "water_gate": {
+   "h": 60,
+   "w": 52
+  },
+  "water_vat": {
+   "h": 22,
+   "w": 21
+  },
+  "weapon_rack": {
+   "h": 31,
+   "w": 28
+  },
+  "well": {
+   "h": 34,
+   "w": 37
+  },
+  "willow": {
+   "h": 92,
+   "w": 86
+  },
+  "wupeng_boat": {
+   "h": 26,
+   "w": 22
+  },
+  "xian_array": {
+   "h": 34,
+   "w": 38
+  },
+  "yurt": {
+   "h": 44,
+   "w": 59
+  },
+  "yw_anchor": {
+   "h": 20,
+   "w": 24
+  },
+  "yw_arch": {
+   "h": 92,
+   "w": 94
+  },
+  "yw_banner": {
+   "h": 58,
+   "w": 36
+  },
+  "yw_brazier": {
+   "h": 33,
+   "w": 27
+  },
+  "yw_crystals": {
+   "h": 44,
+   "w": 33
+  },
+  "yw_floatrock": {
+   "h": 59,
+   "w": 50
+  },
+  "yw_meteor": {
+   "h": 39,
+   "w": 30
+  },
+  "yw_pillar": {
+   "h": 130,
+   "w": 74
+  },
+  "yw_ribs": {
+   "h": 64,
+   "w": 72
+  },
+  "yw_rubble": {
+   "h": 20,
+   "w": 31
+  },
+  "yw_skull": {
+   "h": 58,
+   "w": 58
+  },
+  "yw_stele": {
+   "h": 50,
+   "w": 49
+  }
+ },
+ "scenes": {
+  "card_baiye": {
+   "h": 432,
+   "w": 768
+  },
+  "card_ch1": {
+   "h": 432,
+   "w": 768
+  },
+  "card_ch1_shidi": {
+   "h": 432,
+   "w": 768
+  },
+  "card_ch2": {
+   "h": 432,
+   "w": 768
+  },
+  "card_ch3": {
+   "h": 432,
+   "w": 768
+  },
+  "card_xiantu": {
+   "h": 432,
+   "w": 768
+  },
+  "card_yuwai": {
+   "h": 432,
+   "w": 768
+  },
+  "ending_bg": {
+   "h": 432,
+   "w": 768
+  },
+  "interior_shijie": {
+   "h": 288,
+   "w": 384
+  },
+  "select_bg": {
+   "h": 432,
+   "w": 768
+  },
+  "server_bg": {
+   "h": 432,
+   "w": 768
+  },
+  "share_street": {
+   "h": 432,
+   "w": 768
+  },
+  "title_bg": {
+   "h": 432,
+   "w": 768
+  }
+ },
+ "skills": [
+  "sk_slash",
+  "sk_slap",
+  "sk_taunt",
+  "sk_qi",
+  "sk_flame",
+  "sk_firerain",
+  "sk_shield",
+  "sk_sleeve",
+  "sk_flick",
+  "sk_thunder",
+  "sk_meteor",
+  "sk_dash",
+  "sk_swordrush",
+  "sk_swordrain",
+  "sk_heal",
+  "ui_jump",
+  "ui_interact",
+  "ui_drift",
+  "ui_exit",
+  "ui_fly",
+  "ui_horn",
+  "ui_job",
+  "ui_radio",
+  "ui_attack",
+  "sk_bind",
+  "sk_thunderfu",
+  "sk_swordring",
+  "sk_yuanying",
+  "sk_frostfield",
+  "sk_skysword",
+  "pro_herb",
+  "pro_mine",
+  "pro_fish",
+  "pro_alchemy",
+  "pro_forge",
+  "pro_cook",
+  "sk_crescent",
+  "sk_shadowblade",
+  "sk_fireball",
+  "sk_fivethunder",
+  "sk_blink",
+  "sk_starfall",
+  "sk_quake",
+  "sk_bullrush",
+  "sk_vajra",
+  "sk_giant",
+  "sk_roar",
+  "sk_buddha",
+  "sk_cloudarrow",
+  "sk_wolf",
+  "sk_multishot",
+  "sk_stampede",
+  "sk_guard",
+  "sk_moonwolf",
+  "sk_curse",
+  "sk_drain",
+  "sk_demon",
+  "sk_shatter",
+  "sk_bloodpact",
+  "sk_banner",
+  "path_sword",
+  "path_dao",
+  "path_body",
+  "path_beast",
+  "path_demon",
+  "pro_beast",
+  "pro_farm"
+ ],
+ "ui": {
+  "forge_smith": {
+   "frames": 4,
+   "h": 51,
+   "w": 71
+  },
+  "logo": {
+   "h": 116,
+   "w": 300
+  },
+  "logo_en": {
+   "h": 115,
+   "w": 300
+  }
+ },
+ "vehicles": {
+  "veh_boat": {
+   "h": 62,
+   "w": 26
+  },
+  "veh_cloud": {
+   "h": 60,
+   "w": 38
+  },
+  "veh_gourd": {
+   "h": 56,
+   "w": 30
+  },
+  "veh_ox": {
+   "h": 62,
+   "w": 30
+  },
+  "veh_police": {
+   "h": 78,
+   "w": 30
+  },
+  "veh_sword": {
+   "h": 76,
+   "w": 12
+  },
+  "veh_zhangmen": {
+   "h": 84,
+   "w": 34
+  }
+ }
+}

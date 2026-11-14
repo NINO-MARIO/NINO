@@ -1,0 +1,15 @@
+{
+  "name": "侠盗修仙",
+  "short_name": "侠盗修仙",
+  "description": "像素风开放世界修仙喜剧：师妹下山买桂花糕，顺手抢了掌门专驾。",
+  "start_url": "./",
+  "display": "fullscreen",
+  "orientation": "landscape",
+  "background_color": "#0d0b14",
+  "theme_color": "#0d0b14",
+  "lang": "zh-CN",
+  "icons": [
+    { "src": "assets/ui/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "assets/ui/icon-512.png", "sizes": "512x512", "type": "image/png" }
+  ]
+}

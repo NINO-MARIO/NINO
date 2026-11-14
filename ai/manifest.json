@@ -1,0 +1,483 @@
+{
+ "name": "NINO",
+ "version": "1.0.0",
+ "readOnly": true,
+ "note": "อ่านอย่างเดียว ไม่มีคีย์/โทเคนในไฟล์เหล่านี้ · sha = sha256 16 ตัวแรก · สร้างโดย tools-make-manifests.py",
+ "files": [
+  {
+   "path": "CHANGES.md",
+   "bytes": 88400,
+   "sha": "4445d16ce8241c99"
+  },
+  {
+   "path": "DECISIONS.md",
+   "bytes": 47485,
+   "sha": "b0dfea334e6d7ec9"
+  },
+  {
+   "path": "HANDOFF.md",
+   "bytes": 10160,
+   "sha": "384dda28d60885de"
+  },
+  {
+   "path": "NOW.md",
+   "bytes": 30362,
+   "sha": "6f2fe6bd25c954e1"
+  },
+  {
+   "path": "README.md",
+   "bytes": 9714,
+   "sha": "6b6f8dcfeb760660"
+  },
+  {
+   "path": "Readme.html",
+   "bytes": 163,
+   "sha": "7de7e35a1eca7c48"
+  },
+  {
+   "path": "Skill.md",
+   "bytes": 9869,
+   "sha": "cb7a36a9e46d9bf9"
+  },
+  {
+   "path": "app.js",
+   "bytes": 18701,
+   "sha": "8be6ed71212c812b"
+  },
+  {
+   "path": "assetlinks.json",
+   "bytes": 326,
+   "sha": "04d38e7ab27fc89e"
+  },
+  {
+   "path": "assets/classroom/_pack.json",
+   "bytes": 227,
+   "sha": "a637fd8d07862cd5"
+  },
+  {
+   "path": "assets/scenes.json",
+   "bytes": 1070,
+   "sha": "efc7b69416dc43c4"
+  },
+  {
+   "path": "code-brain.js",
+   "bytes": 3837,
+   "sha": "35c5c1c637261d6c"
+  },
+  {
+   "path": "games/nds/app.js",
+   "bytes": 9856,
+   "sha": "ffb3823ee533c90c"
+  },
+  {
+   "path": "games/nds/index.html",
+   "bytes": 7053,
+   "sha": "64e10744d5d056ad"
+  },
+  {
+   "path": "games/outlaw/assets/boot.pack.json",
+   "bytes": 44270,
+   "sha": "58d55a57aab4bbce"
+  },
+  {
+   "path": "games/outlaw/assets/index-BVQB7jwx.css",
+   "bytes": 23981,
+   "sha": "70265f3875d16850"
+  },
+  {
+   "path": "games/outlaw/assets/manifest.json",
+   "bytes": 33889,
+   "sha": "b0ce4b6b528ed0e4"
+  },
+  {
+   "path": "games/outlaw/assets/mapart/meta.json",
+   "bytes": 103,
+   "sha": "d3a72a5eedfd1ad9"
+  },
+  {
+   "path": "games/outlaw/index.html",
+   "bytes": 1687,
+   "sha": "ec3f8387b3110fae"
+  },
+  {
+   "path": "github-agent.js",
+   "bytes": 41838,
+   "sha": "2693d838af4221ce"
+  },
+  {
+   "path": "index.html",
+   "bytes": 46836,
+   "sha": "a7ac17b7b9677599"
+  },
+  {
+   "path": "js/amongai-core.js",
+   "bytes": 88551,
+   "sha": "a7146b34c346be1d"
+  },
+  {
+   "path": "js/amongai.js",
+   "bytes": 35704,
+   "sha": "9fada2c8bb01c0f9"
+  },
+  {
+   "path": "js/api-guard.js",
+   "bytes": 2978,
+   "sha": "5e894c6b13d529f2"
+  },
+  {
+   "path": "js/auto-route.js",
+   "bytes": 1534,
+   "sha": "79c3b876fbc47e1f"
+  },
+  {
+   "path": "js/boot.js",
+   "bytes": 2741,
+   "sha": "1779271a536ed296"
+  },
+  {
+   "path": "js/characters.js",
+   "bytes": 12825,
+   "sha": "b901caa0b30fedae"
+  },
+  {
+   "path": "js/classroom.js",
+   "bytes": 13121,
+   "sha": "c1320ccd92562e30"
+  },
+  {
+   "path": "js/code-fast.js",
+   "bytes": 11350,
+   "sha": "9f6622c2fe200f22"
+  },
+  {
+   "path": "js/code-utils.js",
+   "bytes": 17586,
+   "sha": "664c9e2c44daa67f"
+  },
+  {
+   "path": "js/config.js",
+   "bytes": 4151,
+   "sha": "0c4b14f64709d446"
+  },
+  {
+   "path": "js/console-ui.js",
+   "bytes": 32108,
+   "sha": "02301cdc11b866ea"
+  },
+  {
+   "path": "js/context-manager.js",
+   "bytes": 1818,
+   "sha": "fe67ea86190de96e"
+  },
+  {
+   "path": "js/continuation.js",
+   "bytes": 2720,
+   "sha": "b93e79cd2e870627"
+  },
+  {
+   "path": "js/delegate.js",
+   "bytes": 8638,
+   "sha": "af53c69d053e7e88"
+  },
+  {
+   "path": "js/focus-chat.js",
+   "bytes": 4160,
+   "sha": "8d110a2f0293932c"
+  },
+  {
+   "path": "js/fonts.js",
+   "bytes": 4894,
+   "sha": "7f189b47f3e93428"
+  },
+  {
+   "path": "js/godview.js",
+   "bytes": 14680,
+   "sha": "d19b08d2ef396cef"
+  },
+  {
+   "path": "js/home-check.js",
+   "bytes": 11343,
+   "sha": "b1078ffded5a20e5"
+  },
+  {
+   "path": "js/hud-card.js",
+   "bytes": 36074,
+   "sha": "7ce77734a9572662"
+  },
+  {
+   "path": "js/image-bridge.js",
+   "bytes": 32880,
+   "sha": "bb32c9a9354de902"
+  },
+  {
+   "path": "js/keep-awake.js",
+   "bytes": 1996,
+   "sha": "1b17c149b1346ab5"
+  },
+  {
+   "path": "js/learn.js",
+   "bytes": 11117,
+   "sha": "dcada73ef769351f"
+  },
+  {
+   "path": "js/lib-health.js",
+   "bytes": 15469,
+   "sha": "8b06cd8d6dd0ed16"
+  },
+  {
+   "path": "js/llm-providers.js",
+   "bytes": 30116,
+   "sha": "2b1d7c69dd4911a9"
+  },
+  {
+   "path": "js/loop-guard.js",
+   "bytes": 6414,
+   "sha": "1397c14d9ab5e9e8"
+  },
+  {
+   "path": "js/memory.js",
+   "bytes": 19140,
+   "sha": "75cda6c865a5ddae"
+  },
+  {
+   "path": "js/modes-session.js",
+   "bytes": 28940,
+   "sha": "789bfa8c6b4d6f6d"
+  },
+  {
+   "path": "js/music.js",
+   "bytes": 27001,
+   "sha": "e728c0fb19725627"
+  },
+  {
+   "path": "js/native-bridge.js",
+   "bytes": 3575,
+   "sha": "5da90d694600f9f7"
+  },
+  {
+   "path": "js/nds.js",
+   "bytes": 3428,
+   "sha": "52cc9002b3c384dc"
+  },
+  {
+   "path": "js/nino-sys.js",
+   "bytes": 24603,
+   "sha": "40c0c7bd5b7e0667"
+  },
+  {
+   "path": "js/no-emoji.js",
+   "bytes": 747,
+   "sha": "37fcaceb84e25c50"
+  },
+  {
+   "path": "js/notes.js",
+   "bytes": 19709,
+   "sha": "f503706811d99b8b"
+  },
+  {
+   "path": "js/obs.js",
+   "bytes": 5354,
+   "sha": "a33c11832e191cdb"
+  },
+  {
+   "path": "js/orchestrator-core.js",
+   "bytes": 31577,
+   "sha": "80d4ba034bd4aa91"
+  },
+  {
+   "path": "js/orchestrator-tools.js",
+   "bytes": 54768,
+   "sha": "de6bb185693c243b"
+  },
+  {
+   "path": "js/ota.js",
+   "bytes": 7061,
+   "sha": "95cd05b3b157df89"
+  },
+  {
+   "path": "js/outlaw.js",
+   "bytes": 10290,
+   "sha": "a40f6907b9f630db"
+  },
+  {
+   "path": "js/prompt-cache.js",
+   "bytes": 10296,
+   "sha": "bee6b9e2953444df"
+  },
+  {
+   "path": "js/research.js",
+   "bytes": 13043,
+   "sha": "0b7def55965a53ec"
+  },
+  {
+   "path": "js/roleplay.js",
+   "bytes": 29495,
+   "sha": "082c3bb19cb766bb"
+  },
+  {
+   "path": "js/scenes.js",
+   "bytes": 13792,
+   "sha": "5983a8cd777b6174"
+  },
+  {
+   "path": "js/shelf.js",
+   "bytes": 13894,
+   "sha": "28ae2a6ba78f1749"
+  },
+  {
+   "path": "js/term.js",
+   "bytes": 17287,
+   "sha": "9e0b0ebe1fe738dd"
+  },
+  {
+   "path": "js/threads.js",
+   "bytes": 14968,
+   "sha": "f226780bed0fe861"
+  },
+  {
+   "path": "js/ui-dock.js",
+   "bytes": 1434,
+   "sha": "7664cc8c0c641ea4"
+  },
+  {
+   "path": "js/ui-input.js",
+   "bytes": 13256,
+   "sha": "a6265b1ae0f56729"
+  },
+  {
+   "path": "js/ui-render.js",
+   "bytes": 33278,
+   "sha": "35e12bf9d6de3717"
+  },
+  {
+   "path": "js/ui-tools.js",
+   "bytes": 17711,
+   "sha": "26e70cbe43c8f83f"
+  },
+  {
+   "path": "js/web-search.js",
+   "bytes": 18944,
+   "sha": "20a8741e4698ef01"
+  },
+  {
+   "path": "js/workshop.js",
+   "bytes": 1265,
+   "sha": "b964664f3c648124"
+  },
+  {
+   "path": "legacy/NINO_original.html",
+   "bytes": 198040,
+   "sha": "441e06e738c6a004"
+  },
+  {
+   "path": "local-ai/bridge.js",
+   "bytes": 6311,
+   "sha": "3554f45e9b8f4926"
+  },
+  {
+   "path": "local-ai/endpoint.js",
+   "bytes": 6774,
+   "sha": "3bd9db4d92bd5884"
+  },
+  {
+   "path": "local-ai/health.js",
+   "bytes": 1375,
+   "sha": "9f5ecb7e59c8a153"
+  },
+  {
+   "path": "local-ai/key.js",
+   "bytes": 4029,
+   "sha": "03789c5956ab8757"
+  },
+  {
+   "path": "local-ai/ui.js",
+   "bytes": 11098,
+   "sha": "0bf173e55b8cff90"
+  },
+  {
+   "path": "lock.js",
+   "bytes": 3281,
+   "sha": "74114806edbe5780"
+  },
+  {
+   "path": "manifest.json",
+   "bytes": 537,
+   "sha": "67ccbf3d48a54a93"
+  },
+  {
+   "path": "nino-agent.js",
+   "bytes": 15564,
+   "sha": "56fd610005dc3316"
+  },
+  {
+   "path": "nino-home.js",
+   "bytes": 21496,
+   "sha": "193d14c631affa8f"
+  },
+  {
+   "path": "packs/manifest.json",
+   "bytes": 31,
+   "sha": "cd0f36cb9aa93dfe"
+  },
+  {
+   "path": "patches/github-agent-bugs.md",
+   "bytes": 248,
+   "sha": "6982015044f10f09"
+  },
+  {
+   "path": "patches/system-selffix.md",
+   "bytes": 227,
+   "sha": "3016d21d9cacb275"
+  },
+  {
+   "path": "patches/thai-llm-patch.md",
+   "bytes": 221,
+   "sha": "cdbcd03a5c5f44a0"
+  },
+  {
+   "path": "revive.js",
+   "bytes": 2713,
+   "sha": "16b3c9dc9b3e9078"
+  },
+  {
+   "path": "roleplay-callback.js",
+   "bytes": 3099,
+   "sha": "9bbd8be021e40d57"
+  },
+  {
+   "path": "self-upgrade.js",
+   "bytes": 12020,
+   "sha": "9b81a992d474dfa8"
+  },
+  {
+   "path": "service-worker.js",
+   "bytes": 4185,
+   "sha": "5374ce3c4daffb56"
+  },
+  {
+   "path": "skill-lib.js",
+   "bytes": 14156,
+   "sha": "a44e0d7c5548762f"
+  },
+  {
+   "path": "style.css",
+   "bytes": 40399,
+   "sha": "08b50a149c5e61b9"
+  },
+  {
+   "path": "trash.js",
+   "bytes": 4817,
+   "sha": "4172e2f730279a82"
+  },
+  {
+   "path": "update-notifier.js",
+   "bytes": 6216,
+   "sha": "a7c179b4b0749b19"
+  },
+  {
+   "path": "version.js",
+   "bytes": 562,
+   "sha": "1dbf9ba16f360b39"
+  }
+ ]
+}

@@ -1,0 +1,1 @@
+# สมุดจดของ code-analysis

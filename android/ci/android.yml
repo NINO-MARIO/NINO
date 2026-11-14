@@ -1,0 +1,310 @@
+name: NINO Android APK
+
+# Two products come out of one push:
+#   web  -> a signed OTA bundle (about 1 minute). The installed app downloads it by itself (Build button / update banner).
+#   apk  -> the native app (about 5-8 minutes). Only needed when Kotlin/Java/Gradle files under android/ changed.
+# The logic lives in tools/ci/*.sh so it can be updated through the zip; this file rarely needs re-uploading.
+on:
+  workflow_dispatch:
+    inputs:
+      target:
+        description: 'สร้างอะไร: both = ทั้งสองอย่าง (ค่าเริ่มต้น), web = เฉพาะหน้าเว็บ (เร็ว), apk = เฉพาะแอป'
+        type: choice
+        options: [both, web, apk]
+        default: both
+  push:
+    branches: [main, master]
+    # Uploading only the zip (before it is unpacked) must not start a build: there is nothing to check yet.
+    paths-ignore:
+      - '*.zip'
+
+permissions:
+  contents: write
+
+jobs:
+  check:
+    name: Static checks and tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - name: The project must be unpacked first
+        run: |
+          if [ ! -f tools/check.js ] || [ ! -d android/app ]; then
+            echo "::error::รีโปนี้ยังไม่มีไฟล์โค้ดของ NINO (ไม่พบ tools/check.js) ให้อัปโหลด NINO.zip ที่หน้าแรกของรีโป แล้วรัน NINO unpack zip ก่อน แล้วค่อยรัน workflow นี้"
+            echo "## ยังไม่ได้แตก NINO.zip" >> "$GITHUB_STEP_SUMMARY"
+            echo "อัปโหลด NINO.zip ที่หน้าแรกของรีโป แล้วรัน NINO unpack zip" >> "$GITHUB_STEP_SUMMARY"
+            exit 1
+          fi
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Static gate (syntax, script order, JS-Kotlin contract, Kotlin brackets)
+        run: node tools/check.js
+      - name: Web unit tests
+        run: node tools/test/web.test.js
+      - name: OTA core tests on a plain JVM (hashing, signatures, zip safety, rollback, shell, log)
+        run: bash android/core-tests/run.sh
+
+  plan:
+    name: Decide what to build
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    outputs:
+      web: ${{ steps.p.outputs.web }}
+      apk: ${{ steps.p.outputs.apk }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - id: p
+        env:
+          EVENT: ${{ github.event_name }}
+          TARGET: ${{ inputs.target }}
+          BEFORE: ${{ github.event.before }}
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+        run: |
+          WEB=true; APK=true
+          if [ "$EVENT" = "workflow_dispatch" ]; then
+            [ "$TARGET" = "web" ] && APK=false
+            [ "$TARGET" = "apk" ] && WEB=false
+          else
+            APK=false
+            if [ -n "$BEFORE" ] && [ "$BEFORE" != "0000000000000000000000000000000000000000" ] && git cat-file -e "$BEFORE^{commit}" 2>/dev/null; then
+              if git diff --name-only "$BEFORE" "$GITHUB_SHA" | grep -qE '^android/(app/|build\.gradle|settings\.gradle|gradle)'; then APK=true; fi
+            else
+              APK=true
+            fi
+          fi
+          # Bridge guard: the web layer may need a newer native bridge than the APK that is published now.
+          # If so, an APK must be built in this run, otherwise the app would ask for an update it cannot get.
+          if [ "$APK" = "false" ] && [ "$WEB" = "true" ] && [ "$TARGET" != "web" ]; then
+            WANT=$(sed -n 's/.*NINO_BRIDGE_API=\([0-9]*\).*/\1/p' version.js | head -n 1)
+            HAVE=$(gh release download nino-latest -p apk.json -O - 2>/dev/null | python3 -c 'import sys,json; print(json.load(sys.stdin).get("bridgeApi",""))' 2>/dev/null || true)
+            echo "bridge: web needs ${WANT:-?}, latest published APK has ${HAVE:-none}"
+            if [ -z "$HAVE" ] || [ "${WANT:-0}" -gt "${HAVE:-0}" ]; then
+              APK=true
+              echo "::notice::สร้าง APK ด้วย เพราะหน้าเว็บต้องการ bridge ใหม่กว่า APK ที่เผยแพร่อยู่"
+            fi
+          fi
+          echo "web=$WEB" >> "$GITHUB_OUTPUT"
+          echo "apk=$APK" >> "$GITHUB_OUTPUT"
+          echo "plan: web=$WEB apk=$APK"
+
+  web:
+    name: OTA web bundle
+    needs: [check, plan]
+    if: needs.plan.outputs.web == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Restore signing key (optional)
+        env:
+          SIGN_PASS: ${{ secrets.NINO_SIGN_PASS }}
+        run: bash tools/ci/restore-key.sh
+
+      - name: Prepare the web files
+        run: bash tools/ci/prepare-web.sh "$RUNNER_TEMP/web"
+
+      - name: Pack and sign the bundle
+        env:
+          NINO_KS_PASS: ${{ secrets.NINO_SIGN_PASS }}
+        run: bash tools/ci/make-bundle.sh "$RUNNER_TEMP/web" "$RUNNER_TEMP/dist"
+
+      - name: Verify the bundle exactly like the phone will
+        env:
+          NINO_KS_PASS: ${{ secrets.NINO_SIGN_PASS }}
+        run: |
+          CERT=none
+          if [ "${SIGNED:-}" = "1" ]; then
+            keytool -exportcert -keystore "$NINO_KEYSTORE" -alias nino -storepass:env NINO_KS_PASS -file "$RUNNER_TEMP/cert.der"
+            CERT="$RUNNER_TEMP/cert.der"
+          fi
+          bash android/core-tests/verify.sh "$RUNNER_TEMP/dist" "$CERT"
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: NINO-web-bundle
+          path: ${{ runner.temp }}/dist
+          retention-days: 7
+
+      - name: Publish release web-<commit>
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: bash tools/ci/publish-release.sh "$RUNNER_TEMP/dist"
+
+      - name: Summary
+        run: |
+          {
+            echo "### OTA bundle published"
+            echo "- release: \`web-${GITHUB_SHA:0:7}\`"
+            echo "- signed: ${SIGNED:-0}"
+            echo "- the app picks it up through the Build button or the update banner"
+          } >> "$GITHUB_STEP_SUMMARY"
+
+  apk:
+    name: Android APK
+    needs: [check, plan]
+    if: needs.plan.outputs.apk == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    concurrency:
+      group: nino-apk
+      cancel-in-progress: true
+    env:
+      NINO_KEY_ALIAS: nino
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - uses: gradle/actions/setup-gradle@v5
+        with:
+          gradle-version: '8.9'
+
+      - name: Ensure Android SDK platform and build-tools
+        run: |
+          exec > >(tee -a "$RUNNER_TEMP/apk-fail.log") 2>&1
+          SDK="${ANDROID_HOME:-${ANDROID_SDK_ROOT:-/usr/local/lib/android/sdk}}"
+          echo "ANDROID_HOME=$SDK" >> "$GITHUB_ENV"
+          echo "ANDROID_SDK_ROOT=$SDK" >> "$GITHUB_ENV"
+          SDKM="$(command -v sdkmanager || true)"
+          [ -n "$SDKM" ] || SDKM="$(ls "$SDK"/cmdline-tools/*/bin/sdkmanager 2>/dev/null | sort -V | tail -n 1 || true)"
+          echo "== SDK step: sdk=$SDK sdkmanager=${SDKM:-NOT FOUND}"
+          if [ -n "$SDKM" ]; then
+            yes | "$SDKM" --sdk_root="$SDK" --licenses > /dev/null 2>&1 || true
+            "$SDKM" --sdk_root="$SDK" "platforms;android-34" "build-tools;34.0.0" 2>&1 | tail -n 15 || true
+          fi
+          if [ ! -d "$SDK/platforms/android-34" ] || [ ! -d "$SDK/build-tools/34.0.0" ]; then
+            echo "::error::ไม่มี platforms/android-34 หรือ build-tools/34.0.0 ใน SDK หลังพยายามติดตั้งแล้ว (ดูข้อความ sdkmanager ด้านบน)"
+            exit 1
+          fi
+          echo "SDK ready: platform 34 and build-tools 34.0.0"
+
+      - name: Prepare the web files and embed them as the built-in UI
+        run: |
+          bash tools/ci/prepare-web.sh "$RUNNER_TEMP/web"
+          rm -rf android/app/src/main/assets/web
+          mkdir -p android/app/src/main/assets
+          cp -r "$RUNNER_TEMP/web" android/app/src/main/assets/web
+
+      - name: Restore signing key (optional)
+        env:
+          SIGN_PASS: ${{ secrets.NINO_SIGN_PASS }}
+        run: bash tools/ci/restore-key.sh
+
+      - name: Work out the version
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+        run: |
+          VER=$(sed -n "s/.*NINO_VERSION='\([0-9][0-9.]*\)'.*/\1/p" version.js | head -1)
+          echo "NINO_VER=${VER:-1.0.0}" >> "$GITHUB_ENV"
+          CODE=$((3000 + GITHUB_RUN_NUMBER))
+          # versionCode must only go up: a phone refuses an APK whose versionCode is lower than the installed one.
+          PREV=$(gh release download nino-latest -p apk.json -O - 2>/dev/null | python3 -c 'import sys,json; print(json.load(sys.stdin).get("versionCode",0))' 2>/dev/null || echo 0)
+          PREV=${PREV:-0}
+          if [ "$PREV" -ge "$CODE" ] 2>/dev/null; then CODE=$((PREV + 1)); echo "::notice::versionCode ปรับเป็น $CODE เพราะรอบก่อนใช้ $PREV"; fi
+          echo "NINO_CODE=$CODE" >> "$GITHUB_ENV"
+
+      - name: Build APK
+        env:
+          NINO_KS_PASS: ${{ secrets.NINO_SIGN_PASS }}
+          NINO_KEY_PASS: ${{ secrets.NINO_SIGN_PASS }}
+        run: |
+          set -o pipefail
+          TASK=assembleDebug
+          if [ "$SIGNED" = "1" ]; then TASK=assembleRelease; fi
+          gradle -p android "$TASK" --stacktrace --console=plain \
+            -PninoRepo="$GITHUB_REPOSITORY" -PninoVersionCode="$NINO_CODE" -PninoVersionName="$NINO_VER" 2>&1 | tee -a "$RUNNER_TEMP/apk-fail.log"
+
+      - name: Check the APK before it is published
+        run: |
+          set -euo pipefail
+          APK=$(find android/app/build/outputs/apk -name '*.apk' | head -n 1)
+          test -n "$APK"
+          AS=$(ls "$ANDROID_HOME"/build-tools/*/apksigner 2>/dev/null | sort -V | tail -n 1 || true)
+          FP=""
+          if [ -n "$AS" ]; then
+            FP=$("$AS" verify --print-certs "$APK" 2>/dev/null | sed -n 's/.*certificate SHA-256 digest: //p' | head -n 1 || true)
+          fi
+          if [ -z "$FP" ]; then
+            FP=$(keytool -printcert -jarfile "$APK" 2>/dev/null | sed -n 's/.*SHA256: //p' | head -n 1 || true)
+          fi
+          NATIVE=$(unzip -l "$APK" | awk '{print $4}' | grep '\.so$' || true)
+          BAD=$(printf '%s\n' "$NATIVE" | grep -v '^lib/arm64-v8a/' | grep -v '^$' || true)
+          {
+            echo "### APK ที่สร้างรอบนี้"
+            echo "- ลายเซ็น (SHA-256): \`${FP:-ไม่ทราบ}\`"
+            if [ "${SIGNED:-0}" = "1" ]; then
+              echo "- ลงนามด้วยกุญแจของโปรเจกต์: ติดตั้งทับ APK รอบอื่นที่ใช้กุญแจเดียวกันได้"
+            else
+              echo "- **ลงนามด้วย debug key ชั่วคราว**: ติดตั้งทับ APK รอบอื่นไม่ได้ ตั้งกุญแจตาม GUIDE ข้อ 3 ก่อน"
+            fi
+            echo "- ไลบรารี native: " $( [ -n "$NATIVE" ] && echo "มี" || echo "ไม่มี" )
+          } >> "$GITHUB_STEP_SUMMARY"
+          if [ "${SIGNED:-0}" != "1" ]; then
+            echo "::warning::APK นี้ไม่ได้ลงนามด้วยกุญแจของโปรเจกต์"
+          fi
+          if [ -n "$BAD" ]; then
+            echo "::error::มีไลบรารี native นอก arm64-v8a: $BAD"
+            exit 1
+          fi
+
+      - name: Collect APK and describe it
+        run: |
+          mkdir -p out
+          APK=$(find android/app/build/outputs/apk -name '*.apk' | head -n 1)
+          cp "$APK" out/NINO.apk
+          bash tools/ci/make-apk-info.sh out/NINO.apk out/apk.json "$NINO_CODE" "$NINO_VER"
+          ls -la out
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: NINO-apk
+          path: out/NINO.apk
+
+      - name: Publish a release with a direct APK link
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release view nino-latest > /dev/null 2>&1 || gh release create nino-latest --title "NINO ล่าสุด" --notes "ไฟล์ APK จากบิลด์ล่าสุด" --prerelease
+          gh release upload nino-latest out/NINO.apk --clobber
+          gh release upload nino-latest out/apk.json --clobber
+          gh release edit nino-latest --title "NINO ล่าสุด · v$NINO_VER · run $GITHUB_RUN_NUMBER (${GITHUB_SHA:0:7})" --notes "ไฟล์ APK ล่าสุดที่สร้างสำเร็จ: run $GITHUB_RUN_NUMBER, commit ${GITHUB_SHA:0:7}, อัปเดต $(date -u +%Y-%m-%dT%H:%MZ). ถ้า run ใน Actions ที่เป็นสีเขียวใหม่กว่านี้ ให้รอจนมีรายการใหม่" || true
+          TAG="apk-$GITHUB_RUN_NUMBER"
+          gh release create "$TAG" out/NINO.apk out/apk.json --prerelease --target "$GITHUB_SHA" --title "NINO APK v$NINO_VER · run $GITHUB_RUN_NUMBER" --notes "สำเนาเก็บไว้ของบิลด์ run $GITHUB_RUN_NUMBER (ย้อนไปติดตั้งเวอร์ชันเก่าด้วยมือได้)" || true
+          gh release list --limit 200 --json tagName,createdAt -q '[.[]|select(.tagName|test("^apk-[0-9]+$"))]|sort_by(.createdAt)|reverse|.[10:]|.[].tagName' \
+            | while read -r t; do [ -n "$t" ] && gh release delete "$t" --cleanup-tag -y || true; done || true
+
+      - name: Explain the failure on the summary page
+        if: failure()
+        run: |
+          {
+            echo "### Android APK ล้ม"
+            echo "ท้ายล็อก SDK/Gradle (หาบรรทัดที่ขึ้นต้นด้วย \`FAILURE\`, \`What went wrong\`, \`error\` หรือ \`Could not\`):"
+            echo '```'
+            tail -n 60 "$RUNNER_TEMP/apk-fail.log" 2>/dev/null || echo "(ยังไม่ถึงขั้น SDK/Gradle — เปิดขั้นที่เป็นสีแดงในหน้า job)"
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"

@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#14111a">
+<title>ห้องสมุด NDS</title>
+<style>
+@font-face{font-family:'NDS Pixel';src:url(fonts/fusion10-th.woff2) format('woff2');unicode-range:U+0E00-0E7F;font-display:swap}
+@font-face{font-family:'NDS Pixel';src:url(fonts/fusion10.woff2) format('woff2');unicode-range:U+0000-00FF;font-display:swap}
+:root{--bg:#14111a;--card:#1d1824;--card2:#272030;--line:#3a3145;--shadow:#0a0810;--mute:#a79bb3;--ink:#e9e2ee;--bright:#fbf7fd;--accent:#f28ab2;--ok:#8fd3b0;--warn:#f2c275;--bad:#f26d78}
+*{box-sizing:border-box}
+html,body{margin:0;min-height:100%;background:var(--bg);color:var(--ink);font-family:'NDS Pixel','Noto Sans Thai','Sarabun','Segoe UI',system-ui,sans-serif;-webkit-tap-highlight-color:transparent}
+body{padding:calc(env(safe-area-inset-top,0px) + 12px) 12px calc(env(safe-area-inset-bottom,0px) + 24px)}
+h1,h2{margin:0;font-weight:400;letter-spacing:.5px}
+h1{font-size:22px;color:var(--bright);text-shadow:3px 3px 0 var(--shadow)}
+h2{font-size:17px;color:var(--accent);text-shadow:2px 2px 0 var(--shadow)}
+p{margin:0}
+.top{display:flex;align-items:center;gap:12px;padding:10px 12px;background:var(--card);border:3px solid var(--line);box-shadow:5px 5px 0 var(--shadow);margin-bottom:14px}
+.top p{font-size:13px;color:var(--mute);margin-top:4px}
+.top .core{margin-left:auto;font-size:11px;color:var(--mute);text-align:right;max-width:40%}
+.core.ok{color:var(--ok)}
+.core.no{color:var(--warn)}
+.panel{background:var(--card);border:3px solid var(--line);box-shadow:5px 5px 0 var(--shadow);padding:12px;margin-bottom:14px}
+.row{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:10px}
+.hint{font-size:12px;color:var(--mute);line-height:1.6;margin-top:8px}
+.btn{position:relative;display:inline-flex;align-items:center;justify-content:center;min-height:40px;padding:0 14px;background:var(--card2);border:2px solid var(--line);box-shadow:3px 3px 0 var(--shadow);color:var(--bright);font:inherit;font-size:14px;cursor:pointer;user-select:none}
+.btn:active{transform:translate(2px,2px);box-shadow:1px 1px 0 var(--shadow)}
+.btn.small{min-height:34px;padding:0 10px;font-size:13px}
+.btn.del{color:var(--bad);min-height:34px;padding:0 8px;font-size:12px}
+.sr{position:absolute;width:1px;height:1px;opacity:0;overflow:hidden;pointer-events:none}
+.slot{display:flex;align-items:center;gap:12px;padding:10px 0;border-top:2px dashed var(--line)}
+.slot:first-child{border-top:0}
+.slot-t{flex:1;min-width:0;display:flex;flex-direction:column;gap:3px}
+.slot-t b{font-weight:400;font-size:15px;color:var(--bright)}
+.slot-t small{font-size:12px;color:var(--mute)}
+.led{flex:none;width:12px;height:12px;background:#4a4057;box-shadow:0 0 0 2px var(--shadow)}
+.led.on{background:var(--ok);box-shadow:0 0 0 2px var(--shadow),0 0 8px rgba(143,211,176,.5)}
+.shelf{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px}
+.empty{grid-column:1/-1;text-align:center;padding:22px 12px 14px;border-bottom:8px solid var(--line);color:var(--mute);font-size:13px;line-height:1.7}
+.cart{position:relative;display:flex;flex-direction:column;background:var(--card2);border:2px solid var(--line);border-top:12px solid var(--c);box-shadow:4px 4px 0 var(--shadow)}
+.cart-play{flex:1;display:flex;flex-direction:column;gap:6px;align-items:flex-start;padding:10px;background:none;border:0;color:var(--bright);font:inherit;text-align:left;cursor:pointer}
+.cart-t{font-size:14px;line-height:1.35;word-break:break-word}
+.cart-m{font-size:11px;color:var(--mute)}
+.cart-del{align-self:flex-end;margin:0 6px 6px;background:none;border:0;color:var(--mute);font:inherit;font-size:12px;cursor:pointer}
+.cart-del:hover,.cart-del:focus{color:var(--bad)}
+.play{position:fixed;inset:0;z-index:50;background:var(--shadow);display:none;flex-direction:column;align-items:center;gap:12px;padding:calc(env(safe-area-inset-top,0px) + 10px) 12px calc(env(safe-area-inset-bottom,0px) + 10px)}
+.play.on{display:flex}
+.play-bar{width:100%;max-width:560px;display:flex;align-items:center;gap:10px}
+.play-bar b{flex:1;min-width:0;font-weight:400;font-size:15px;color:var(--bright);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+#fps{font-size:13px;color:var(--ok);min-width:70px;text-align:right}
+.frame{border:4px solid var(--line);box-shadow:6px 6px 0 #000;background:#000;padding:4px}
+#screen{display:block;width:min(86vw,calc(64vh * 0.6667));height:auto;aspect-ratio:2/3;image-rendering:pixelated;image-rendering:crisp-edges;background:#000}
+.toast{position:fixed;left:50%;bottom:calc(env(safe-area-inset-bottom,0px) + 18px);transform:translate(-50%,140%);max-width:92vw;background:var(--card2);border:2px solid var(--accent);box-shadow:4px 4px 0 var(--shadow);color:var(--bright);padding:10px 14px;font-size:13px;line-height:1.5;z-index:60;transition:transform .2s;pointer-events:none}
+.toast.on{transform:translate(-50%,0)}
+</style>
+</head>
+<body>
+<header class="top">
+  <svg width="34" height="34" viewBox="0 0 16 16" shape-rendering="crispEdges" aria-hidden="true">
+    <rect x="3" y="1" width="10" height="14" fill="#272030" stroke="#f28ab2"/>
+    <rect x="5" y="3" width="6" height="4" fill="#f28ab2"/>
+    <rect x="6" y="10" width="4" height="2" fill="#7fe7ff"/>
+  </svg>
+  <div>
+    <h1>ห้องสมุด NDS</h1>
+    <p>ตลับเกมของคุณ เก็บไว้ในเครื่องนี้</p>
+  </div>
+  <span id="core" class="core no">กำลังเปิดแกน...</span>
+</header>
+
+<section class="panel">
+  <div class="row"><h2>ตู้ BIOS</h2></div>
+  <div id="bios"></div>
+  <p id="note" class="hint"></p>
+  <p class="hint">ไฟล์ทั้งสามมาจากเครื่อง DS ของคุณเอง แอปไม่มีไฟล์เหล่านี้ให้ และไม่ส่งไฟล์ไปที่ไหน</p>
+</section>
+
+<section class="panel">
+  <div class="row">
+    <h2>ชั้นวางตลับ</h2>
+    <label class="btn small">ใส่ตลับ (.nds)<input id="add" class="sr" type="file" accept=".nds,application/octet-stream"></label>
+  </div>
+  <div id="shelf" class="shelf"></div>
+</section>
+
+<section id="play" class="play" aria-label="จอเกม">
+  <div class="play-bar">
+    <b id="play-title"></b>
+    <span id="fps">FPS --</span>
+    <button class="btn small" data-act="out" type="button">ออก</button>
+  </div>
+  <div class="frame"><canvas id="screen" width="256" height="384"></canvas></div>
+  <p class="hint" style="max-width:520px;text-align:center">โหมดทดสอบ: ยังไม่ได้ต่อแกนจำลอง ฉันแสดงภาพทดสอบแทนค่ะ</p>
+</section>
+
+<div id="toast" class="toast" role="status" aria-live="polite"></div>
+<script src="wasm_exec.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no,viewport-fit=cover">
+<meta name="theme-color" content="#1D1824">
+<link rel="manifest" href="./manifest.json">
+<link rel="apple-touch-icon" href="./icons/icon-192.png">
+<link rel="stylesheet" href="./style.css">
+<title>NINO — Coding + Roleplay</title>
+<script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body>
+<div id="nino" class="flex flex-col w-full h-full text-slate-200">
+<header id="app-header" class="flex-shrink-0 bg-[#1D1824] border-b border-[#3A3145] px-3 py-2 flex flex-col gap-1.5 z-40">
+<div class="flex flex-nowrap items-center justify-between gap-2 w-full overflow-x-auto hide-scrollbar">
+<div class="flex flex-nowrap items-center gap-2 min-w-0 flex-shrink-0">
+<div class="w-7 h-7 rounded bg-[#272030] border border-[#3A3145] flex items-center justify-center text-[#F28AB2] flex-shrink-0">
+<svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg>
+</div>
+<div class="min-w-0">
+<div class="flex flex-nowrap items-center gap-1.5">
+<span class="font-bold text-sm text-[#FBF7FD] tracking-wide font-mono-code whitespace-nowrap flex-shrink-0">NINO</span>
+<span id="model-badge" class="inline-flex items-center px-1.5 py-0.5 text-[10px] rounded bg-[#1F6FEB]/20 text-[#F28AB2] border border-[#1F6FEB]/40 font-mono-code whitespace-nowrap flex-shrink-0">gemini</span>
+<div id="mode-toggle" title="สลับโหมด"><button id="mode-code" class="active code">Code</button><button id="mode-roleplay">Roleplay</button></div>
+</div>
+<div class="flex flex-nowrap items-center gap-1.5 text-[11px] text-[#A79BB3] whitespace-nowrap"><span id="status-dot"></span><span id="status-indicator">พร้อมทำงาน</span></div>
+<span id="offline-badge" class="hidden ml-1 px-1.5 py-0.5 rounded bg-[#F26D78]/20 text-[#F26D78] border border-[#F26D78]/40 text-[9px] font-mono-code">OFFLINE</span>
+</div>
+</div>
+<div class="flex flex-nowrap items-center gap-1.5 justify-end flex-shrink-0">
+<button id="nino-inspect" class="btn-tactile px-2 py-1 bg-[#1a1a2e] text-[#00e5ff] border border-[#00e5ff] rounded text-[11px] font-mono-code whitespace-nowrap flex-shrink-0">ตรวจสอบโค้ด</button>
+<button id="btn-character" class="btn-tactile px-2 py-1 bg-[#272030] hover:bg-[#3A3145] text-[#C9A8F5] border border-[#3A3145] rounded text-xs flex items-center gap-1 whitespace-nowrap flex-shrink-0" title="ตัวละคร"><svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"></circle><path d="M4 21v-2a4 4 0 0 1 4-4h8a4 4 0 0 1 4 4v2"></path></svg><span class="text-[11px]">ตัวละคร</span></button>
+<button id="btn-settings" aria-label="Settings" class="btn-tactile p-1.5 bg-[#272030] hover:bg-[#3A3145] text-[#A79BB3] hover:text-[#F28AB2] border border-[#3A3145] rounded whitespace-nowrap flex-shrink-0" title="ตั้งค่า API"><svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg></button>
+<button id="btn-memory-toggle" class="btn-tactile px-2 py-1 bg-[#272030] hover:bg-[#3A3145] text-[#E9E2EE] border border-[#3A3145] rounded text-xs flex items-center gap-1 whitespace-nowrap flex-shrink-0"><svg class="w-3.5 h-3.5 text-[#F7B8D0]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="4" width="16" height="16" rx="2"></rect><line x1="9" y1="9" x2="9.01" y2="9"></line><line x1="15" y1="9" x2="15.01" y2="9"></line><line x1="9" y1="15" x2="15.01" y2="15"></line></svg><span class="text-[11px] font-mono-code">Memory</span><span id="memory-events-badge" class="hidden px-1 rounded bg-[#8FD3B0] text-white text-[9px] font-bold">0</span></button>
+<button id="btn-undo" aria-label="Undo" title="ย้อนกลับ" class="btn-tactile p-1.5 bg-[#272030] hover:bg-[#3A3145] text-[#A79BB3] hover:text-[#79C0FF] border border-[#3A3145] rounded whitespace-nowrap flex-shrink-0"><svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 14 4 9 9 4"></polyline><path d="M20 20v-7a4 4 0 0 0-4-4H4"></path></svg></button>
+<button id="btn-reset-session" aria-label="Reset" title="เริ่มใหม่" class="btn-tactile p-1.5 bg-[#272030] hover:bg-[#3A3145] text-[#A79BB3] hover:text-[#F26D78] border border-[#3A3145] rounded whitespace-nowrap flex-shrink-0"><svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="1 4 1 10 7 10"></polyline><polyline points="23 20 23 14 17 14"></polyline><path d="M20.49 9A9 9 0 0 0 5.64 5.64L1 10m22 4l-4.64 4.36A9 9 0 0 1 3.51 15"></path></svg></button>
+</div>
+</div>
+<div id="task-lock-badge" class="hidden items-center gap-1.5 text-[10px] font-mono-code text-[#F2C275] bg-[#D29922]/20 border border-[#D29922]/40 px-2 py-0.5 rounded"><span class="w-1 h-1 rounded-full bg-[#F2C275] pulse-dot"></span><span>NINO กำลังลงมือ</span></div>
+<div class="flex items-center justify-between text-[11px] font-mono-code pt-0.5 border-t border-[#272030]">
+<div class="flex items-center gap-2">
+<span class="text-[#A79BB3]">Context:</span>
+<div class="w-24 sm:w-36 h-2 bg-[#272030] rounded-full overflow-hidden border border-[#3A3145]"><div id="budget-progress-bar" class="h-full transition-all duration-300 bg-[#8FD3B0]" style="width:0%;"></div></div>
+<span id="budget-token-text" class="text-[#F28AB2] font-semibold whitespace-nowrap">0 / 0</span>
+<button id="btn-token-slider-toggle" class="text-[10px] text-[#F7B8D0] hover:underline" style="display:none">ปรับ</button>
+</div>
+<div class="flex items-center gap-2 text-[#A79BB3]"><span id="fs-count-badge" class="px-1.5 py-0.5 rounded bg-[#272030] text-[#9BE0BC] border border-[#3A3145] whitespace-nowrap">1 ไฟล์</span><span id="session-phase-badge" class="text-[#E9E2EE] whitespace-nowrap">Phase 1</span></div>
+</div>
+<div id="token-slider-panel" class="hidden flex-col gap-1.5 pt-1.5 border-t border-[#272030]">
+<input type="range" id="token-slider" min="16384" max="900000" step="16384" value="900000" class="w-full accent-[#F28AB2]">
+<div class="flex justify-between text-[9px] text-[#A79BB3]"><span>16K</span><span id="token-slider-val" class="text-[#F28AB2] font-bold">900K</span><span>900K</span></div>
+</div>
+</header>
+<nav id="main-tabs" class="flex-shrink-0 bg-[#14111A] border-b border-[#3A3145] flex px-2 pt-1 gap-1 z-30">
+<button id="tab-btn-chat" class="btn-tactile flex-1 py-2 px-3 text-xs font-mono-code font-semibold flex items-center justify-center gap-1.5 border-b-2 border-[#F28AB2] text-[#FBF7FD] bg-[#1D1824]/50 rounded-t"><svg class="w-3.5 h-3.5 text-[#F28AB2]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg><span>Chat</span></button>
+<button id="tab-btn-files" class="btn-tactile flex-1 py-2 px-3 text-xs font-mono-code font-medium flex items-center justify-center gap-1.5 border-b-2 border-transparent text-[#A79BB3] hover:text-[#E9E2EE] rounded-t"><svg class="w-3.5 h-3.5 text-[#9BE0BC]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"></path><polyline points="13 2 13 9 20 9"></polyline></svg><span>Files</span></button>
+<button id="tab-btn-preview" class="btn-tactile flex-1 py-2 px-3 text-xs font-mono-code font-medium flex items-center justify-center gap-1.5 border-b-2 border-transparent text-[#A79BB3] hover:text-[#E9E2EE] rounded-t"><svg class="w-3.5 h-3.5 text-[#C9A8F5]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg><span>Preview</span></button>
+</nav>
+<main class="flex-1 min-h-0 relative overflow-hidden bg-[#14111A] flex flex-col">
+<section id="panel-chat" class="tab-panel active h-full flex flex-col">
+<div id="active-char-bar" class="hidden">
+<div class="char-avatar" id="active-char-avatar"></div>
+<div class="name" id="active-char-name">NINO</div>
+<span class="char-mode-badge code" id="active-char-mode">code</span>
+<span class="hint" id="active-char-hint"></span><button id="btn-clear-chat" class="ml-auto text-[#A79BB3] hover:text-[#F26D78] text-[11px] px-1.5 py-0.5 rounded hover:bg-[#F26D78]/10 transition-colors" title="ล้างแชททั้งหมด">ล้าง</button>
+</div>
+<div id="chat-messages-container" class="flex-1 min-h-0 overflow-y-auto p-3 flex flex-col gap-3 font-mono-code text-xs"></div>
+<div id="phase-indicator" class="hidden px-3 py-2 bg-[#1D1824]/95 border-t border-[#3A3145] font-mono-code text-[11px] flex-col gap-1.5">
+<div class="flex items-center justify-between text-[#E9E2EE]"><div class="flex items-center gap-1.5"><span class="w-1.5 h-1.5 rounded-full bg-[#F28AB2] pulse-dot"></span><span id="phase-label">กำลังเตรียมบริบท...</span></div><span id="phase-eta" class="text-[#A79BB3] text-[10px]"></span></div>
+<div class="w-full h-1 bg-[#272030] rounded-full overflow-hidden"><div id="phase-bar" class="h-full bg-[#F28AB2] transition-all duration-150" style="width:0%"></div></div>
+</div>
+<div id="sensory-cue-banner" class="hidden flex-shrink-0 items-center gap-2 px-3 py-2 bg-gradient-to-r from-[#221A2E] to-[#1D1824] border-t border-b border-[#B388F0]/40"><span id="sensory-cue-dot" class="w-1.5 h-1.5 rounded-full bg-[#C9A8F5] pulse-dot flex-shrink-0"></span><svg class="w-3.5 h-3.5 text-[#C9A8F5] flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a7 7 0 0 0-7 7c0 2.4 1.2 4 2.3 5.3.8.9 1.2 1.9 1.2 2.7H15.5c0-.8.4-1.8 1.2-2.7C17.8 13 19 11.4 19 9a7 7 0 0 0-7-7z"></path><line x1="9.5" y1="21" x2="14.5" y2="21"></line></svg><span id="sensory-cue-text" class="flex-1 min-w-0 text-[11px] text-[#E6D9FF] italic font-roleplay leading-snug"></span><button id="sensory-cue-close" class="flex-shrink-0 text-[#A79BB3] hover:text-white text-[14px] leading-none px-1" title="ซ่อน">×</button></div>
+<div id="quick-reply-chips" class="flex-shrink-0 px-3 py-1.5 bg-[#1D1824]/60 border-t border-[#272030] flex items-center gap-1.5 overflow-x-auto text-xs"></div>
+<div id="nino-img-tray" class="hidden"></div>
+<div class="flex-shrink-0 p-2.5 bg-[#1D1824] border-t border-[#3A3145] flex items-center gap-2">
+<textarea id="prompt-input" placeholder="พิมพ์ข้อความ... (Enter = ใหม่บรรทัด, Ctrl+Enter = ส่ง)" rows="1" class="flex-1 bg-[#14111A] border border-[#3A3145] rounded-lg px-3 py-2 text-sm text-[#FBF7FD] placeholder-[#6E6279] focus:outline-none focus:border-[#F28AB2] resize-none" autocomplete="off" autocapitalize="off" spellcheck="false" style="min-height:38px;max-height:120px;overflow-y:auto;line-height:1.5;"></textarea>
+<button id="btn-img" class="p-2 text-lg" title="แนบรูปภาพ (อัลบั้ม / แฟ้ม)">+</button>
+<span id="char-counter" class="text-[10px] text-[#6E6279] min-w-[36px] text-right flex-shrink-0 select-none" title="จำนวนตัวอักษร">0</span>
+<button id="btn-cancel" class="btn-tactile hidden px-3 py-2 bg-[#F26D78] hover:bg-[#FF8A94] text-white font-medium rounded-lg text-sm">ยกเลิก</button>
+<button id="btn-send" class="btn-tactile px-4 py-2 bg-[#D9558A] hover:bg-[#E8689C] text-white font-medium rounded-lg text-sm flex items-center justify-center gap-1.5 flex-shrink-0"><span>ส่ง</span><svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg></button>
+</div>
+</section>
+<section id="panel-files" class="tab-panel h-full flex flex-col bg-[#14111A]">
+<div class="flex-shrink-0 bg-[#1D1824] border-b border-[#3A3145] px-3 py-2 flex items-center justify-between text-xs font-mono-code">
+<div class="flex items-center gap-2 min-w-0"><span class="text-[#A79BB3]">FILES:</span><div id="files-list-tabs" class="flex items-center gap-1 overflow-x-auto"></div></div>
+<div class="flex items-center gap-1">
+<button id="btn-new-file" class="btn-tactile px-2 py-1 bg-[#272030] hover:bg-[#3A3145] border border-[#3A3145] rounded text-[11px] text-[#F28AB2] flex items-center gap-1"><svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg><span>+ ไฟล์</span></button>
+<button id="btn-save-current-file" class="btn-tactile px-2 py-1 bg-[#D9558A] hover:bg-[#E8689C] rounded text-[11px] text-white">บันทึก</button>
+</div>
+<div class="flex-shrink-0 px-3 py-1.5 border-b border-[#3A3145]" id="file-search-bar"><input id="file-search-input" type="text" placeholder="ค้้นหาในไฟล์... (Ctrl+K)" class="w-full bg-[#14111A] border border-[#3A3145] rounded px-2 py-1 text-xs text-[#E9E2EE] placeholder-[#6E6279] focus:outline-none focus:border-[#F28AB2] font-mono-code"></div>
+</div>
+<div id="file-search-results" class="hidden flex-shrink-0 max-h-40 overflow-y-auto bg-[#14111A] border-b border-[#3A3145]"></div>
+<div id="find-replace-bar" class="hidden flex-shrink-0 bg-[#1D1824] border-b border-[#3A3145] px-3 py-1.5 flex items-center gap-2 text-xs font-mono-code">
+<input id="fr-find-input" type="text" placeholder="ค้นหา..." class="flex-1 min-w-0 bg-[#14111A] border border-[#3A3145] rounded px-2 py-1 text-xs text-[#E9E2EE] placeholder-[#6E6279] focus:outline-none focus:border-[#F28AB2]">
+<input id="fr-replace-input" type="text" placeholder="แทนที่..." class="flex-1 min-w-0 bg-[#14111A] border border-[#3A3145] rounded px-2 py-1 text-xs text-[#E9E2EE] placeholder-[#6E6279] focus:outline-none focus:border-[#F28AB2]">
+<span id="fr-match-count" class="text-[#6E6279] text-[10px] whitespace-nowrap">0/0</span>
+<button id="fr-prev-btn" class="btn-tactile px-1.5 py-0.5 bg-[#272030] hover:bg-[#3A3145] rounded text-[10px] text-[#E9E2EE]" title="ก่อนหน้า">↑</button>
+<button id="fr-next-btn" class="btn-tactile px-1.5 py-0.5 bg-[#272030] hover:bg-[#3A3145] rounded text-[10px] text-[#E9E2EE]" title="ถัดไป">↓</button>
+<button id="fr-replace-btn" class="btn-tactile px-2 py-0.5 bg-[#272030] hover:bg-[#3A3145] rounded text-[10px] text-[#F28AB2]">แทนที่</button>
+<button id="fr-replace-all-btn" class="btn-tactile px-2 py-0.5 bg-[#272030] hover:bg-[#3A3145] rounded text-[10px] text-[#9BE0BC]">แทนท่ีทุกตัว</button>
+<button id="fr-close-btn" class="btn-tactile px-1.5 py-0.5 bg-[#272030] hover:bg-[#3A3145] rounded text-[10px] text-[#F26D78]" title="ปิด (Esc)">ปิด</button>
+</div>
+<div class="flex-1 min-h-0 flex bg-[#14111A] font-mono-code text-xs relative overflow-hidden">
+<div id="editor-line-numbers" class="w-10 bg-[#14111A] text-[#6E6279] py-2 px-1 text-right select-none border-r border-[#272030] overflow-hidden leading-5"></div>
+<div id="line-numbers" class="absolute left-0 top-0 bottom-0 w-10 bg-[#1D1824] border-r border-[#3A3145] text-[#6E6279] text-[11px] font-mono-code text-right pr-2 pt-2 overflow-hidden select-none pointer-events-none z-10"></div>
+<textarea id="file-editor-textarea" class="flex-1 h-full bg-[#14111A] text-[#E9E2EE] p-2 leading-5 resize-none border-none outline-none font-mono-code text-xs focus:ring-0" spellcheck="false" autocomplete="off" autocapitalize="off"></textarea>
+</div>
+<div class="flex-shrink-0 bg-[#1D1824] border-t border-[#3A3145] px-3 py-1 flex items-center justify-between text-[11px] font-mono-code text-[#A79BB3]">
+<div class="flex items-center gap-2"><span id="active-filename-display" class="text-[#79C0FF]">index.html</span><span id="file-size-display">UTF-8 • 0 บรรทัด</span><span id="cursor-pos-display" class="text-[#6E6279] ml-1">Ln 1, Col 1</span><span id="file-saved-indicator" class="file-saved-indicator" title="Auto-saved">✓</span></div>
+<div class="flex items-center gap-2"><button id="btn-word-wrap" class="text-[#A79BB3] hover:text-[#F28AB2] text-[10px] font-mono" title="Toggle Word Wrap">WRAP</button><button id="btn-delete-active-file" class="text-[#F26D78] hover:underline text-[10px]">ลบไฟล์นี้</button><button id="btn-preview-shortcut" class="text-[#F28AB2] hover:underline text-[10px]">เปิดพรีวิว ›</button></div>
+</div>
+</section>
+<section id="panel-preview" class="tab-panel h-full flex flex-col bg-[#14111A]">
+<div class="flex-shrink-0 bg-[#1D1824] border-b border-[#3A3145] px-3 py-1.5 flex items-center justify-between text-xs font-mono-code">
+<div class="flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-[#8FD3B0]"></span><span class="text-[#A79BB3]">PREVIEW</span></div>
+<div class="flex items-center gap-2"><button id="btn-refresh-preview" class="btn-tactile px-2 py-1 bg-[#272030] hover:bg-[#3A3145] border border-[#3A3145] rounded text-[11px] text-[#E9E2EE]">รีเฟรช</button><button id="btn-open-in-chat" class="btn-tactile px-2 py-1 bg-[#272030] hover:bg-[#3A3145] border border-[#3A3145] rounded text-[11px] text-[#9BE0BC]">‹ กลับแชท</button></div>
+</div>
+<div class="flex-1 min-h-0 bg-white relative"><iframe id="live-preview-iframe" class="w-full h-full border-none" sandbox="allow-scripts allow-modals" srcdoc="<!DOCTYPE html><html><body>ไม่มีไฟล์ index.html</body></html>"></iframe></div>
+</section>
+</main>
+</div>
+<div id="memory-drawer" class="drawer-backdrop hidden-drawer absolute inset-0 z-50 bg-black/75 flex flex-col justify-end p-2 sm:p-4">
+<div class="bg-[#1D1824] border border-[#3A3145] rounded-xl flex flex-col max-h-[85%] overflow-hidden shadow-2xl">
+<div class="p-3 border-b border-[#3A3145] flex items-center justify-between bg-[#272030]">
+<div class="flex items-center gap-2">
+<div class="p-1.5 rounded bg-[#1F6FEB]/20 text-[#F28AB2]"><svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="4" width="16" height="16" rx="2"></rect><line x1="9" y1="9" x2="9.01" y2="9"></line><line x1="15" y1="9" x2="15.01" y2="9"></line><line x1="9" y1="15" x2="15.01" y2="15"></line></svg></div>
+<div><h3 class="text-sm font-bold font-mono-code text-[#FBF7FD]">NINO MEMORY</h3><p class="text-[10px] text-[#A79BB3]">Facts · Events · Episodic · RAG · Diffs</p></div>
+</div>
+<div class="flex items-center gap-1 mr-2">
+<button id="memory-export-btn" class="btn-tactile px-2 py-0.5 bg-[#272030] hover:bg-[#3A3145] text-[#9BE0BC] border border-[#3A3145] rounded text-[10px] font-mono-code">Export</button>
+<button id="memory-import-btn" class="btn-tactile px-2 py-0.5 bg-[#272030] hover:bg-[#3A3145] text-[#79C0FF] border border-[#3A3145] rounded text-[10px] font-mono-code">Import</button>
+<button id="memory-compact-btn" class="btn-tactile px-2 py-0.5 bg-[#272030] hover:bg-[#3A3145] text-[#F2C275] border border-[#3A3145] rounded text-[10px] font-mono-code">Compact</button>
+<button id="memory-clear-btn" class="btn-tactile px-2 py-0.5 bg-[#272030] hover:bg-[#3A3145] text-[#F26D78] border border-[#3A3145] rounded text-[10px] font-mono-code">Clear</button>
+<input type="file" id="memory-import-file" accept=".json,application/json" style="display:none">
+</div>
+<button id="btn-close-memory" class="btn-tactile p-1 text-[#A79BB3] hover:text-white rounded"><svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></button>
+</div>
+<div class="flex-1 overflow-y-auto p-3 space-y-4 font-mono-code text-xs">
+<div class="bg-[#14111A] border border-[#3A3145] rounded-lg p-2.5"><div class="flex items-center justify-between mb-2"><span class="text-[#79C0FF] font-semibold text-[11px]">1. FACTS</span><span class="text-[10px] text-[#A79BB3]" id="facts-count-text">0 ข้อ</span></div><div id="memory-facts-list" class="space-y-1.5 text-[11px] text-[#E9E2EE]"></div></div>
+<div class="bg-[#14111A] border border-[#3A3145] rounded-lg p-2.5"><div class="flex items-center justify-between mb-2"><span class="text-[#9BE0BC] font-semibold text-[11px]">2. EVENTS</span><span class="text-[10px] text-[#A79BB3]" id="events-count-text">0 รายการ</span></div><div id="memory-events-list" class="space-y-1.5 text-[11px]"></div></div>
+<div class="bg-[#14111A] border border-[#3A3145] rounded-lg p-2.5"><div class="flex items-center justify-between mb-2"><span class="text-[#C9A8F5] font-semibold text-[11px]">3. EPISODIC (ความจำระยะยาว)</span><span class="text-[10px] text-[#A79BB3]" id="episodic-count-text">0</span></div><div id="memory-episodic-list" class="space-y-1.5 text-[11px] max-h-40 overflow-y-auto"></div></div>
+<div class="bg-[#14111A] border border-[#3A3145] rounded-lg p-2.5"><div class="flex items-center justify-between mb-2"><span class="text-[#F2C275] font-semibold text-[11px]">4. DIFF LOG</span><span class="text-[10px] text-[#A79BB3]" id="diffs-count-text">0 รายการ</span></div><div id="memory-diffs-list" class="space-y-1.5 text-[11px]"></div></div>
+</div>
+<div class="p-2.5 bg-[#272030] border-t border-[#3A3145] flex justify-end"><button id="btn-dismiss-memory-footer" class="btn-tactile px-3 py-1.5 bg-[#3A3145] hover:bg-[#3d444d] text-white rounded text-xs font-mono-code">ปิด</button></div>
+</div>
+</div>
+<div id="character-drawer" class="drawer-backdrop hidden-drawer absolute inset-0 z-50 bg-black/75 flex flex-col justify-end p-2 sm:p-4">
+<div class="bg-[#1D1824] border border-[#3A3145] rounded-xl flex flex-col max-h-[88%] overflow-hidden shadow-2xl">
+<div class="p-3 border-b border-[#3A3145] flex items-center justify-between bg-[#272030]">
+<div class="flex items-center gap-2">
+<div class="p-1.5 rounded bg-[#B388F0]/20 text-[#C9A8F5]"><svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"></circle><path d="M4 21v-2a4 4 0 0 1 4-4h8a4 4 0 0 1 4 4v2"></path></svg></div>
+<div><h3 class="text-sm font-bold font-mono-code text-[#FBF7FD]">ตัวละคร</h3><p class="text-[10px] text-[#A79BB3]">สลับ / สร้าง / แก้ไข</p></div>
+</div>
+<div class="flex items-center gap-2">
+<button id="btn-create-character" class="btn-tactile px-3 py-1 bg-[#B388F0] hover:bg-[#9b6fe8] text-white rounded text-xs font-semibold flex items-center gap-1"><svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg><span>สร้าง</span></button>
+<button id="btn-close-character" class="btn-tactile p-1 text-[#A79BB3] hover:text-white rounded"><svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></button>
+</div>
+</div>
+<div class="flex-1 overflow-y-auto p-3 space-y-2.5 font-mono-code text-xs" id="characters-list"></div>
+<div class="p-2.5 bg-[#272030] border-t border-[#3A3145] flex justify-end"><button id="btn-dismiss-character-footer" class="btn-tactile px-3 py-1.5 bg-[#3A3145] hover:bg-[#3d444d] text-white rounded text-xs font-mono-code">ปิด</button></div>
+</div>
+</div>
+<div id="char-edit-modal" class="hidden">
+<div style="background:#1D1824;border:1px solid #3A3145;border-radius:12px;max-width:520px;width:100%;padding:20px;color:#E9E2EE;font-size:13px;max-height:92vh;overflow-y:auto;font-family:system-ui,-apple-system,sans-serif;">
+<h3 id="char-modal-title" style="color:#FBF7FD;font-size:15px;margin:0 0 14px 0;font-weight:700;">สร้างตัวละคร</h3>
+<div style="display:flex;gap:12px;margin-bottom:12px;align-items:center;">
+<div id="char-avatar-preview" class="char-avatar" style="width:64px;height:64px;font-size:22px;cursor:pointer;" onclick="document.getElementById('char-avatar-file').click()"></div>
+<div style="flex:1;"><button class="btn-tactile" style="padding:6px 12px;background:#272030;color:#F28AB2;border:1px solid #3A3145;border-radius:6px;cursor:pointer;font-size:12px;" onclick="document.getElementById('char-avatar-file').click()">อัปโหลดรูป</button><input type="file" id="char-avatar-file" accept="image/*" style="display:none;"><p style="color:#A79BB3;font-size:11px;margin:6px 0 0;">แนะนำ: 512x512 หรือใหญ่กว่า</p></div>
+</div>
+<label style="display:block;margin-bottom:12px;"><span style="display:block;margin-bottom:4px;color:#A79BB3;font-size:12px;">ชื่อ *</span><input id="char-name" type="text" style="width:100%;background:#14111A;border:1px solid #3A3145;border-radius:6px;padding:8px;color:#FBF7FD;outline:none;font-size:13px;" placeholder="เช่น Sakura, Codex, Sherlock"></label>
+<label style="display:block;margin-bottom:12px;"><span style="display:block;margin-bottom:4px;color:#A79BB3;font-size:12px;">โหมด</span><div style="display:flex;gap:8px;"><button type="button" id="char-mode-code" class="char-mode-btn btn-tactile" data-mode="code" data-selected="false" style="flex:1;padding:8px;background:#14111A;border:1px solid #3A3145;border-radius:6px;color:#A79BB3;cursor:pointer;font-size:12px;">Code</button><button type="button" id="char-mode-roleplay" class="char-mode-btn btn-tactile" data-mode="roleplay" data-selected="false" style="flex:1;padding:8px;background:#14111A;border:1px solid #3A3145;border-radius:6px;color:#A79BB3;cursor:pointer;font-size:12px;">Roleplay</button></div></label>
+<label style="display:block;margin-bottom:12px;"><span style="display:block;margin-bottom:4px;color:#A79BB3;font-size:12px;">คำอธิบายสั้น</span><input id="char-description" type="text" style="width:100%;background:#14111A;border:1px solid #3A3145;border-radius:6px;padding:8px;color:#FBF7FD;outline:none;font-size:13px;" placeholder="เช่น นักสืบสาวผู้เฉียบคม"></label>
+<label style="display:block;margin-bottom:12px;"><span style="display:block;margin-bottom:4px;color:#A79BB3;font-size:12px;">Persona (ส่วนตัว — LLM เท่านั้นที่เห็น)</span><textarea id="char-persona" style="width:100%;height:110px;background:#14111A;border:1px solid #3A3145;border-radius:6px;padding:8px;color:#FBF7FD;outline:none;font-family:inherit;font-size:12px;line-height:1.6;resize:vertical;" placeholder="นิสัย สไตล์การพูด หลักการ ความเชื่อ ข้อบกพร่อง"></textarea></label>
+<label style="display:block;margin-bottom:12px;"><span style="display:block;margin-bottom:4px;color:#A79BB3;font-size:12px;">Scenario (ฉาก — สำหรับ Roleplay)</span><textarea id="char-scenario" style="width:100%;height:80px;background:#14111A;border:1px solid #3A3145;border-radius:6px;padding:8px;color:#FBF7FD;outline:none;font-family:inherit;font-size:12px;line-height:1.6;resize:vertical;" placeholder="เช่น เมืองโอซาก้า ปี 1985, ฝนตก, เราอยู่ในบาร์ร้าง"></textarea></label>
+<label style="display:block;margin-bottom:12px;"><span style="display:block;margin-bottom:4px;color:#A79BB3;font-size:12px;">ตัวอย่างบทสนทนา (สำหรับ Roleplay)</span><textarea id="char-examples" style="width:100%;height:100px;background:#14111A;border:1px solid #3A3145;border-radius:6px;padding:8px;color:#FBF7FD;outline:none;font-family:inherit;font-size:12px;line-height:1.6;resize:vertical;" placeholder="ผู้ใช้: ...&#10;ตัวละคร: ..."></textarea></label>
+<label style="display:block;margin-bottom:12px;"><span style="display:block;margin-bottom:4px;color:#A79BB3;font-size:12px;">ข้อความทักทาย (ข้อความแรก)</span><textarea id="char-greeting" style="width:100%;height:60px;background:#14111A;border:1px solid #3A3145;border-radius:6px;padding:8px;color:#FBF7FD;outline:none;font-family:inherit;font-size:12px;line-height:1.6;resize:vertical;" placeholder="ข้อความเปิดฉากเมื่อเริ่มแชท"></textarea></label>
+<div style="display:flex;gap:8px;margin-top:16px;"><button id="char-save-btn" class="btn-tactile" style="flex:1;padding:10px;background:#B388F0;color:white;border:none;border-radius:6px;cursor:pointer;font-weight:600;font-size:13px;">บันทึก</button><button id="char-cancel-btn" class="btn-tactile" style="padding:10px 16px;background:#272030;color:#A79BB3;border:1px solid #3A3145;border-radius:6px;cursor:pointer;font-size:13px;">ยกเลิก</button></div>
+</div>
+</div>
+<div id="file-import-overlay" class="drawer-backdrop hidden-drawer absolute inset-0 z-50 bg-black/75 flex items-center justify-center p-2 sm:p-4">
+<div class="bg-[#1D1824] border border-[#3A3145] rounded-xl flex flex-col w-full max-w-2xl max-h-[85%] overflow-hidden shadow-2xl">
+<header class="p-3 border-b border-[#3A3145] bg-[#272030] flex items-center justify-between gap-2"><h3 class="font-mono-code text-sm font-bold text-[#FBF7FD]">นำเข้าไฟล์</h3><div class="flex items-center gap-2"><button id="btn-import-save" class="btn-tactile px-3 py-1 bg-[#D9558A] hover:bg-[#E8689C] text-white rounded text-xs">บันทึก</button><button id="btn-import-close" class="btn-tactile px-3 py-1 bg-[#272030] hover:bg-[#3A3145] text-[#A79BB3] rounded text-xs">ปิด</button></div></header>
+<div class="flex-1 min-h-0 flex flex-col gap-2 p-3 overflow-hidden">
+<input id="file-import-name" type="text" class="w-full bg-[#14111A] border border-[#3A3145] rounded px-2 py-1.5 text-xs text-[#FBF7FD] font-mono-code focus:border-[#F28AB2] focus:outline-none" placeholder="ชื่อไฟล์ e.g. index.html">
+<textarea id="file-import-code" class="flex-1 min-h-0 w-full bg-[#14111A] border border-[#3A3145] rounded p-2 text-xs text-[#E9E2EE] font-mono-code resize-none outline-none focus:border-[#F28AB2]" placeholder="วางโค้ดที่นี่..." spellcheck="false"></textarea>
+<div id="import-status-text" class="text-[11px] text-[#A79BB3] font-mono-code">0 bytes · 0 บรรทัด</div>
+</div>
+</div>
+</div>
+<div id="settings-modal" class="hidden">
+<div style="background:#1D1824;border:1px solid #3A3145;border-radius:12px;max-width:440px;width:100%;padding:20px;color:#E9E2EE;font-family:monospace;font-size:12px;max-height:90vh;overflow-y:auto;">
+<h3 style="color:#FBF7FD;font-size:14px;margin:0 0 12px 0;">ตั้งค่า NINO — LLM Provider</h3>
+<label style="display:block;margin-bottom:8px;"><span style="display:block;margin-bottom:4px;color:#A79BB3;">Provider</span><select id="cfg-provider" style="width:100%;background:#14111A;border:1px solid #3A3145;border-radius:6px;padding:6px;color:#FBF7FD;outline:none;"><option value="gemini">Google Gemini</option><option value="9arm">9arm AI Passport (OpenAI-compatible)</option><option value="tokenme">TokenMe (DeepSeek / Qwen / Gemma)</option></select></label>
+<div id="cfg-gemini-fields">
+<label style="display:block;margin-bottom:8px;"><span style="display:block;margin-bottom:4px;color:#A79BB3;">Gemini API Key</span><input id="cfg-api-key" type="password" style="width:100%;background:#14111A;border:1px solid #3A3145;border-radius:6px;padding:6px;color:#FBF7FD;outline:none;" placeholder="AIza..."></label>
+<button id="cfg-discover" style="width:100%;padding:8px;background:#1F6FEB;color:white;border:none;border-radius:6px;cursor:pointer;margin-bottom:8px;">ค้นหา + ทดสอบโมเดล (สร้าง Pool)</button>
+<div id="model-list-container" style="max-height:180px;overflow-y:auto;background:#14111A;border:1px solid #3A3145;border-radius:6px;padding:6px;margin-bottom:10px;"><div style="color:#666;font-size:11px;">ยังไม่ได้ค้นหา — กดปุ่มด้านบน</div></div>
+<label style="display:block;margin-bottom:8px;"><span style="display:block;margin-bottom:4px;color:#A79BB3;">Model (หลัก)</span><input id="cfg-model" type="text" style="width:100%;background:#14111A;border:1px solid #3A3145;border-radius:6px;padding:6px;color:#FBF7FD;outline:none;" placeholder="gemini-2.0-flash"></label>
+<label style="display:block;margin-bottom:8px;"><span style="display:block;margin-bottom:4px;color:#A79BB3;">Model Pool (fallback, คั่นด้วย comma)</span><textarea id="cfg-model-list" style="width:100%;height:60px;background:#14111A;border:1px solid #3A3145;border-radius:6px;padding:6px;color:#FBF7FD;outline:none;font-family:monospace;resize:vertical;" placeholder="gemini-2.0-flash, gemini-2.5-flash"></textarea></label>
+<label style="display:block;margin-bottom:8px;"><span style="display:block;margin-bottom:4px;color:#A79BB3;">Temperature (Code Mode)</span><input id="cfg-temp" type="number" step="0.1" min="0" max="2" style="width:100%;background:#14111A;border:1px solid #3A3145;border-radius:6px;padding:6px;color:#FBF7FD;outline:none;" placeholder="0.7"></label>
+</div>
+<div id="cfg-tokenme-fields" style="display:none;">
+<label style="display:block;margin-bottom:8px;"><span style="display:block;margin-bottom:4px;color:#A79BB3;">TokenMe API Key</span><input id="cfg-tm-key" type="password" style="width:100%;background:#14111A;border:1px solid #3A3145;border-radius:6px;padding:6px;color:#FBF7FD;outline:none;" placeholder="sk-..."></label>
+<label style="display:block;margin-bottom:8px;"><span style="display:block;margin-bottom:4px;color:#A79BB3;">Model (หลัก — ล้มเหลวจะสลับอีก 2 ตัวอัตโนมัติ)</span><select id="cfg-tm-model" style="width:100%;background:#14111A;border:1px solid #3A3145;border-radius:6px;padding:6px;color:#FBF7FD;outline:none;"><option value="deepseek-ai/deepseek-v4-flash-0731">deepseek-ai/deepseek-v4-flash-0731</option><option value="unsloth/qwen3.8-27b-nvfp4">unsloth/qwen3.8-27b-nvfp4</option><option value="google/gemma-4-31b-it">google/gemma-4-31b-it</option></select></label>
+<label style="display:block;margin-bottom:8px;"><span style="display:block;margin-bottom:4px;color:#A79BB3;">Temperature (TokenMe)</span><input id="cfg-tm-temp" type="number" step="0.1" min="0" max="2" style="width:100%;background:#14111A;border:1px solid #3A3145;border-radius:6px;padding:6px;color:#FBF7FD;outline:none;" placeholder="0.7"></label>
+<button id="cfg-tm-test" style="width:100%;padding:8px;background:#B388F0;color:white;border:none;border-radius:6px;cursor:pointer;margin-bottom:8px;">ทดสอบ TokenMe connection</button>
+<div id="tm-status" style="color:#A79BB3;font-size:11px;padding:4px;">—</div>
+</div>
+<div id="cfg-9arm-fields" style="display:none;">
+<label style="display:block;margin-bottom:8px;"><span style="display:block;margin-bottom:4px;color:#A79BB3;">9arm API Key (sk-...)</span><input id="cfg-9arm-key" type="password" style="width:100%;background:#14111A;border:1px solid #3A3145;border-radius:6px;padding:6px;color:#FBF7FD;outline:none;" placeholder="sk-..."></label>
+<label style="display:block;margin-bottom:8px;"><span style="display:block;margin-bottom:4px;color:#A79BB3;">Base URL</span><input id="cfg-9arm-base" type="text" style="width:100%;background:#14111A;border:1px solid #3A3145;border-radius:6px;padding:6px;color:#FBF7FD;outline:none;" placeholder="https://gateway.9arm.co/v1"></label>
+<label style="display:block;margin-bottom:8px;"><span style="display:block;margin-bottom:4px;color:#A79BB3;">Model</span><input id="cfg-9arm-model" type="text" style="width:100%;background:#14111A;border:1px solid #3A3145;border-radius:6px;padding:6px;color:#FBF7FD;outline:none;" placeholder="qwen3.8-27b-fp8"></label>
+<label style="display:block;margin-bottom:8px;"><span style="display:block;margin-bottom:4px;color:#A79BB3;">Temperature (9arm)</span><input id="cfg-9arm-temp" type="number" step="0.1" min="0" max="2" style="width:100%;background:#14111A;border:1px solid #3A3145;border-radius:6px;padding:6px;color:#FBF7FD;outline:none;" placeholder="0.7"></label>
+<button id="cfg-9arm-test" style="width:100%;padding:8px;background:#B388F0;color:white;border:none;border-radius:6px;cursor:pointer;margin-bottom:8px;">ทดสอบ 9arm connection</button>
+<div id="ninearm-status" style="color:#A79BB3;font-size:11px;padding:4px;">—</div>
+</div>
+<div style="border-top:1px solid #3A3145;margin-top:10px;padding-top:10px;">
+<div style="color:#FBF7FD;margin-bottom:6px;">โรลเพลย์ &amp; รูปภาพ</div>
+<label style="display:block;margin-bottom:8px;"><span style="display:block;margin-bottom:4px;color:#A79BB3;">ความยาวคำตอบ Roleplay (NINO ต่อให้เองถ้าสั้นกว่าเป้า)</span><select id="cfg-rp-length" style="width:100%;background:#14111A;border:1px solid #3A3145;border-radius:6px;padding:6px;color:#FBF7FD;outline:none;"><option value="normal">ปกติ (3-5 ย่อหน้า)</option><option value="long">ยาว (6-9 ย่อหน้า · ~2,000 ตัวอักษร+)</option><option value="xlong">ยาวมาก (10-15 ย่อหน้า · ~4,000+)</option><option value="epic">มหากาพย์ (16-25 ย่อหน้า · ~8,000+)</option></select></label>
+<label style="display:block;margin-bottom:8px;"><span style="display:block;margin-bottom:4px;color:#A79BB3;">โมเดลอ่านรูปยังไง</span><select id="cfg-vision-mode" style="width:100%;background:#14111A;border:1px solid #3A3145;border-radius:6px;padding:6px;color:#FBF7FD;outline:none;"><option value="auto">อัตโนมัติ (Gemini ส่งรูปตรง · โมเดลอื่นใช้ดวงตาช่วย)</option><option value="bridge">ใช้ดวงตาช่วยเสมอ (เหมาะกับ Qwen/โมเดลที่มองรูปไม่ได้)</option><option value="native">ส่งรูปตรงเสมอ (โมเดลต้องรองรับรูป)</option></select></label>
+<label style="display:block;margin-bottom:8px;"><span style="display:block;margin-bottom:4px;color:#A79BB3;">ลบรูปที่ส่งอัตโนมัติ (นับหลัง NINO ตอบเสร็จ)</span><select id="cfg-img-ttl" style="width:100%;background:#14111A;border:1px solid #3A3145;border-radius:6px;padding:6px;color:#FBF7FD;outline:none;"><option value="0">ทันทีหลังตอบเสร็จ</option><option value="5">5 นาที</option><option value="30">30 นาที</option><option value="120">2 ชั่วโมง</option><option value="1440">24 ชั่วโมง</option></select></label>
+<button type="button" id="cfg-trash-empty" style="width:100%;padding:8px;background:#272030;color:#FBF7FD;border:1px solid #3A3145;border-radius:6px;cursor:pointer;margin-bottom:10px;">เทถังขยะรูปภาพตอนนี้</button>
+</div>
+<div style="border-top:1px solid #3A3145;margin-top:10px;padding-top:10px;">
+<label style="display:none;display:block;margin-bottom:8px;"><span style="display:block;margin-bottom:4px;color:#A79BB3;">เวลาเล่นสูงสุดต่อรอบงาน (วินาที) — NINO วางแผนให้จบเอง</span><input id="cfg-time-limit" type="number" step="50" min="300" max="7200" style="width:100%;background:#14111A;border:1px solid #3A3145;border-radius:6px;padding:6px;color:#FBF7FD;outline:none;" placeholder="2000"></label>
+<label style="display:none;display:block;margin-bottom:8px;"><span style="display:block;margin-bottom:4px;color:#A79BB3;">(ไม่ใช้แล้ว)</span><input id="cfg-allow-k" type="number" step="20" min="20" max="5000" style="width:100%;background:#14111A;border:1px solid #3A3145;border-radius:6px;padding:6px;color:#FBF7FD;outline:none;" placeholder="600"></label>
+<button type="button" onclick="window.ninoRevive&&window.ninoRevive.open()" style="width:100%;padding:8px;background:#272030;color:#FBF7FD;border:1px solid #3A3145;border-radius:6px;cursor:pointer;margin-bottom:4px;">ตรวจ/คืนชีพระบบ</button>
+</div>
+<div style="margin-top:10px;display:flex;align-items:center;justify-content:space-between;gap:8px;color:#A79BB3;font-size:11px;"><span id="nino-ver-badge">NINO</span><button id="nino-check-update" type="button" style="padding:4px 10px;background:#272030;color:#E9E2EE;border:1px solid #3A3145;border-radius:6px;cursor:pointer;font-size:11px;">ตรวจอัปเดต</button></div>
+<div style="display:flex;gap:8px;margin-top:12px;"><button id="cfg-save" style="flex:1;padding:8px;background:#D9558A;color:white;border:none;border-radius:6px;cursor:pointer;">บันทึก</button><button id="cfg-close" style="padding:8px 12px;background:#272030;color:#A79BB3;border:1px solid #3A3145;border-radius:6px;cursor:pointer;">ปิด</button></div>
+</div>
+</div>
+<section id="inspector">
+<header style="display:flex;gap:8px;align-items:center;margin-bottom:8px;flex-shrink:0"><strong style="color:#00e5ff">Inspector</strong><span id="nino-inspect-size" style="color:#aaa;flex:1"></span><button id="nino-inspect-copy" style="background:#1a1a2e;color:#b7ff75;border:1px solid #76ff03;padding:6px 10px;border-radius:12px">คัดลอก</button><button id="nino-inspect-close" style="background:#1a1a2e;color:#ff8b8b;border:1px solid #ff5555;padding:6px 10px;border-radius:12px">ปิด</button></header>
+<pre id="nino-inspect-code" style="flex:1;min-height:0;overflow:auto;background:#050510;color:#e0e0e0;padding:10px;border:1px solid #2a2a4a;border-radius:8px;margin:0;white-space:pre-wrap;word-break:break-word"></pre>
+</section>
+<button type="button" onclick="if(confirm('ล้างแคช + Service Worker แล้วรีโหลดแอปทั้งหมดเดี๋ยวนี้นะ?')){if(window.ninoHardRefresh)window.ninoHardRefresh();else location.reload();}" style="margin-top:10px;padding:10px 20px;background:#6c5ce7;color:#fff;border:none;border-radius:10px;cursor:pointer;font-size:14px;width:100%;box-shadow:0 2px 8px rgba(108,92,231,.3)">ล้างแคช + รีโหลดแอป</button>
+<div id="toast"></div>
+<script src="./version.js"></script>
+<script src="./js/obs.js"></script>
+<script src="./lock.js"></script>
+<script src="./self-upgrade.js"></script>
+<script src="./nino-agent.js"></script>
+<script src="./github-agent.js"></script>
+<script src="./code-brain.js"></script>
+<script src="./roleplay-callback.js"></script>
+<script src="./trash.js"></script>
+<script src="./revive.js"></script>
+<script src="./update-notifier.js"></script>
+<script src="./js/boot.js" defer></script>
+<script src="./js/config.js" defer></script>
+<script src="./js/context-manager.js" defer></script>
+<script src="./js/memory.js" defer></script>
+<script src="./js/llm-providers.js" defer></script>
+<script src="./js/code-utils.js" defer></script>
+<script src="./js/characters.js" defer></script>
+<script src="./js/keep-awake.js" defer></script>
+<script src="./js/modes-session.js" defer></script>
+<script src="./js/orchestrator-core.js" defer></script>
+<script src="./js/orchestrator-tools.js" defer></script>
+<script src="./js/continuation.js" defer></script>
+<script src="./js/hud-card.js" defer></script>
+<script src="./js/roleplay.js" defer></script>
+<script src="./js/ui-render.js" defer></script>
+<script src="./js/ui-input.js" defer></script>
+<script src="./js/ui-tools.js" defer></script>
+<script src="./js/image-bridge.js" defer></script>
+<script src="./skill-lib.js" defer></script>
+<script src="./nino-home.js" defer></script>
+<script src="./local-ai/endpoint.js" defer></script>
+<script src="./local-ai/bridge.js" defer></script>
+<script src="./local-ai/key.js" defer></script>
+<script src="./local-ai/ui.js" defer></script>
+<script src="./local-ai/health.js" defer></script>
+<script src="./js/native-bridge.js" defer></script>
+<script src="./js/api-guard.js" defer></script>
+<script src="./js/ota.js" defer></script>
+<script src="./js/term.js" defer></script>
+<script src="./js/music.js" defer></script>
+<script src="./js/threads.js" defer></script>
+<script src="./js/notes.js" defer></script>
+<script src="./js/godview.js" defer></script>
+<script src="./js/nino-sys.js" defer></script>
+<script src="./js/console-ui.js" defer></script>
+<script src="./js/focus-chat.js" defer></script>
+<script src="./js/auto-route.js" defer></script>
+<script src="./js/workshop.js" defer></script>
+<script src="./js/home-check.js" defer></script>
+<script src="./js/research.js" defer></script>
+<script src="./js/learn.js" defer></script>
+<script src="./js/shelf.js" defer></script>
+<script src="./js/web-search.js" defer></script>
+<script src="./js/classroom.js" defer></script>
+<script src="./js/scenes.js" defer></script>
+<script src="./js/code-fast.js" defer></script>
+<script src="./js/delegate.js" defer></script>
+<script src="./js/lib-health.js" defer></script>
+<script src="./js/prompt-cache.js" defer></script>
+<script src="./js/loop-guard.js" defer></script>
+<script src="./js/no-emoji.js" defer></script>
+<script src="./js/amongai-core.js" defer></script>
+<script src="./js/amongai.js" defer></script>
+<script src="./js/outlaw.js" defer></script>
+<script src="./js/nds.js" defer></script>
+<script src="./js/ui-dock.js" defer></script>
+<script src="./js/fonts.js" defer></script>
+<script src="./app.js" defer></script>
+</body>
+</html>
