@@ -1,0 +1,13 @@
+# Packages that build for js/wasm (last known good run: f38b3c). One per line.
+# Add a package here when the probe shows it OK for the first time.
+arm/genarm
+arm/genthumb
+emu/cpugen
+emu/debugger
+emu/fixed
+emu/gfx
+emu/gfx/genmixer
+emu/hw
+emu/jit
+raster3d/fillerconfig
+raster3d/gen

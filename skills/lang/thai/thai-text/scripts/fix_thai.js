@@ -1,0 +1,1 @@
+var p=ctx.args[0],t=ctx.fs.read(p);if(t==null)return 'ไม่พบไฟล์ '+p;var R=[['เป็็น','เป็น'],['ตือ','คือ'],['จรล','จบ']],n=0,o=t;R.forEach(function(r){o=o.split(r[0]).join(r[1])});o=o.replace(/([\u0E31\u0E34-\u0E3A\u0E47-\u0E4E])\1+/g,'$1');if(o!==t){ctx.fs.write(p,o);return 'แก้แล้ว '+p+' (เปลี่ยน '+Math.abs(t.length-o.length)+'+ ตัวอักษร)';}return 'ไม่พบคำผิด';

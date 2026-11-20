@@ -1,0 +1,341 @@
+/* มิ้ม | สไตล์ป็อปอัพ: หน้าต่างสไตล์เรโท ใช้โทนสีเดียวกับแอป NINO (--n-*)
+ * หัวและปุ่มใช้ฟอนต์พิกเซล ตัวอักษรในแชตใช้ฟอนต์เดียวกับแชตหลักเพื่อให้กลมกลืน
+ */
+.mim-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 70;
+  background: rgba(10, 7, 14, 0.72);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px;
+}
+.mim-overlay[hidden] { display: none; }
+
+.mim-win {
+  position: relative;
+  width: min(440px, 100%);
+  height: min(640px, calc(100dvh - 24px));
+  display: flex;
+  flex-direction: column;
+  background: var(--n-card, #1D1824);
+  border: 1px solid var(--n-line, #3A3145);
+  border-radius: 14px;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5), inset 0 -2px 0 var(--n-line, #3A3145);
+  overflow: hidden;
+  color: var(--n-ink, #E9E2EE);
+}
+
+/* เส้นสแกนบางๆ ให้กลิ่นเรโท ไม่รบกวนการอ่าน */
+.mim-win::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: repeating-linear-gradient(to bottom, rgba(255, 255, 255, 0.018) 0 1px, transparent 1px 3px);
+}
+
+.mim-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 10px 12px;
+  background: var(--n-card2, #272030);
+  border-bottom: 1px solid var(--n-line, #3A3145);
+}
+
+.mim-brand { display: flex; flex-direction: column; min-width: 0; }
+
+.mim-title {
+  font-family: 'Pixelify Sans', 'Chakra Petch', 'Noto Sans Thai', system-ui, sans-serif;
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  color: var(--n-accent, #F28AB2);
+  line-height: 1.1;
+  text-shadow: 2px 2px 0 #3A3145;
+}
+
+.mim-sub {
+  font-family: 'Chakra Petch', 'Noto Sans Thai', system-ui, sans-serif;
+  font-size: 10px;
+  color: var(--n-mute, #A79BB3);
+  overflow-wrap: anywhere;
+}
+
+.mim-acts { display: flex; align-items: center; gap: 4px; flex-shrink: 0; }
+
+.mim-btn {
+  font-family: 'Chakra Petch', 'Noto Sans Thai', system-ui, sans-serif;
+  font-size: 11px;
+  padding: 4px 8px;
+  border-radius: 8px;
+  border: 1px solid var(--n-line, #3A3145);
+  background: var(--n-card, #1D1824);
+  color: var(--n-mute, #A79BB3);
+  cursor: pointer;
+  white-space: nowrap;
+  min-height: 30px;
+}
+.mim-btn:hover { color: var(--n-ink, #E9E2EE); border-color: var(--n-accent, #F28AB2); }
+.mim-btn[hidden] { display: none; }
+
+.mim-primary {
+  color: var(--n-bright, #FBF7FD);
+  background: var(--n-accent-soft, rgba(242, 138, 178, 0.14));
+  border-color: var(--n-accent, #F28AB2);
+}
+
+.mim-x {
+  width: 30px;
+  min-height: 30px;
+  border-radius: 8px;
+  border: 1px solid var(--n-line, #3A3145);
+  background: var(--n-card, #1D1824);
+  color: var(--n-mute, #A79BB3);
+  font-size: 18px;
+  line-height: 1;
+  cursor: pointer;
+}
+.mim-x:hover { color: #F26D78; border-color: #F26D78; }
+
+.mim-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 6px 12px;
+  font-family: 'Chakra Petch', 'Noto Sans Thai', system-ui, sans-serif;
+  font-size: 11px;
+  color: var(--n-mute, #A79BB3);
+  border-bottom: 1px solid var(--n-line, #3A3145);
+}
+
+.mim-msgs {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  font-size: 12px;
+  overflow-wrap: anywhere;
+}
+
+.mim-compose {
+  display: flex;
+  align-items: flex-end;
+  gap: 8px;
+  padding: 10px;
+  border-top: 1px solid var(--n-line, #3A3145);
+  background: var(--n-card, #1D1824);
+}
+
+.mim-compose textarea {
+  flex: 1;
+  min-width: 0;
+  resize: none;
+  max-height: 120px;
+  background: var(--n-bg, #14111A);
+  border: 1px solid var(--n-line, #3A3145);
+  border-radius: 8px;
+  padding: 8px 10px;
+  color: var(--n-bright, #FBF7FD);
+  font-size: 13px;
+  font-family: inherit;
+}
+.mim-compose textarea:focus { outline: none; border-color: var(--n-accent, #F28AB2); }
+
+.mim-send {
+  padding: 8px 14px;
+  min-height: 36px;
+  border-radius: 8px;
+  border: none;
+  background: var(--n-accent, #F28AB2);
+  color: #14111A;
+  font-family: 'Pixelify Sans', 'Chakra Petch', 'Noto Sans Thai', system-ui, sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+/* ปุ่มมิ้มในแถบโหมด (Code / Roleplay / มิ้ม) */
+#mode-toggle button.mim {
+  font-family: 'Pixelify Sans', 'Chakra Petch', system-ui, sans-serif;
+  font-size: 11px;
+  letter-spacing: 0.3px;
+}
+#mode-toggle button.mim.active { color: #F2C275; }
+
+/* ฟองข้อความ: สีและรูปทรงเดียวกับแชตหลักของ NINO แต่เขียนเองทั้งหมด */
+.mim-bub {
+  max-width: 85%;
+  border-radius: 12px;
+  padding: 8px 12px;
+  font-size: 12px;
+  line-height: 1.6;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
+}
+.mim-bub-user {
+  align-self: flex-end;
+  background: #1F6FEB;
+  color: #fff;
+}
+.mim-bub-nino {
+  align-self: flex-start;
+  max-width: 94%;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 12px;
+  background: var(--n-card, #1D1824);
+  border: 1px solid var(--n-line, #3A3145);
+  color: var(--n-ink, #E9E2EE);
+}
+.mim-bub-text { white-space: pre-wrap; }
+.mim-bub-meta {
+  font-family: 'Chakra Petch', 'Noto Sans Thai', system-ui, sans-serif;
+  font-size: 10px;
+  color: var(--n-mute, #A79BB3);
+  border-top: 1px solid var(--n-card2, #272030);
+  padding-top: 4px;
+}
+
+.mim-bar-acts { display: flex; align-items: center; gap: 6px; flex-shrink: 0; }
+
+/* ปุ่มนาเดียร์: เปิดอยู่ใช้สีทองให้รู้ว่ากำลังออนไลน์ */
+.mim-nadia.on {
+  color: #F2C275;
+  border-color: #F2C275;
+  background: rgba(242, 194, 117, 0.12);
+}
+
+/* ปุ่มจำคำตอบจากนาเดียร์ อยู่ใต้ฟองคำตอบ */
+.mim-bub-act {
+  align-self: flex-start;
+  font-family: 'Chakra Petch', 'Noto Sans Thai', system-ui, sans-serif;
+  font-size: 11px;
+  padding: 4px 10px;
+  border-radius: 8px;
+  border: 1px solid var(--n-accent, #F28AB2);
+  background: var(--n-accent-soft, rgba(242, 138, 178, 0.14));
+  color: var(--n-bright, #FBF7FD);
+  cursor: pointer;
+  min-height: 28px;
+}
+.mim-bub-act:disabled { opacity: 0.6; cursor: default; border-color: var(--n-line, #3A3145); }
+
+/* ป้ายชื่อหัวฟอง: มิ้มสีชมพู พี่นาเดียร์สีทอง ให้รู้ว่าใครกำลังพูด */
+.mim-chip {
+  align-self: flex-start;
+  font-family: 'Pixelify Sans', 'Chakra Petch', system-ui, sans-serif;
+  font-size: 10px;
+  letter-spacing: 0.3px;
+  padding: 1px 8px;
+  border-radius: 999px;
+  border: 1px solid currentColor;
+}
+.mim-chip-mim { color: var(--n-accent, #F28AB2); }
+.mim-chip-nadia { color: #F2C275; }
+
+.mim-bub-acts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.mim-bub-fix {
+  border-color: var(--n-line, #3A3145);
+  background: var(--n-card2, #272030);
+  color: var(--n-mute, #A79BB3);
+}
+.mim-bub-fix:hover { color: #F26D78; border-color: #F26D78; }
+
+/* แถบสอน: คำถามสีชมพู ตัวคั่น | และคำตอบสีทอง ซ้อนอยู่บนช่องพิมพ์ที่โปร่งใส */
+.mim-teach {
+  padding: 8px 10px;
+  border-top: 1px solid var(--n-line, #3A3145);
+  background: var(--n-card2, #272030);
+}
+.mim-teach[hidden] { display: none; }
+.mim-teach-label {
+  font-family: 'Chakra Petch', 'Noto Sans Thai', system-ui, sans-serif;
+  font-size: 10px;
+  color: var(--n-mute, #A79BB3);
+  margin-bottom: 6px;
+}
+.mim-teach-box { position: relative; }
+.mim-teach-mirror,
+.mim-teach-input {
+  box-sizing: border-box;
+  width: 100%;
+  min-height: 52px;
+  max-height: 120px;
+  margin: 0;
+  padding: 8px 10px;
+  font-family: inherit;
+  font-size: 13px;
+  line-height: 1.6;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  border-radius: 8px;
+  border: 1px solid var(--n-line, #3A3145);
+}
+.mim-teach-mirror {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  background: var(--n-bg, #14111A);
+  color: var(--n-ink, #E9E2EE);
+}
+.mim-teach-input {
+  position: relative;
+  resize: none;
+  display: block;
+  background: transparent;
+  color: transparent;
+  caret-color: var(--n-bright, #FBF7FD);
+}
+.mim-teach-input:focus { outline: none; border-color: var(--n-accent, #F28AB2); }
+.mim-tq { color: var(--n-accent, #F28AB2); }
+.mim-tsep { color: var(--n-mute, #A79BB3); font-weight: 700; }
+.mim-ta { color: #F2C275; }
+
+/* ปุ่มคำถาม/คำตอบ/ปิดสอน อยู่ข้างช่องพิมพ์ */
+.mim-qa {
+  align-self: stretch;
+  min-width: 64px;
+  font-family: 'Pixelify Sans', 'Chakra Petch', system-ui, sans-serif;
+}
+.mim-qa.on {
+  color: #F2C275;
+  border-color: #F2C275;
+  background: rgba(242, 194, 117, 0.12);
+}
+
+/* จอแคบ (โทรศัพท์): เต็มจอ ไม่มีขอบมน และไม่เลื่อนแนวนอน */
+@media (max-width: 480px) {
+  .mim-overlay { padding: 0; }
+  .mim-win { width: 100%; height: 100dvh; border-radius: 0; }
+}
+
+/* คำถามที่มิ้มตอบไม่ได้ (ในช่องสอน) */
+.mim-gaps { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; margin: 4px 0 8px; }
+.mim-gaps[hidden] { display: none; }
+.mim-gaps .mim-teach-label { width: 100%; }
+.mim-gap-chip { max-width: 100%; white-space: normal; text-align: left; }
+
+/* รายการรอยืนยันจากเว็บ (54-webcand): ต้องกดยืนยันเองทุกข้อ */
+.mim-tray { margin: 6px 0; display: flex; flex-direction: column; gap: 6px; }
+.mim-tray[hidden] { display: none; }
+.mim-tray-head { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; justify-content: space-between; }
+.mim-tray-row { border: 1px dashed currentColor; border-radius: 8px; padding: 6px 8px; }
+.mim-tray-q { font-weight: 600; }
+.mim-tray-a { font-size: 14px; }
+.mim-tray-meta { font-size: 12px; opacity: 0.75; word-break: break-all; }

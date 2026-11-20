@@ -1,0 +1,1 @@
+var f=ctx.session.files,k=Object.keys(f),h=k.filter(function(x){return /\.html?$/i.test(x)});ctx.log('ไฟล์',k.length,'html',h.length);k.forEach(function(x){ctx.log(x,f[x].length+' ตัวอักษร')});if(h.length>1)ctx.log('เตือน: html มากกว่า 1 ไฟล์ — รวมให้เหลือไฟล์เดียว');

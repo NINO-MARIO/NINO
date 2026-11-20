@@ -33,3 +33,13 @@ google-services.json
 
 # Android Profiling
 *.hprof
+
+# Web / PWA
+node_modules/
+.env
+.env.*
+.DS_Store
+Thumbs.db
+*.bak
+*.swp
+signing-key-info.txt

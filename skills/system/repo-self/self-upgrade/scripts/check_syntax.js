@@ -1,0 +1,1 @@
+var f=ctx.session.files,bad=0;Object.keys(f).filter(function(x){return /\.js$/.test(x)}).forEach(function(x){try{new Function(f[x])}catch(e){bad++;ctx.log(x,e.message)}});return bad?'พบ '+bad+' ไฟล์ผิด':'js ผ่านทุกไฟล์';

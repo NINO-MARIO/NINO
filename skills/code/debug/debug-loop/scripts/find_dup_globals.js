@@ -1,0 +1,1 @@
+var f=ctx.session.files,seen={},d=[];Object.keys(f).filter(function(x){return /\.js$/.test(x)}).forEach(function(x){var re=/^(?:async\s+)?(?:function\s*\*?\s*|class\s+|const\s+|let\s+|var\s+)([A-Za-z_$][\w$]*)/gm,m;while((m=re.exec(f[x]))){var n=m[1];if(seen[n]&&seen[n]!==x)d.push(n+' : '+seen[n]+' + '+x);else seen[n]=x}});return d.length?d.join('\n'):'ไม่พบชื่อซ้ำข้ามไฟล์';

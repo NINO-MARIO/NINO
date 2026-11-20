@@ -1,0 +1,68 @@
+name: NDS room tests
+
+# Runs the browser tests of the NDS room (games/nds) on Chromium.
+# They use a stub core, so they test the room and player, not the emulator.
+
+on:
+  push:
+    paths:
+      - 'games/nds/**'
+      - 'tools/test/nds-*.test.js'
+      - 'tools/nds-core/**'
+      - '.github/workflows/nds-room-tests.yml'
+  pull_request:
+    paths:
+      - 'games/nds/**'
+      - 'tools/test/nds-*.test.js'
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+
+jobs:
+  room-tests:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Static detective (no Chromium needed)
+        run: |
+          set -euo pipefail
+          python3 tools/nds-core/detective.py --selftest
+          python3 tools/nds-core/gofront/check.py --selftest
+          python3 tools/nds-core/gofront/check.py "$RUNNER_TEMP/gofront.txt" || true
+          cat "$RUNNER_TEMP/gofront.txt" >> "$GITHUB_STEP_SUMMARY"
+          python3 tools/nds-core/probe-report.py --selftest
+          python3 tools/nds-core/detective.py "$RUNNER_TEMP/detective.txt"
+          cat "$RUNNER_TEMP/detective.txt" >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Install Playwright (pinned) and Chromium
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/pw"
+          npm install --prefix "$RUNNER_TEMP/pw" --no-audit --no-fund playwright@1.47.0
+          npx --prefix "$RUNNER_TEMP/pw" playwright install --with-deps chromium
+
+      - name: Run the room tests
+        env:
+          NODE_PATH: ${{ runner.temp }}/pw/node_modules
+        run: |
+          set -uo pipefail
+          SUM="$GITHUB_STEP_SUMMARY"
+          fail=0
+          echo "## NDS room tests" >> "$SUM"
+          for t in flow import optional-firmware freebios core-contract player library playtest; do
+            if node "tools/test/nds-$t.test.js" > "$RUNNER_TEMP/nds-$t.log" 2>&1; then
+              echo "- PASS nds-$t: $(tail -n 1 "$RUNNER_TEMP/nds-$t.log")" >> "$SUM"
+            else
+              echo "- FAIL nds-$t" >> "$SUM"
+              tail -n 40 "$RUNNER_TEMP/nds-$t.log" >> "$SUM"
+              fail=1
+            fi
+          done
+          exit $fail
