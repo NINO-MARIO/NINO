@@ -1,0 +1,11 @@
+อ่านก่อน
+
+โฟลเดอร์ .github/workflows มีไฟล์ workflow ของ NINO (คัดลอกมาจาก android/ci)
+ไฟล์ NINO.zip อยู่ที่หน้าแรกของรีโป
+
+ขั้นตอน
+1. ตั้งค่า secret ชื่อ NINO_SIGN_PASS ที่ Settings → Secrets and variables → Actions (ต้องตั้งก่อนรัน unpack)
+2. แท็บ Actions → "NINO unpack zip" → Run workflow → เลือก main
+   ถ้ายังไม่มีกุญแจในรีโป workflow นี้จะสั่ง "NINO create signing key (run once)" ให้เองและรอจนเสร็จก่อน
+   แล้วค่อยแตกซิป ตรวจด้วย ci-gate และสั่งบิลด์ APK, NDS core และ NDS room tests ให้เอง
+3. ไม่ต้องรัน "NINO create signing key" เอง
