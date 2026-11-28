@@ -37,7 +37,7 @@ function noteModelErr(model, status, errStatus, msg, forceCode) {
     if (!model) return;
     const code = forceCode || classifyErr(status, errStatus, msg);
     MODEL_ERR.set(model, { code, status: Number(status) || 0, errStatus: String(errStatus || ''), msg: String(msg || '').slice(0, 200), at: Date.now() });
-    if (code === 'key') OK_MODELS.clear(); // คีย์ที่ถูกปฏิเสธใช้กับทุกโมเดลไม่ได้ ผลตรวจ OK เดิมจึงไม่น่าเชื่อถืออีก
+    if (code === 'key') { OK_MODELS.clear(); saveModelState(); } // คีย์ที่ถูกปฏิเสธใช้กับทุกโมเดลไม่ได้ ผลตรวจ OK เดิมจึงไม่น่าเชื่อถืออีก
 }
 function diagnoseModels() {
     const cfg = getCfg();
@@ -61,8 +61,27 @@ function failReason() {
     if (!latest) return d.headline;
     return d.headline + ' · ล่าสุด: ' + latest.th + (latest.status ? ' (' + latest.status + ')' : '') + (latest.msg ? ' — ' + latest.msg.slice(0, 90) : '');
 }
-function markModelOk(m) { if (!m) return; OK_MODELS.set(m, Date.now()); BENCHED.delete(m); MODEL_ERR.delete(m); }
-function markModelFailed(m) { if (!m) return; OK_MODELS.delete(m); BENCHED.add(m); if (_activeModel === m) _activeModel = null; }
+const STATE_KEY = 'nino-model-state-v2';
+function loadModelState() {
+    try {
+        const st = JSON.parse(localStorage.getItem(STATE_KEY) || 'null');
+        if (!st || typeof st !== 'object')
+            return;
+        Object.entries(st.ok || {}).forEach(([m, t]) => { if (m) OK_MODELS.set(m, Number(t) || 0); });
+        Object.entries(st.red || {}).forEach(([m, e]) => { if (m && e) { BENCHED.add(m); MODEL_ERR.set(m, e); } });
+    }
+    catch (e) { /* ไม่มีผลค้างที่อ่านได้ เริ่มใหม่ */ }
+}
+function saveModelState() {
+    try {
+        const red = {};
+        BENCHED.forEach(m => { red[m] = MODEL_ERR.get(m) || { code: 'other', status: 0, errStatus: '', msg: '', at: Date.now() }; });
+        localStorage.setItem(STATE_KEY, JSON.stringify({ v: 2, ok: Object.fromEntries(OK_MODELS), red }));
+    }
+    catch (e) { /* เก็บไม่ได้ก็ยังทำงานต่อในหน่วยความจำ */ }
+}
+function markModelOk(m) { if (!m) return; OK_MODELS.set(m, Date.now()); BENCHED.delete(m); MODEL_ERR.delete(m); saveModelState(); }
+function markModelFailed(m) { if (!m) return; OK_MODELS.delete(m); BENCHED.add(m); if (_activeModel === m) _activeModel = null; saveModelState(); }
 const FETCH_TIMEOUT = 45000;
 
 async function _fetchWithTimeout(url, options, timeoutMs) {
@@ -110,52 +129,57 @@ function getModelPool() {
 
 const TEST_TIMEOUT = 9000;
 
+async function _probeModelVersion(apiKey, model, ver) {
+    try {
+        const res = await _fetchWithTimeout(`https://${GEMINI_HOST}/${ver}/models/${model}:generateContent?key=${encodeURIComponent(apiKey)}`, {
+            method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ contents: [{ parts: [{ text: 'hi' }] }], generationConfig: { maxOutputTokens: 1 } })
+        }, TEST_TIMEOUT);
+        if (!res.ok) {
+            const ed = await res.json().catch(() => ({}));
+            const msg = ed.error?.message || '';
+            noteModelErr(model, res.status, ed.error?.status, msg);
+            if (/not found|not supported|is not supported/i.test(msg))
+                return { ok: false, invalid: true };
+            if (res.status === 429 || ed.error?.status === 'RESOURCE_EXHAUSTED')
+                return { ok: false, quota: true };
+            if (MODEL_ERR.get(model)?.code === 'key')
+                return { ok: false, key: true };
+            return { ok: false };
+        }
+        const data = await res.json();
+        if (data.candidates)
+            return { ok: true, version: ver };
+        noteModelErr(model, 0, '', 'ไม่มี candidates ในผลตอบ', 'empty');
+        return { ok: false };
+    }
+    catch (e) {
+        noteModelErr(model, 0, '', e && e.message || String(e));
+        return { ok: false };
+    }
+}
+
+// ทดสอบทีละเวอร์ชัน (ประหยัดโควตา): ลองเวอร์ชันถัดไปเฉพาะเมื่อผิดที่ความไม่รองรับของเวอร์ชันนั้น
+// ถ้าโควตาหมดหรือคีย์ไม่ถูกต้อง ไม่ต้องลองต่อ เพราะจะได้ผลเดิม
 async function testModel(apiKey, model) {
     if (OK_MODELS.has(model))
         return { ok: true, cached: true };
-    const tries = GEMINI_VERSIONS.map(async (ver) => {
-        try {
-            const res = await _fetchWithTimeout(`https://${GEMINI_HOST}/${ver}/models/${model}:generateContent?key=${encodeURIComponent(apiKey)}`, {
-                method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ contents: [{ parts: [{ text: 'hi' }] }], generationConfig: { maxOutputTokens: 1 } })
-            }, TEST_TIMEOUT);
-            if (!res.ok) {
-                const ed = await res.json().catch(() => ({}));
-                const msg = ed.error?.message || '';
-                noteModelErr(model, res.status, ed.error?.status, msg);
-                if (/not found|not supported|is not supported/i.test(msg))
-                    return { ok: false, invalid: true };
-                if (res.status === 429 || ed.error?.status === 'RESOURCE_EXHAUSTED')
-                    return { ok: false, quota: true };
-                return { ok: false };
-            }
-            const data = await res.json();
-            if (data.candidates)
-                return { ok: true, version: ver };
-            noteModelErr(model, 0, '', 'ไม่มี candidates ในผลตอบ', 'empty');
-            return { ok: false };
+    let last = { ok: false };
+    for (const ver of GEMINI_VERSIONS) {
+        last = await _probeModelVersion(apiKey, model, ver);
+        if (last.ok) {
+            markModelOk(model);
+            return last;
         }
-        catch (e) {
-            noteModelErr(model, 0, '', e && e.message || String(e));
-            return { ok: false };
-        }
-    });
-    const settled = await Promise.all(tries);
-    const hit = settled.find(r => r.ok);
-    if (hit) {
-        markModelOk(model);
-        return hit;
+        if (last.quota || last.key)
+            break;
     }
-    const inv = settled.find(r => r.invalid);
-    if (inv) {
+    if (last.invalid || last.quota)
         markModelFailed(model);
-        return inv;
+    if (last.key) {
+        OK_MODELS.clear();
+        saveModelState();
     }
-    const q = settled.find(r => r.quota);
-    if (q) {
-        markModelFailed(model);
-        return q;
-    }
-    return { ok: false };
+    return last.invalid || last.quota || last.key ? last : { ok: false };
 }
 
 async function testNinearm(cfg) {
@@ -404,36 +428,35 @@ async function healthCheck() {
     return false;
 }
 
-async function ensureModelPool() {
-    const cfg = getCfg();
-    if (isCompat(cfg.provider))
-        return;
-    if (!cfg.apiKey)
-        return;
-    if ((cfg.modelList || []).length >= 2)
-        return;
-    const verTries = GEMINI_VERSIONS.map(ver => _fetchWithTimeout(`https://${GEMINI_HOST}/${ver}/models?key=${encodeURIComponent(cfg.apiKey)}`, {}, TEST_TIMEOUT).then(res => res.ok ? res.json() : null).catch(() => null));
+let _bgSearchKey = null;
+async function listGeminiModels(apiKey) {
+    const verTries = GEMINI_VERSIONS.map(ver => _fetchWithTimeout(`https://${GEMINI_HOST}/${ver}/models?key=${encodeURIComponent(apiKey)}`, {}, TEST_TIMEOUT).then(res => res.ok ? res.json() : null).catch(() => null));
     const verResults = await Promise.all(verTries);
-    let discovered = [];
     for (const data of verResults) {
         if (data && data.models) {
-            discovered = data.models.filter(m => m.name.includes('gemini') && m.supportedGenerationMethods?.includes('generateContent')).map(m => m.name.replace('models/', ''));
+            const found = data.models.filter(m => m.name.includes('gemini') && m.supportedGenerationMethods?.includes('generateContent')).map(m => m.name.replace('models/', ''));
+            if (found.length)
+                return found;
             break;
         }
     }
-    if (!discovered.length)
-        discovered = GEMINI_FALLBACK.slice();
-    const tested = await mapLimit(discovered, 8, async (model) => {
-        const test = await testModel(cfg.apiKey, model);
-        if (test.ok)
-            return model;
-        return null;
-    });
-    const valid = tested.filter(Boolean).slice(0, 3);
-    if (valid.length) {
-        cfg.modelList = [...new Set([...(cfg.modelList || []), ...valid])];
-        setCfg(cfg);
-    }
+    return GEMINI_FALLBACK.slice();
+}
+// งานอัตโนมัติพื้นหลัง: รอบเดียวต่อคีย์ต่อการเปิดแอป
+// 1) ลองใหม่เฉพาะโมเดลที่โควตาหมด (เท่านั้นที่กลับมาได้เอง) 2) ทดสอบเฉพาะโมเดลที่ยังไม่รู้ผล
+// โมเดลที่ผ่านแล้วไม่ถูกเรียกซ้ำ และไม่มีการเขียนทับรายการที่บันทึกไว้
+async function ensureModelPool() {
+    const cfg = getCfg();
+    if (isCompat(cfg.provider) || !cfg.apiKey)
+        return;
+    if (_bgSearchKey === cfg.apiKey)
+        return;
+    _bgSearchKey = cfg.apiKey;
+    const quotaRetry = [...BENCHED].filter(m => MODEL_ERR.get(m)?.code === 'quota');
+    const listed = await listGeminiModels(cfg.apiKey);
+    const unknown = listed.filter(m => !OK_MODELS.has(m) && !BENCHED.has(m));
+    const toTest = [...new Set([...quotaRetry, ...unknown])];
+    await mapLimit(toTest, 6, async (model) => testModel(cfg.apiKey, model));
 }
 
 function cleanResponse(raw) {
@@ -825,6 +848,7 @@ function updateModelBadge(model) {
     }
 }
 
+loadModelState();
 window.ninoDiagnose = () => diagnoseModels();
 window.ninoFailReason = () => failReason();
 window.ninoModelStatus = () => _lastStatusText;
