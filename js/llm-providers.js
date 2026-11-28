@@ -102,6 +102,7 @@ function getModelPool() {
     add(cfg.preferredModel);
     add(_activeModel);
     add(cfg.model);
+    [...OK_MODELS.keys()].forEach(add); // ทุกโมเดลที่ผ่านการค้นหาในรอบนี้ใช้ได้ทันที ไม่ต้องรอให้อยู่ในรายการที่บันทึก
     (cfg.modelList || []).forEach(add);
     GEMINI_FALLBACK.forEach(add);
     return pool;
@@ -704,8 +705,7 @@ async function discoverModelsUI(apiKey) {
         setStatus('err', failReason());
     let selected = '';
     if (results.length) {
-        selected = cfg.model && results.includes(cfg.model) ? cfg.model : results[0];
-        document.getElementById('cfg-model').value = selected;
+        selected = cfg.model;
         document.getElementById('cfg-model-list').value = results.join(', ');
         updateModelSelectionUI(container, selected);
     }
