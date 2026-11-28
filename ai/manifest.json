@@ -311,8 +311,8 @@
   },
   {
    "path": "js/llm-providers.js",
-   "bytes": 37819,
-   "sha": "6fb0bb0df302c236"
+   "bytes": 40649,
+   "sha": "ac29a361c67b5ed0"
   },
   {
    "path": "js/llm-roster-ui.js",

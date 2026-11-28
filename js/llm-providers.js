@@ -655,17 +655,20 @@ async function discoverModelsUI(apiKey) {
         if (container)
             container.innerHTML = '<div class="model-item failed">ไม่พบโมเดล — ใช้ fallback</div>';
     }
-    else if (container)
+    if (container)
         container.innerHTML = '';
+    const board = makeModelBoard(container, apiKey);
     const itemMap = new Map();
-    if (container) {
-        for (const model of discovered) {
-            const item = document.createElement('div');
-            item.className = 'model-item pending';
-            item.textContent = 'ทดสอบ ' + model;
-            container.appendChild(item);
-            itemMap.set(model, item);
-        }
+    _modelItemEls = [];
+    for (const model of discovered) {
+        const item = document.createElement('div');
+        item.className = 'model-item pending';
+        item.textContent = 'ทดสอบ ' + model;
+        item._model = model;
+        item._state = 'pending';
+        board.green.appendChild(item);
+        itemMap.set(model, item);
+        _modelItemEls.push(item);
     }
     const cfg = getCfg();
     const tested = await mapLimit(discovered, 6, async (model) => {
@@ -674,24 +677,13 @@ async function discoverModelsUI(apiKey) {
         const ms = Math.round(performance.now() - t0);
         const item = itemMap.get(model);
         if (result.ok) {
-            if (item) {
-                item.className = 'model-item active';
-                item.textContent = '[OK] ' + model + ' · ' + ms + 'ms';
-                item.onclick = () => {
-                    document.getElementById('cfg-model').value = model;
-                    updateModelSelectionUI(container, model);
-                };
-            }
+            if (item)
+                showModelOk(item, model, ms, board);
             return model;
         }
-        else {
-            if (item) {
-                item.className = 'model-item failed';
-                const e = MODEL_ERR.get(model);
-                item.textContent = '[FAIL] ' + model + ' · ' + ms + 'ms · ' + (e ? ERR_TH[e.code] + (e.status ? ' (' + e.status + ')' : '') : 'ไม่ทราบสาเหตุ');
-            }
-            return null;
-        }
+        if (item)
+            showModelFail(item, model, ms, board, apiKey);
+        return null;
     });
     const results = tested.filter(Boolean);
     const diag = diagnoseModels();
@@ -703,27 +695,102 @@ async function discoverModelsUI(apiKey) {
     }
     if (!results.length)
         setStatus('err', failReason());
-    let selected = '';
     if (results.length) {
-        selected = cfg.model;
         document.getElementById('cfg-model-list').value = results.join(', ');
-        updateModelSelectionUI(container, selected);
+        updateModelSelectionUI(container, cfg.model);
     }
     return results;
+}
+
+// สองคอลัมน์: ซ้ายเขียว = ใช้ได้, ขวาแดง = ใช้ไม่ได้/พัก (มีปุ่มทดสอบอีกครั้ง)
+let _modelItemEls = [];
+function makeModelBoard(container, apiKey) {
+    const board = { container, green: null, red: null, apiKey };
+    const wrap = document.createElement('div');
+    wrap.style.cssText = 'display:grid;grid-template-columns:1fr 1fr;gap:8px;align-items:start;';
+    const green = document.createElement('div');
+    const red = document.createElement('div');
+    const gh = document.createElement('div');
+    gh.className = 'model-item';
+    gh.textContent = 'เขียว · ใช้ได้';
+    gh.style.cssText = 'color:#00ff88;font-weight:bold;';
+    green.appendChild(gh);
+    const rh = document.createElement('div');
+    rh.className = 'model-item';
+    rh.textContent = 'แดง · ใช้ไม่ได้';
+    rh.style.cssText = 'color:#ff5577;font-weight:bold;';
+    const rall = document.createElement('button');
+    rall.textContent = 'ทดสอบแดงทั้งหมด';
+    rall.style.cssText = 'display:block;margin:4px 0;font-size:11px;';
+    red.appendChild(rh);
+    red.appendChild(rall);
+    wrap.appendChild(green);
+    wrap.appendChild(red);
+    if (container)
+        container.appendChild(wrap);
+    board.green = green;
+    board.red = red;
+    rall.onclick = async () => {
+        const reds = _modelItemEls.filter(it => it._state === 'fail');
+        await mapLimit(reds, 6, async (it) => retestModelItem(it, board));
+    };
+    return board;
+}
+function showModelOk(item, model, ms, board) {
+    item._state = 'ok';
+    item.className = 'model-item active';
+    item.textContent = '[OK] ' + model + ' · ' + ms + 'ms';
+    item.style.cssText = 'color:#00ff88;';
+    item.onclick = () => {
+        document.getElementById('cfg-model').value = model;
+        updateModelSelectionUI(board.container, model);
+    };
+    board.green.appendChild(item);
+}
+function showModelFail(item, model, ms, board, apiKey) {
+    item._state = 'fail';
+    item.className = 'model-item failed';
+    item.onclick = null;
+    const e = MODEL_ERR.get(model);
+    item.textContent = '[FAIL] ' + model + ' · ' + ms + 'ms';
+    item.style.cssText = 'color:#ff5577;';
+    const why = document.createElement('div');
+    why.textContent = e ? ERR_TH[e.code] + (e.status ? ' (' + e.status + ')' : '') : 'ไม่ทราบสาเหตุ';
+    why.style.cssText = 'font-size:11px;opacity:.85;';
+    item.appendChild(why);
+    const rb = document.createElement('button');
+    rb.textContent = 'ทดสอบอีกครั้ง';
+    rb.style.cssText = 'font-size:11px;margin-top:2px;';
+    rb.onclick = (ev) => { if (ev && ev.stopPropagation) ev.stopPropagation(); return retestModelItem(item, board); };
+    item.appendChild(rb);
+    board.red.appendChild(item);
+}
+async function retestModelItem(item, board) {
+    const model = item._model;
+    item._state = 'pending';
+    item.className = 'model-item pending';
+    item.textContent = 'ทดสอบอีกครั้ง ' + model + ' ...';
+    item.style.cssText = '';
+    const t0 = performance.now();
+    const r = await testModel(board.apiKey, model);
+    const ms = Math.round(performance.now() - t0);
+    if (r.ok)
+        showModelOk(item, model, ms, board);
+    else
+        showModelFail(item, model, ms, board, board.apiKey);
+    return r.ok;
 }
 
 function updateModelSelectionUI(container, selected) {
     if (!container)
         return;
-    Array.from(container.children).forEach(el => {
-        const name = el.textContent.replace(/^\[(OK|FAIL)\]\s*/, '');
-        if (name === selected) {
+    _modelItemEls.forEach(el => {
+        if (el._model === selected) {
             el.classList.add('active');
-            el.style.border = '1px solid #00ff88';
+            el.style.outline = '1px solid #00ff88';
         }
         else {
-            el.classList.remove('active');
-            el.style.border = '1px solid transparent';
+            el.style.outline = 'none';
         }
     });
 }
