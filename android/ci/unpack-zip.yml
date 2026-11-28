@@ -1,0 +1,98 @@
+name: NINO unpack zip
+
+on:
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+  actions: write
+
+jobs:
+  unpack:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Unpack the newest zip at the repo root
+        env:
+          GH_TOKEN: ${{ github.token }}
+          SIGN_PASS: ${{ secrets.NINO_SIGN_PASS }}
+        run: |
+          # ตรวจก่อนแตะอะไรทั้งนั้น: ถ้ายังไม่มีกุญแจและยังไม่ได้ตั้ง secret ให้หยุดตรงนี้ ซิปยังอยู่ที่หน้าแรก ไม่มีการคอมมิต
+          if [ ! -f android/signing/nino.jks.enc ]; then
+            if [ -z "$SIGN_PASS" ]; then
+              echo "::error::ยังไม่ได้ตั้ง secret ชื่อ NINO_SIGN_PASS (ยังไม่ได้แตกซิปและยังไม่ได้แก้อะไรในรีโป) ตั้ง secret ที่ Settings → Secrets and variables → Actions แล้วกด Run ใหม่ ซิปยังอยู่ที่หน้าแรก"
+              exit 1
+            fi
+            if [ "${#SIGN_PASS}" -lt 16 ]; then
+              echo "::error::รหัส NINO_SIGN_PASS สั้นเกินไป ต้องยาว 16 ตัวอักษรขึ้นไป (ยังไม่ได้แก้อะไรในรีโป) แก้ค่า secret แล้วกด Run ใหม่"
+              exit 1
+            fi
+          fi
+          ZIP=$(ls -t ./*.zip 2>/dev/null | head -n 1)
+          if [ -z "$ZIP" ]; then echo "::error::ไม่พบไฟล์ .zip ที่หน้าแรกของรีโป (อัปโหลดไฟล์ zip ก่อน)"; exit 1; fi
+          echo "ใช้ไฟล์: $ZIP"
+          echo "sha256: $(sha256sum "$ZIP" | cut -d" " -f1)"
+          rm -rf "$RUNNER_TEMP/x" && mkdir -p "$RUNNER_TEMP/x"
+          unzip -q "$ZIP" -d "$RUNNER_TEMP/x" || { echo "::error::เปิดซิปไม่ได้ อาจเสียหายหรือไม่ใช่ zip"; exit 1; }
+          SRC="$RUNNER_TEMP/x"
+          COUNT=$(find "$SRC" -mindepth 1 -maxdepth 1 | wc -l)
+          if [ "$COUNT" -eq 1 ] && [ -d "$(find "$SRC" -mindepth 1 -maxdepth 1)" ]; then SRC=$(find "$SRC" -mindepth 1 -maxdepth 1); fi
+          rsync -a --exclude '.github' --exclude '.git' --exclude '*.zip' "$SRC"/ ./
+          # เอาซิปออกจากต้นไม้งานก่อนตรวจ ไม่งั้นตัวซิปจะถูกนับเป็นไฟล์ที่ไม่มีบทบาทและทำให้ NOW.md ไม่ตรง
+          mv "$ZIP" "$RUNNER_TEMP/input.zip"
+          # ประตูตรวจก่อนคอมมิต: ใช้สคริปต์เดียวกับที่รันในเครื่องได้ (tools/ci-gate.sh)
+          # ซิปที่ไม่มีสคริปต์นี้คือซิปรุ่นเก่า ไม่ commit เพื่อไม่ให้รีโปถอยหลัง
+          if [ ! -f tools/ci-gate.sh ]; then echo "::error::ซิปนี้ไม่มี tools/ci-gate.sh (ซิปรุ่นเก่า) ยังไม่ commit"; exit 1; fi
+          bash tools/ci-gate.sh || { mv "$RUNNER_TEMP/input.zip" "./$(basename "$ZIP")"; echo "::error::ประตูตรวจไม่ผ่าน ยังไม่ commit ซิปยังอยู่ที่หน้าแรกให้แก้ได้ (ดูรายการที่ไม่ผ่านในสรุปของงาน)"; exit 1; }
+          git rm -q -f --ignore-unmatch "$ZIP" || true
+          rm -f "$ZIP"
+          if [ -d "$SRC/.github/workflows" ]; then
+            if ! diff -rq "$SRC/.github/workflows" .github/workflows > "$RUNNER_TEMP/wf.diff" 2>&1; then
+              { echo "## ไฟล์ workflow ใน zip ต่างจากที่อยู่ในรีโป"; echo "GitHub ไม่ให้ระบบอัตโนมัติแก้ไฟล์ใน .github/workflows ต้องอัปโหลดเองจากโฟลเดอร์ android/ci ของ zip"; echo '```'; cat "$RUNNER_TEMP/wf.diff"; echo '```'; } >> "$GITHUB_STEP_SUMMARY"
+            fi
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -m "Update NINO from zip" || echo "ไม่มีอะไรเปลี่ยน"
+          git push origin HEAD
+
+          # กุญแจลงนาม: ถ้ายังไม่มีในรีโป สั่ง NINO create signing key ให้เองก่อน แล้วรอจนเสร็จ ค่อยบิลด์ APK
+          # ไม่งั้น APK จะถูกลงนามด้วยกุญแจชั่วคราว ติดตั้งทับแอปเดิมไม่ได้
+          KEY_OK=1
+          if [ ! -f android/signing/nino.jks.enc ]; then
+            echo "ยังไม่มีกุญแจในรีโป สั่ง NINO create signing key ให้เองก่อน"
+            BEFORE=$(gh run list --workflow android-keystore.yml --limit 1 --json databaseId --jq '.[0].databaseId // 0') || BEFORE=0
+            if ! gh workflow run android-keystore.yml; then
+              echo "::error::สั่ง NINO create signing key ไม่ได้"
+              KEY_OK=0
+            fi
+            RID=0
+            if [ "$KEY_OK" = 1 ]; then
+              for i in $(seq 1 30); do
+                sleep 4
+                RID=$(gh run list --workflow android-keystore.yml --limit 1 --json databaseId --jq '.[0].databaseId // 0') || RID=0
+                if [ "$RID" != 0 ] && [ "$RID" != "$BEFORE" ]; then break; fi
+                RID=0
+              done
+              if [ "$RID" = 0 ]; then
+                echo "::error::หางาน NINO create signing key ที่เพิ่งสั่งไม่เจอ ลองรัน NINO unpack zip ใหม่"
+                KEY_OK=0
+              elif ! gh run watch "$RID" --exit-status; then
+                KEY_OK=0
+              fi
+            fi
+            if [ "$KEY_OK" = 0 ]; then
+              echo "::error::สร้างกุญแจไม่สำเร็จ (ดูงาน NINO create signing key) มักเป็นเพราะยังไม่ได้ตั้ง secret ชื่อ NINO_SIGN_PASS"
+            fi
+          fi
+
+          if [ "$KEY_OK" = 1 ]; then
+            gh workflow run "NINO Android APK" || echo "สั่งบิลด์เองที่แท็บ Actions ได้"
+          else
+            { echo "## ยังไม่สั่งบิลด์ APK"; echo "ยังไม่มีกุญแจลงนาม ตั้ง secret ชื่อ NINO_SIGN_PASS แล้วรัน NINO unpack zip อีกครั้ง"; } >> "$GITHUB_STEP_SUMMARY"
+          fi
+          # NDS: probe และเทสต์ห้อง รันพร้อมกันทุกครั้งที่ unpack (GITHUB_TOKEN สั่ง workflow_dispatch ได้)
+          gh workflow run "NDS core (wasm)" || echo "สั่ง NDS core (wasm) เองที่แท็บ Actions ได้"
+          gh workflow run "NDS room tests" || echo "สั่ง NDS room tests เองที่แท็บ Actions ได้"

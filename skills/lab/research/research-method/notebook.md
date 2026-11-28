@@ -1,0 +1,1 @@
+# สมุดจดของ research-method

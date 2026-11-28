@@ -1,0 +1,11 @@
+NOTICE: ห้องสมุด NDS (games/nds) และแกน tools/nds-core
+
+1. โค้ดเอนจินจำลอง: คัดจาก ndsemu (github.com/rasky/ndsemu) สัญญาอนุญาต MIT ประกาศลิขสิทธิ์ของ Giovanni Bajo อยู่ที่ tools/nds-core/LICENSE.MIT ต้องคงไว้ทุกครั้งที่คัดลอกหรือแจกจ่าย
+
+2. ฟอนต์: Fusion Pixel ใช้ตามสัญญาอนุญาต SIL OFL ดูไฟล์ fonts/OFL-fusion-pixel.txt
+
+3. BIOS และ firmware: แอปและรีโปไม่มี BIOS หรือ firmware ของ Nintendo ผู้ใช้ต้องใส่ไฟล์จากเครื่อง DS ของตัวเอง ไฟล์จะเก็บใน IndexedDB ของเครื่องนั้นเท่านั้น โฟลเดอร์ games/nds/bios-free/ มี FreeBIOS ที่เขียนขึ้นใหม่ (Copyright (c) 2013 Gilead Kutnick สัญญาอนุญาต BSD-2 ดู LICENSE.txt ในโฟลเดอร์นั้น) ไม่ใช่ BIOS ของ Nintendo
+
+4. ตลับเกม (.nds): ไม่มีตลับเกมใดในแอปหรือในรีโป ผู้ใช้ต้องมีสิทธิ์ใช้ตลับเกมที่นำเข้า
+
+5. สถานะ: แกนจริง (webcore) ต่อเอนจินจำลองแล้ว ไฟล์ core.wasm และ wasm_exec.js สร้างด้วย tools/nds-core/build-webcore.sh และไม่เข้ารีโป ถ้ายังไม่มีแกนที่สร้างไว้ หน้าเล่นจะไม่เปิด

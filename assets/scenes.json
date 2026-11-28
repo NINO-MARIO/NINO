@@ -1,0 +1,41 @@
+{
+ "schema": 1,
+ "packs": [
+  {
+   "id": "classroom",
+   "title": "ฉาก: ห้องเรียน",
+   "desc": "วิดีโอนิโนะอ่านและเขียนสมุด (ติดมากับแอป)",
+   "lobby": false,
+   "scene": "classroom",
+   "bundled": true,
+   "version": "26b056986e",
+   "size": 853853,
+   "files": [
+    {
+     "path": "nino-read.mp4",
+     "size": 390553,
+     "sha256": "12df3354432e233f14ccd1a38e324a7087e86dc8c9dbe25445d78f08a5cbb0a7",
+     "mime": "video/mp4"
+    },
+    {
+     "path": "nino-read.webp",
+     "size": 36680,
+     "sha256": "e0b5c2c28b7e855863660b0c609d69d807431f5d0ea7ff44d7eed817831bd536",
+     "mime": "image/webp"
+    },
+    {
+     "path": "nino-write.mp4",
+     "size": 388626,
+     "sha256": "aab6cfe5919a663dd2fe30a5d98bffc05d496fc9b01493c6ab98f4243daf5f2d",
+     "mime": "video/mp4"
+    },
+    {
+     "path": "nino-write.webp",
+     "size": 37994,
+     "sha256": "b5fac084d5218e3406b3d5ff663e144f542e44d5bdd7b2fa592f657317282f39",
+     "mime": "image/webp"
+    }
+   ]
+  }
+ ]
+}

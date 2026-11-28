@@ -1,0 +1,8 @@
+[{
+      "relation": ["delegate_permission/common.handle_all_urls"],
+      "target": {
+        "namespace": "android_app",
+        "package_name": "io.github.nino_mario.twa",
+        "sha256_cert_fingerprints": ["2A:1F:BA:F7:C0:E2:73:37:A4:57:AA:08:64:B2:9A:AD:0F:1B:BA:AF:D8:F2:AE:AC:03:A9:CA:06:9C:DC:B5:90"]
+      }
+    }]

@@ -1,0 +1,29 @@
+{
+  "tools/test/chat-memory.test.js": {
+    "sha": "b915cabeb41addc9",
+    "reasons": [
+      {
+        "at": "2026-11-24T07:26:01.180Z",
+        "reason": "สร้างล็อกครั้งแรก"
+      }
+    ]
+  },
+  "tools/test/llm-roster.test.js": {
+    "sha": "8172efc5197af22c",
+    "reasons": [
+      {
+        "at": "2026-11-24T07:26:01.189Z",
+        "reason": "สร้างล็อกครั้งแรก"
+      }
+    ]
+  },
+  "tools/test/cutout-core.test.js": {
+    "sha": "f6d887f0988054be",
+    "reasons": [
+      {
+        "at": "2026-11-24T07:26:01.190Z",
+        "reason": "สร้างล็อกครั้งแรก"
+      }
+    ]
+  }
+}

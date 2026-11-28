@@ -33,3 +33,20 @@ google-services.json
 
 # Android Profiling
 *.hprof
+
+# Web / PWA
+node_modules/
+.env
+.env.*
+.DS_Store
+Thumbs.db
+*.bak
+*.swp
+signing-key-info.txt
+
+# NDS web core build outputs (สร้างด้วย tools/nds-core/build-webcore.sh ไม่เข้ารีโป)
+games/nds/core.wasm
+games/nds/wasm_exec.js
+
+# Python bytecode (สร้างโดยสคริปต์ตรวจ NDS)
+__pycache__/

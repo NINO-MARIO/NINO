@@ -1,0 +1,143 @@
+name: NDS core (wasm)
+
+# Builds the wasm entry of the NDS core and uploads it as an artifact.
+# Scope: tools/nds-core/wasm only (the test entry). The engine in the repo root still
+# depends on SDL2 (cgo) and cannot be built for wasm yet, so this does NOT make games run.
+
+on:
+  push:
+    paths:
+      - 'tools/nds-core/**'
+      - 'games/nds/**'
+      - '.github/workflows/nds-wasm.yml'
+  pull_request:
+    paths:
+      - 'tools/nds-core/**'
+      - 'games/nds/**'
+  workflow_dispatch: {}
+  # เรียกใช้จาก workflow หลักได้ (uses: ./.github/workflows/nds-wasm.yml)
+  workflow_call: {}
+
+permissions:
+  contents: read
+
+jobs:
+  build-wasm:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-go@v5
+        with:
+          go-version: '1.21'
+          cache: false
+
+      - name: Build the wasm entry (its own module, no engine dependencies)
+        working-directory: tools/nds-core/wasm
+        run: |
+          set -euo pipefail
+          GOOS=js GOARCH=wasm go build -trimpath -ldflags="-s -w" -o "$RUNNER_TEMP/core.wasm" .
+          # wasm_exec.js อยู่ที่ lib/wasm (Go 1.24+) หรือ misc/wasm (Go 1.21-1.23): ลองทั้งสองที่
+          WE=""
+          for p in "$(go env GOROOT)/lib/wasm/wasm_exec.js" "$(go env GOROOT)/misc/wasm/wasm_exec.js"; do
+            if [ -f "$p" ]; then WE="$p"; break; fi
+          done
+          if [ -z "$WE" ]; then echo "::error::ไม่พบ wasm_exec.js ใน GOROOT"; exit 1; fi
+          cp "$WE" "$RUNNER_TEMP/wasm_exec.js"
+
+      - name: Check the artifact is a wasm module
+        run: |
+          set -euo pipefail
+          test -s "$RUNNER_TEMP/core.wasm" || { echo "::error::core.wasm ว่างเปล่า"; exit 1; }
+          MAGIC=$(head -c 4 "$RUNNER_TEMP/core.wasm" | od -An -tx1 | tr -d ' \n')
+          if [ "$MAGIC" != "0061736d" ]; then echo "::error::core.wasm ไม่ใช่ไฟล์ wasm (magic=$MAGIC)"; exit 1; fi
+          ls -l "$RUNNER_TEMP/core.wasm" "$RUNNER_TEMP/wasm_exec.js"
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: nds-core-wasm
+          path: |
+            ${{ runner.temp }}/core.wasm
+            ${{ runner.temp }}/wasm_exec.js
+          if-no-files-found: error
+          retention-days: 14
+
+  # Report only (never fails the workflow): compiles every engine package for wasm
+  # and records which ones build and the exact compiler errors of the ones that do not.
+  # This list drives the next decoupling steps (SDL2/cgo, termui, JIT, asm).
+  probe-engine:
+    runs-on: ubuntu-latest
+    continue-on-error: true
+    env:
+      GOFLAGS: -mod=mod
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-go@v5
+        with:
+          go-version: '1.21'
+          cache: false
+
+      - name: Compile each engine package for wasm (report only)
+        working-directory: tools/nds-core
+        run: |
+          LOG="$RUNNER_TEMP/probe.log"
+          SUM="$RUNNER_TEMP/probe-summary.txt"
+          : > "$LOG"; : > "$SUM"
+          go mod download >>"$LOG" 2>&1 || echo "(go mod download มีข้อผิดพลาด ดู log)" >>"$LOG"
+          # go.mod ถูกแก้ให้ใช้ timestamp ที่ Go รายงานแล้ว (ดู tools/nds-core/go.mod)
+          go mod tidy >>"$LOG" 2>&1 || echo "(go mod tidy มีข้อผิดพลาด)" >>"$LOG"
+          # logrus.v0 ไม่มี IsTerminal บน js: prepare-js-deps.sh คัดลอกและแก้ไขเฉพาะสำเนาใน CI
+          bash prepare-js-deps.sh "$RUNNER_TEMP/logrus-js" >>"$LOG" 2>&1 || echo "(prepare-js-deps.sh มีข้อผิดพลาด)" >>"$LOG"
+          OK=0; BAD=0
+          PKGS=$(go list ./... 2>>"$LOG") || PKGS=""
+          if [ -z "$PKGS" ]; then
+            echo "ERROR go list ล้มเหลว ไม่มีแพ็กเกจให้ probe (ดู probe.log)" >>"$SUM"
+          fi
+          for p in $PKGS; do
+            if GOOS=js GOARCH=wasm go build -o /dev/null "$p" >>"$LOG" 2>&1; then
+              echo "OK   $p" >>"$SUM"; OK=$((OK+1))
+            else
+              echo "FAIL $p" >>"$SUM"; BAD=$((BAD+1))
+            fi
+          done
+          echo "wasm: $OK ok, $BAD fail" >>"$SUM"
+          REP="$RUNNER_TEMP/probe-report.txt"
+          python3 probe-report.py "$SUM" probe-baseline.txt "$REP" >>"$LOG" 2>&1 || echo "(probe-report.py มีข้อผิดพลาด ดู log)" >>"$LOG"
+          cat "$REP" 2>/dev/null >> "$SUM"
+          { echo "## NDS engine wasm probe"; echo '```'; cat "$SUM"; echo '```'; } >> "$GITHUB_STEP_SUMMARY"
+          cat "$SUM"
+
+      - name: Detective report (static, no compiler; report only)
+        working-directory: tools/nds-core
+        run: |
+          python3 detective.py "$RUNNER_TEMP/detective.txt" || true
+          python3 gofront/check.py "$RUNNER_TEMP/gofront.txt" || true
+          cat "$RUNNER_TEMP/gofront.txt" >> "$GITHUB_STEP_SUMMARY"
+          cat "$RUNNER_TEMP/detective.txt" >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Regression gate (fails this step only, the job is report-only)
+        working-directory: tools/nds-core
+        run: |
+          python3 probe-report.py "$RUNNER_TEMP/probe-summary.txt" probe-baseline.txt "$RUNNER_TEMP/probe-gate.txt" --gate
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: nds-engine-wasm-probe
+          path: |
+            ${{ runner.temp }}/probe.log
+            ${{ runner.temp }}/probe-summary.txt
+            ${{ runner.temp }}/probe-report.txt
+            ${{ runner.temp }}/detective.txt
+          if-no-files-found: warn
+          retention-days: 14
+
+      # แกนจริง (webcore) มีแท็ก js จึงไม่อยู่ในรายการ probe ด้านบน ต้องคอมไพล์แยก
+      # คำสั่งเดียวกับ tools/nds-core/build-webcore.sh
+      - name: Build the real core (webcore) for wasm
+        working-directory: tools/nds-core
+        run: |
+          set -euo pipefail
+          GOOS=js GOARCH=wasm go build -trimpath -ldflags="-s -w" -o "$RUNNER_TEMP/core-real.wasm" ./webcore
+          test -s "$RUNNER_TEMP/core-real.wasm"
+          echo "webcore OK: $(stat -c %s "$RUNNER_TEMP/core-real.wasm") bytes"

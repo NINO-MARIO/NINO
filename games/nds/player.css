@@ -1,0 +1,69 @@
+/* ตัวเล่น NDS: สไตล์ทั้งหมดของห้องเล่น (แยกจาก player.js เดิมที่ฉีดด้วยสตริง) */
+.np-bar{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin:8px 0}
+.np-btn{position:relative;font-family:Fusion10,monospace;font-size:11px;line-height:12px;letter-spacing:1px;color:#e9e2ee;background:linear-gradient(#2a2233,#1d1824);border:2px solid #3a3145;box-shadow:0 3px 0 #0a0810,inset 0 1px 0 #ffffff14;padding:6px 10px;min-height:34px;cursor:pointer;touch-action:none;user-select:none;-webkit-user-select:none;display:inline-flex;align-items:center;justify-content:center}
+.np-btn:active,.np-btn.np-on{transform:translateY(2px);box-shadow:0 1px 0 #0a0810,0 0 12px #f28ab2aa;border-color:#f28ab2;color:#fbf7fd}
+.np-btn[disabled]{opacity:.45}
+.np-console{position:relative;width:min(100%,400px);margin:10px auto 4px;padding:14px 12px 12px;background:linear-gradient(180deg,#221b2c,#16111e);border:2px solid #3a3145;box-shadow:0 0 0 1px #0a0810,0 0 22px #f28ab21f,inset 0 0 26px #0a0810}
+.np-console:before,.np-console:after{content:"";position:absolute;width:14px;height:14px;border-color:#f28ab2;border-style:solid;pointer-events:none}
+.np-console:before{left:-2px;top:-2px;border-width:2px 0 0 2px}
+.np-console:after{right:-2px;bottom:-2px;border-width:0 2px 2px 0}
+.np-label{font-size:10px;letter-spacing:.24em;color:#f28ab2;text-align:center;margin:0 0 6px;text-transform:uppercase}
+.np-shoulder{display:flex;justify-content:space-between;width:100%;margin:0 0 8px}
+.np-shoulder .np-btn{min-width:86px;min-height:28px;border-radius:0 0 10px 10px;color:#8fd3b0;border-color:#2e4a3f}
+.np-controls{display:flex;justify-content:space-between;align-items:center;margin:4px 0}
+.np-grid3{display:grid;grid-template-columns:repeat(3,50px);grid-template-rows:repeat(3,50px);gap:3px}
+.np-grid3 > div{width:100%;height:100%}
+@media (max-width:340px){.np-grid3{grid-template-columns:repeat(3,42px);grid-template-rows:repeat(3,42px)}
+.np-console{padding:12px 8px 10px}
+}
+#np-dpad .np-btn{width:100%;height:100%;min-width:0;padding:0;border-radius:4px;color:#f28ab2}
+#np-dpad > div:first-child, #np-dpad > div:nth-child(3), #np-dpad > div:nth-child(7), #np-dpad > div:nth-child(9){visibility:hidden}
+#np-face .np-btn{width:100%;height:100%;min-width:0;padding:0;border-radius:50%;font-size:14px}
+#np-face [data-key=A]{color:#fbf7fd}
+#np-face [data-key=B]{color:#fbf7fd}
+.np-mid{display:flex;justify-content:center;gap:12px;margin:10px 0 2px}
+.np-mid .np-btn{min-width:84px;min-height:24px;font-size:10px;border-radius:12px;color:#a79bb3;background:#14111a;border-color:#3a3145}
+.np-mid .np-btn:active,.np-mid .np-btn.np-on{color:#fbf7fd}
+.np-set{background:#1d1824;border:2px solid #3a3145;box-shadow:0 0 0 1px #0a0810;padding:12px;max-width:420px;margin:12px auto;color:#e9e2ee}
+.np-set label{display:flex;align-items:center;gap:10px;margin:8px 0}
+.np-set ul{margin:6px 0 0;padding-left:18px;font-size:13px}
+#screen.np-smooth{image-rendering:auto}
+#play{overflow-y:auto;overflow-x:hidden;justify-content:flex-start;-webkit-overflow-scrolling:touch}
+#screen{height:min(46vh,560px);width:auto;max-width:100%}
+.np-touchpad{position:relative;width:min(256px,80vw);aspect-ratio:4/3;margin:10px auto;border:2px solid #8fd3b0;box-shadow:0 0 0 1px #0a0810,0 0 14px #8fd3b01f;background-color:#0c0910;background-image:linear-gradient(#8fd3b014 1px,transparent 1px),linear-gradient(90deg,#8fd3b014 1px,transparent 1px);background-size:16px 16px;color:#8fd3b0;display:flex;align-items:center;justify-content:center;font-family:Fusion10,monospace;font-size:11px;letter-spacing:1px;touch-action:none;user-select:none;-webkit-user-select:none}
+.np-touchpad span{pointer-events:none}
+
+/* สไตล์คาวาอี้ของจอยสติ๊กเท่านั้น: พื้นครีมชมพู ปุ่มมน พาเลตสีพาสเทล ไม่กระทบแถบปุ่มด้านล่าง */
+.np-kawaii{text-align:center;background:radial-gradient(circle,#ffd6e8 1.2px,transparent 1.8px) 0 0/16px 16px,linear-gradient(180deg,#fff7fb,#ffe6f1);border:3px solid #ffb8d6;border-radius:32px;box-shadow:0 6px 0 #f3a6c6,0 14px 26px #f28ab22e;padding:16px 14px 16px;color:#7a4a6a}
+.np-kawaii:before,.np-kawaii:after{display:none}
+.np-kawaii .np-label{display:inline-block;margin:0 0 12px;padding:4px 16px;border-radius:999px;background:#ffd6e8;color:#b5487a;font-family:ui-rounded,"Trebuchet MS",sans-serif;font-size:14px;font-weight:700;letter-spacing:.02em;text-transform:none;box-shadow:0 3px 0 #f3a6c6}
+.np-kawaii .np-btn{font-family:ui-rounded,"Trebuchet MS",sans-serif;font-weight:700;letter-spacing:0;color:#7a4a6a;background:#fff;border:3px solid #ffc2dc;border-radius:20px;box-shadow:0 4px 0 #f0a2c2;text-shadow:none}
+.np-kawaii .np-btn:active,.np-kawaii .np-btn.np-on{transform:translateY(3px);box-shadow:0 1px 0 #f0a2c2;border-color:#ff8fb8;background:#ffeef6;color:#7a4a6a}
+.np-kawaii #np-dpad .np-btn{border-radius:20px;color:#ff7eb3;font-size:18px}
+.np-kawaii #np-face .np-btn{border-radius:50%;font-size:20px;color:#fff;border:3px solid #ffffffb3;text-shadow:0 2px 0 #00000026}
+.np-kawaii #np-face [data-key=A]{background:#ff8fb1;box-shadow:0 5px 0 #d96a90}
+.np-kawaii #np-face [data-key=B]{background:#ffc766;box-shadow:0 5px 0 #d99a3c}
+.np-kawaii #np-face [data-key=X]{background:#8fcfff;box-shadow:0 5px 0 #5fa6d9}
+.np-kawaii #np-face [data-key=Y]{background:#9fe6b5;box-shadow:0 5px 0 #6cb98a}
+.np-kawaii #np-face .np-btn:active{transform:translateY(3px);box-shadow:0 1px 0 #8a6a7a;filter:brightness(1.05)}
+.np-kawaii .np-shoulder .np-btn{min-width:104px;min-height:32px;border-radius:999px;background:#e9e0ff;color:#5b3f9e;border-color:#c3b1ff;box-shadow:0 4px 0 #b49ef0;font-size:16px}
+.np-kawaii .np-shoulder .np-btn:active,.np-kawaii .np-shoulder .np-btn.np-on{background:#d8c9ff;border-color:#9f86ee;box-shadow:0 1px 0 #b49ef0}
+.np-kawaii .np-mid .np-btn{min-width:96px;min-height:30px;border-radius:999px;background:#fff;color:#b5487a;border-color:#ffc2dc;box-shadow:0 3px 0 #f0a2c2;font-size:13px}
+.np-kawaii .np-mid .np-btn:active,.np-kawaii .np-mid .np-btn.np-on{background:#ffeef6;color:#b5487a;transform:translateY(2px);box-shadow:0 1px 0 #f0a2c2}
+@media (max-width:380px){.np-kawaii .np-grid3{grid-template-columns:repeat(3,46px);grid-template-rows:repeat(3,46px)}
+}
+@media (max-width:340px){.np-kawaii .np-grid3{grid-template-columns:repeat(3,38px);grid-template-rows:repeat(3,38px)}
+.np-kawaii #np-dpad .np-btn{font-size:15px}
+.np-kawaii #np-face .np-btn{font-size:16px}
+}
+
+/* จอทีวีอ้วนกลมคาวาอี้: กรอบมน ลูกบิดสองข้าง ช่องลำโพง และแววสะท้อนบนจอ (เฉพาะกรอบจอของหน้าเล่น) */
+.np-tv{position:relative;border:none;width:fit-content;max-width:100%;margin:8px auto 14px;padding:22px 16px 46px;border-radius:52px 52px 44px 44px;background:linear-gradient(180deg,#ffeaf5,#ffc4de);box-shadow:0 8px 0 #eb97ba,0 18px 30px #f28ab240,inset 0 3px 0 #ffffff,inset 0 -6px 0 #f7a9cb}
+.np-tv canvas{display:block;margin:0 auto;max-width:100%;border-radius:30px;background:#000;box-shadow:0 0 0 5px #fff7fb,0 0 0 8px #ffb3d1}
+.np-tv #screen{width:min(calc(100vw - 84px),360px);height:auto;max-width:none}
+.np-tv::before,.np-tv::after{content:"";position:absolute;left:16px;right:16px;top:22px;bottom:46px;border-radius:30px;pointer-events:none}
+.np-tv::before{background:radial-gradient(ellipse at 28% 16%,rgba(255,255,255,.16),transparent 46%)}
+.np-tv::after{background:repeating-linear-gradient(to bottom,rgba(120,40,90,.07) 0 1px,transparent 1px 3px)}
+.np-tv-knobs{position:absolute;left:0;right:0;bottom:8px;height:28px;display:flex;align-items:center;justify-content:space-between;padding:0 22px;pointer-events:none}
+.np-knob{width:24px;height:24px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#ffffff,#ffd6e8 60%,#f3a6c6);border:2px solid #ffb8d6;box-shadow:0 3px 0 #e693b8}
+.np-grill{width:64px;height:12px;border-radius:8px;background:repeating-linear-gradient(90deg,#f7a9cb 0 6px,transparent 6px 12px)}
