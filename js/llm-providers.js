@@ -21,7 +21,47 @@ catch { }
 const OK_MODELS = new Map(); // โมเดลที่ผ่านการทดสอบหรือเคยตอบได้ล่าสุด: model -> เวลา
 const BENCHED = new Set(); // โมเดลที่หมดโควตาหรือไม่พบแล้ว: ไม่เรียกจนกว่าการค้นหาโมเดลจะทดสอบผ่านอีกครั้ง
 let _activeModel = null; // โมเดลที่ตอบได้ล่าสุดในแท็บนี้ ใช้เป็นตัวแรกของ pool
-function markModelOk(m) { if (!m) return; OK_MODELS.set(m, Date.now()); BENCHED.delete(m); }
+const MODEL_ERR = new Map(); // โมเดล -> ผลผิดพลาดล่าสุดจาก API (ใช้แสดงเหตุผลและวินิจฉัย)
+const ERR_TH = { key: 'คีย์ไม่ถูกต้องหรือไม่มีสิทธิ์', quota: 'โควตาหมดหรือเรียกถี่เกินไป', notfound: 'ไม่พบโมเดลนี้หรือไม่รองรับ', busy: 'เซิร์ฟเวอร์ไม่ว่างชั่วคราว', badreq: 'คำขอไม่ถูกต้อง', network: 'เครือข่ายขัดข้องหรือหมดเวลา', empty: 'ตอบว่างหรือสตรีมขาด', other: 'ข้อผิดพลาดอื่น' };
+function classifyErr(status, errStatus, msg) {
+    const m = String(msg || ''), es = String(errStatus || '');
+    if (status === 429 || es === 'RESOURCE_EXHAUSTED' || /quota|rate limit|too many requests/i.test(m)) return 'quota';
+    if (status === 401 || status === 403 || es === 'PERMISSION_DENIED' || es === 'UNAUTHENTICATED' || /api key|api_key|permission denied|unauthenticated/i.test(m)) return 'key';
+    if (status === 404 || es === 'NOT_FOUND' || /not found|not supported/i.test(m)) return 'notfound';
+    if (status === 500 || status === 503 || status === 504 || es === 'UNAVAILABLE' || es === 'INTERNAL' || es === 'DEADLINE_EXCEEDED') return 'busy';
+    if (status === 400 || es === 'INVALID_ARGUMENT') return 'badreq';
+    if (!status && /abort|timeout|network|fetch|failed|load/i.test(m)) return 'network';
+    return 'other';
+}
+function noteModelErr(model, status, errStatus, msg, forceCode) {
+    if (!model) return;
+    const code = forceCode || classifyErr(status, errStatus, msg);
+    MODEL_ERR.set(model, { code, status: Number(status) || 0, errStatus: String(errStatus || ''), msg: String(msg || '').slice(0, 200), at: Date.now() });
+    if (code === 'key') OK_MODELS.clear(); // คีย์ที่ถูกปฏิเสธใช้กับทุกโมเดลไม่ได้ ผลตรวจ OK เดิมจึงไม่น่าเชื่อถืออีก
+}
+function diagnoseModels() {
+    const cfg = getCfg();
+    const now = Date.now();
+    const rows = [...MODEL_ERR].filter(([, e]) => now - e.at < 10 * 60 * 1000).map(([model, e]) => ({ model, code: e.code, th: ERR_TH[e.code], status: e.status, errStatus: e.errStatus, msg: e.msg, at: e.at, benched: BENCHED.has(model) }));
+    const counts = {};
+    rows.forEach(r => { counts[r.code] = (counts[r.code] || 0) + 1; });
+    const ok = [...OK_MODELS.keys()].filter(m => !BENCHED.has(m));
+    let headline;
+    if (!cfg.apiKey) headline = 'ยังไม่ได้ใส่คีย์ API';
+    else if (ok.length) headline = 'มีโมเดลใช้ได้ ' + ok.length + ' ตัว';
+    else if (counts.key) headline = 'คีย์ไม่ถูกต้องหรือไม่มีสิทธิ์ (ตรวจคีย์ในหน้าตั้งค่า)';
+    else if (rows.length && rows.every(r => r.code === 'quota')) headline = 'โควตาหมดทุกโมเดลที่ทดสอบ';
+    else if (rows.length) headline = 'ล้มเหลวหลายสาเหตุ ดูรายการด้านล่าง';
+    else headline = 'ยังไม่มีผลการทดสอบ';
+    return { headline, ok, benched: [...BENCHED], counts, rows, pool: getModelPool() };
+}
+function failReason() {
+    const d = diagnoseModels();
+    const latest = d.rows.slice().sort((a, b) => b.at - a.at)[0];
+    if (!latest) return d.headline;
+    return d.headline + ' · ล่าสุด: ' + latest.th + (latest.status ? ' (' + latest.status + ')' : '') + (latest.msg ? ' — ' + latest.msg.slice(0, 90) : '');
+}
+function markModelOk(m) { if (!m) return; OK_MODELS.set(m, Date.now()); BENCHED.delete(m); MODEL_ERR.delete(m); }
 function markModelFailed(m) { if (!m) return; OK_MODELS.delete(m); BENCHED.add(m); if (_activeModel === m) _activeModel = null; }
 const FETCH_TIMEOUT = 45000;
 
@@ -80,6 +120,7 @@ async function testModel(apiKey, model) {
             if (!res.ok) {
                 const ed = await res.json().catch(() => ({}));
                 const msg = ed.error?.message || '';
+                noteModelErr(model, res.status, ed.error?.status, msg);
                 if (/not found|not supported|is not supported/i.test(msg))
                     return { ok: false, invalid: true };
                 if (res.status === 429 || ed.error?.status === 'RESOURCE_EXHAUSTED')
@@ -89,9 +130,11 @@ async function testModel(apiKey, model) {
             const data = await res.json();
             if (data.candidates)
                 return { ok: true, version: ver };
+            noteModelErr(model, 0, '', 'ไม่มี candidates ในผลตอบ', 'empty');
             return { ok: false };
         }
-        catch (_) {
+        catch (e) {
+            noteModelErr(model, 0, '', e && e.message || String(e));
             return { ok: false };
         }
     });
@@ -356,7 +399,7 @@ async function healthCheck() {
             return true;
         }
     }
-    setStatus('err', 'ทุกโมเดลล้มเหลว');
+    setStatus('err', failReason());
     return false;
 }
 
@@ -419,7 +462,7 @@ async function geminiGenerate({ systemInstruction, contents, jsonMode = false, o
     }
     const pool = getModelPool();
     if (!pool.length)
-        throw new Error('ตอนนี้ไม่มีโมเดลที่ใช้ได้ (ถูกพักเพราะโควตาหรือไม่พบ) กดค้นหาโมเดลเพื่อทดสอบใหม่');
+        throw new Error('ตอนนี้ไม่มีโมเดลที่ใช้ได้ (ถูกพักเพราะโควตาหรือไม่พบ) กดค้นหาโมเดลเพื่อทดสอบใหม่ · ' + diagnoseModels().headline);
     _lastFinishReason = null;
     let lastErr = null;
     for (const model of pool) {
@@ -461,6 +504,7 @@ async function geminiGenerate({ systemInstruction, contents, jsonMode = false, o
                         const ed = await res.json().catch(() => ({}));
                         const errStatus = ed.error?.status;
                         const msg = ed.error?.message || `HTTP ${res.status}`;
+                        noteModelErr(model, res.status, errStatus, msg);
                         if (res.status === 404 || errStatus === 'NOT_FOUND' || /not found|not supported|is not supported/i.test(msg)) {
                             markModelFailed(model);
                             lastErr = new Error(msg);
@@ -540,6 +584,7 @@ async function geminiGenerate({ systemInstruction, contents, jsonMode = false, o
                         streamErr = se;
                     }
                     if (!fullText) {
+                        noteModelErr(model, 0, '', streamErr ? (streamErr.message || String(streamErr)) : 'Stream ended without content', streamErr ? undefined : 'empty');
                         lastErr = streamErr || new Error('Stream ended without content');
                         if (attempt < MAX_ATTEMPTS) {
                             await new Promise(r => setTimeout(r, 1000));
@@ -557,6 +602,7 @@ async function geminiGenerate({ systemInstruction, contents, jsonMode = false, o
                 catch (e) {
                     if (e.name === 'AbortError')
                         throw e;
+                    noteModelErr(model, 0, '', e && e.message || String(e));
                     lastErr = e;
                     if (attempt < MAX_ATTEMPTS) {
                         await new Promise(r => setTimeout(r, Math.min(5000, 200 * Math.pow(2, attempt - 1))));
@@ -567,8 +613,9 @@ async function geminiGenerate({ systemInstruction, contents, jsonMode = false, o
             }
         }
     }
-    setStatus('err', 'ทุกโมเดลล้มเหลว');
-    throw lastErr || new Error('ทุกโมเดลล้มเหลว');
+    const why = failReason();
+    setStatus('err', why);
+    throw new Error(why);
 }
 
 async function discoverModelsUI(apiKey) {
@@ -589,6 +636,7 @@ async function discoverModelsUI(apiKey) {
             c.innerHTML = rows.join('');
         return good;
     }
+    MODEL_ERR.clear(); // การค้นหาแต่ละครั้งวินิจฉัยใหม่ ไม่ใช้ผลเก่า
     const container = document.getElementById('model-list-container');
     if (container)
         container.innerHTML = '<div class="model-item pending">กำลังค้นหา...</div>';
@@ -638,16 +686,22 @@ async function discoverModelsUI(apiKey) {
         else {
             if (item) {
                 item.className = 'model-item failed';
-                item.textContent = '[FAIL] ' + model + ' · ' + ms + 'ms';
-                setTimeout(() => {
-                    if (item.parentNode)
-                        item.remove();
-                }, 900);
+                const e = MODEL_ERR.get(model);
+                item.textContent = '[FAIL] ' + model + ' · ' + ms + 'ms · ' + (e ? ERR_TH[e.code] + (e.status ? ' (' + e.status + ')' : '') : 'ไม่ทราบสาเหตุ');
             }
             return null;
         }
     });
     const results = tested.filter(Boolean);
+    const diag = diagnoseModels();
+    if (container) {
+        const h = document.createElement('div');
+        h.className = 'model-item ' + (results.length ? 'active' : 'failed');
+        h.textContent = 'สรุป: ' + diag.headline;
+        container.insertBefore(h, container.firstChild);
+    }
+    if (!results.length)
+        setStatus('err', failReason());
     let selected = '';
     if (results.length) {
         selected = cfg.model && results.includes(cfg.model) ? cfg.model : results[0];
@@ -674,7 +728,9 @@ function updateModelSelectionUI(container, selected) {
     });
 }
 
+let _lastStatusText = '';
 function setStatus(state, text) {
+    _lastStatusText = text || _lastStatusText;
     const dot = document.getElementById('status-dot');
     const ind = document.getElementById('status-indicator');
     if (dot)
@@ -701,3 +757,7 @@ function updateModelBadge(model) {
         b.style.borderColor = 'rgba(31,111,235,0.4)';
     }
 }
+
+window.ninoDiagnose = () => diagnoseModels();
+window.ninoFailReason = () => failReason();
+window.ninoModelStatus = () => _lastStatusText;
